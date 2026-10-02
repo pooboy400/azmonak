@@ -1,0 +1,134 @@
+<div class="layer-card card-eng">
+  <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/leveling.py</span></span><span class="lc-sub">کلاس <span class="ltr">CategoryLadder</span>؛ هر دسته یک نمونه، هر پاسخ یک فراخوانی <span class="ltr">record()</span></span></div>
+  <pre class="code"><span class="cm">"""نردبان سطح دسته‌ای (D16) — سه لیگ برای هر دستهٔ سؤال."""</span>
+
+DROP_STREAK = 2            <span class="cm"># n: غلط پیاپی لازم برای سقوط</span>
+RISE_STREAK = 2            <span class="cm"># m: درست پیاپی لازم برای ارتقا</span>
+MIN_LEVEL, MAX_LEVEL = 1, 3
+LEVEL_BANDS = {1: 1150, 2: 1250, 3: 1350}  <span class="cm"># نوار سختی هر سطح</span>
+STUDY_ALERT_SUCCESS = 0.30  <span class="cm"># آستانهٔ بنر مطالعه</span>
+ALERT_WINDOW = 5            <span class="cm"># پنجرهٔ محاسبهٔ موفقیت اخیر</span>
+START_LEVEL = 2             <span class="cm"># شروع هر دسته از میانه (پیش‌فرض مهندسی)</span>
+
+
+class CategoryLadder:
+    <span class="cm">"""وضعیت نردبان یک دسته برای یک دانش‌آموز."""</span>
+
+    def __init__(self, category: str) -&gt; None:
+        self.category = category
+        self.level = START_LEVEL
+        self.wrong_streak = 0      <span class="cm"># شمارندهٔ غلط پیاپی</span>
+        self.right_streak = 0      <span class="cm"># شمارندهٔ درست پیاپی</span>
+        self.weakness_counter = 0  <span class="cm"># در کف سطح ۱: شمارش افت بی‌اثر</span>
+        self.promoted_this_session = False
+        self.recent: list[bool] = []   <span class="cm"># پنجرهٔ ۵ پاسخ آخر</span>
+        self.alert = False
+
+    def difficulty_band(self) -&gt; float:
+        <span class="cm">"""نوار سختی Elo این سطح — ورودی فیلتر انتخاب سؤال."""</span>
+        return LEVEL_BANDS[self.level]</pre>
+  <div class="code-file"><span class="code-name">core/leveling.py</span><span class="code-desc">بخش ۲ — قلب موتور: متد record</span></div>
+  <pre class="code cont">    def record(self, correct: bool) -&gt; dict:
+        <span class="cm">"""ثبت یک پاسخ و به‌روزرسانی سطح؛ خروجی: گزارش رویداد."""</span>
+        event = {"moved": False, "direction": None, "alert": False}
+        self.recent.append(correct)
+        self.recent = self.recent[-ALERT_WINDOW:]
+
+        if correct:
+            self.right_streak += 1
+            self.wrong_streak = 0
+            if (self.right_streak &gt;= RISE_STREAK
+                    and self.level &lt; MAX_LEVEL
+                    and not self.promoted_this_session):
+                self.level += 1
+                self.right_streak = 0
+                self.promoted_this_session = True
+                event.update(moved=True, direction="up")
+        else:
+            self.wrong_streak += 1
+            self.right_streak = 0
+            if self.wrong_streak &gt;= DROP_STREAK:
+                self.wrong_streak = 0
+                if self.level &gt; MIN_LEVEL:
+                    self.level -= 1
+                    self.promoted_this_session = False
+                    event.update(moved=True, direction="down")
+                else:
+                    self.weakness_counter += 1
+
+        if self.level == MIN_LEVEL and len(self.recent) == ALERT_WINDOW:
+            rate = sum(self.recent) / len(self.recent)
+            self.alert = rate &lt; STUDY_ALERT_SUCCESS
+            event["alert"] = self.alert
+        return event</pre>
+  <div class="code-note"><strong>دو نکتهٔ ظریف:</strong> ① سقوط، شمارندهٔ ارتقای جلسه را هم آزاد می‌کند (<span class="ltr">promoted_this_session = False</span>) — یعنی در یک جلسهٔ پرنوسان، سقوط و برگشت ممکن است ولی فقط یک بار. ② در کف سطح ۱، افتِ دیگر «بی‌اثر» است و به‌جایش شمارندهٔ ضعف بالا می‌رود — این شمارنده همان ورودی هشدار مطالعه در گام ۴ سند است.</div>
+</div>
+
+<div class="example">
+  <div class="ex-title">مثال عددی گام‌به‌گام — نردبان دستهٔ «حد و مشتق» (خروجی واقعی تست)</div>
+  <div class="ex-step"><span class="ex-no">۱</span><span>شروع: سطح <strong>۲</strong> (نقره). پاسخ‌ها: غلط، غلط ← <strong>سقوط به سطح ۱</strong>؛ شمارندهٔ غلط پیاپی صفر می‌شود.</span></div>
+  <div class="ex-step"><span class="ex-no">۲</span><span>درست، درست ← <strong>ارتقا به سطح ۲</strong>؛ سهمیهٔ ارتقای این جلسه مصرف شد.</span></div>
+  <div class="ex-step"><span class="ex-no">۳</span><span>درست (سومین درست پیاپی) ← سطح همان <strong>۲</strong> می‌ماند — ارتقای دومِ همان جلسه ممنوع است.</span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span>سناریوی کف: کسی در سطح ۱ با چهار غلط از پنج پاسخ آخر ← پنجمین پاسخ محاسبه می‌کند: موفقیت <span class="frm">20% &lt; 30%</span> ← <strong>بنر مطالعه روشن</strong>؛ اگر همزمان دو غلط پیاپی هم بیاید، به‌جای افت، شمارندهٔ ضعف <strong>+۱</strong> می‌شود.</span></div>
+</div>
+
+<table class="knobs">
+  <tr><th>دستگیره</th><th>مقدار فعلی</th><th>اگر عوضش کنی چه می‌شود؟</th></tr>
+  <tr><td class="p">DROP_STREAK (n)</td><td class="v">2</td><td>۱ ← هر غلط می‌اندازد (پرنوسان)؛ ۳ ← محتاطانه ولی کند؛ با پرش‌های ناخواسته، اول همین را بالا ببر</td></tr>
+  <tr><td class="p">RISE_STREAK (m)</td><td class="v">2</td><td>کاهشش حس پیشرفت سریع می‌دهد ولی سطح‌ها را شکننده می‌کند؛ از سقف «یک ارتقا در جلسه» جدا نگهش دار</td></tr>
+  <tr><td class="p">STUDY_ALERT_SUCCESS</td><td class="v">0.30</td><td>بالابردنش (مثلاً ۰٫۴) ← بنرهای بیشتر و ریسک «کری‌زدن سیستم»؛ پایین‌آوردنش ← بنرهای نادر و دیر</td></tr>
+  <tr><td class="p">START_LEVEL</td><td class="v">2</td><td>شروع از ۳ ← تجربهٔ سنگین اولیه؛ شروع از ۱ ← تحقیرِ بچه‌های قوی؛ میانه بی‌طرف‌ترین است</td></tr>
+</table>
+
+<div class="rival"><b>چرا نردبان و نه BKT / DKT / KST؟</b> BKT (ردیابی دانش بیزی) برای هر مفهوم یک احتمال پنهان «یاد گرفته» نگه می‌دارد و DKT با شبکهٔ عصبی آن را پیش می‌برد — هر دو قوی‌اند ولی به دادهٔ انبوه، تنظیم پارامتر و اعتمادِ ناشناخته نیاز دارند. نردبان با دو شمارنده و سه سطح، همین «ضعف‌محوری» را به دست می‌دهد و هر عددش را می‌توانی در جلسهٔ داوری از حفظ توضیح بدهی. و چون فرمت بدفهمی (ستون <span class="ltr">distractor_map</span> و شیت <span class="ltr">misconceptions</span>) حفظ شده، روزی که داده انباشت، BKT بدون تغییر اسکیما روی همان داده فعال می‌شود.</div>
+
+<!-- ==================== فصل ۵: SM-2 ==================== -->
+<div class="chapter-header">
+  <div class="ch-tag">فصل ۵</div>
+  <div class="ch-title">SM-2 — مرور فاصله‌دار</div>
+  <div class="ch-sub">قبل از آن‌که فراموش کنی مرورت کن: ۱ ← ۶ ← ۱۵ روز و بعد هر بار طولانی‌تر</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p class="lead">Elo و نردبان دربارهٔ «فهم» تو حرف می‌زنند، ولی حافظه قانون خودش را دارد: هرچه یاد گرفته‌ای، اگر تمرین نشود، طبق یک منحنی ثابت محو می‌شود. SM-2 — الگوریتمی که پشت اپ‌هایی مثل Anki نشسته — این منحنی را با دو عدد مهار می‌کند: <strong>آسانی نسبی EF</strong> (این آیتم برای تو چقدر «چسبنده» است) و <strong>شمارهٔ تکرار n</strong>. بعد از هر پاسخ، فقط همین دو عدد به‌روز می‌شوند و فاصلهٔ مرور بعدی از دلشان بیرون می‌آید.</p>
+
+<div class="layer-card card-kid">
+  <div class="lc-head"><span class="lc-em">🧒</span><span class="lc-title">اگر یک بچهٔ ۱۰ ساله بپرسد: «چرا بعضی سؤال‌ها برمی‌گردند سراغم؟»</span></div>
+  <p>مثل آبیاری گل است! اگر هر روز به گل آب بدهی، ریشه‌اش تنبل می‌شود و سطحی می‌ماند. اگر سه هفته فراموشش کنی، می‌خشکد. گل‌خورد هر روز آب نمی‌خواهد؛ <strong class="s">دقیقاً لحظه‌ای که دارد تشنه می‌شود</strong> آب می‌خواهد. سؤال‌ها هم همین‌طورند: روز اول که یاد گرفتی، فردا دوباره می‌آیند؛ اگر خوب جوابشان بدهی، دفعهٔ بعد شش روز بعد می‌آیند؛ باز هم خوب جواب بدهی، پانزده روز بعد؛ و هر بار فاصله‌ها طولانی‌تر می‌شود چون مغزت این‌ها را «محکم‌تر» نگه داشته.</p>
+  <p>حالا نکتهٔ باحالش: گل‌ها با هم فرق دارند! بعضی سؤال‌ها «کاکتوس»‌اند — سخت‌گیر می‌شوی با آن‌ها و آب کم می‌خواهند؛ بعضی «بنفشه»‌اند — مدام تشنه‌اند. آن عدد <strong class="s">EF</strong> همین است: برای هر سؤال، جداگانه می‌گوید چقدر ماندگار بوده. و اگر یک روز به یک سؤال کامل سربازنزدی؟ فاصله‌اش ریست می‌شود به فردا — مثل اینکه گل پژمیده و باید از اول بهش برسی.</p>
+</div>
+
+<div class="layer-card card-con">
+  <div class="lc-head"><span class="lc-em">💡</span><span class="lc-title">مفهوم — کیفیت سه‌سیگنالی و فرمول درجه‌دو</span></div>
+  <p>کیفیت هر پاسخ، <strong class="s">q</strong> نام دارد و بین ۰ تا ۵ است؛ در آزمونک از سه سیگنال ساخته می‌شود، نه فقط درست/غلط: <strong class="s">① درستی</strong> — پایه: درست ← ۴، غلط ← ۲. <strong class="s">② اعتماد (D14)</strong> — «مطمئن بودم» یک امتیاز اضافه می‌کند (سقف ۵)؛ «حدس می‌زدم» ولی درست، سقف q را در ۴ می‌بندد — چون حدسِ درست نباید حافظهٔ واقعی قوی‌تری نشان بدهد. <strong class="s">③ تأخیر (D10)</strong> — پاسخِ زیر ۱۵ ثانیه مشکوک به حدس رفلکسی است (سقف q = ۴) و بالای ۷۰ ثانیه یعنی سخت به جواب رسیده‌ای (−۰٫۵). سیگنال اعتماد فقط همین‌جا و در قرینهٔ بدفهمی مصرف می‌شود و <em>وارد نمرهٔ جلسه نمی‌شود</em> — قاعدهٔ ثابت سند.</p>
+  <p>دو عدد هر آیتم با q به‌روز می‌شوند. اول آسانی نسبی؛ اگر <span class="ltr">d = 5 − q</span> را باز کنی، فرمول SM-2 شکل حساب‌شده‌اش را نشان می‌دهد:</p>
+  <div class="formula">EF&#8242; = EF + ( 0.1 − d · 0.08 − d<sup>2</sup> · 0.02 ) &nbsp;&nbsp;&nbsp; d = 5 − q &nbsp;&nbsp;,&nbsp;&nbsp; EF ≥ 1.3<span class="fn">قانون آپدیت آسانی نسبی — جریمه درجه‌دو برای کیفیت بد؛ کف ۱٫۳</span></div>
+  <p>سه خاصیت از همین بازکردن بیرون می‌آید: در <strong>q = ۴</strong>، د = ۱ است پس <span class="ltr">0.1 − 0.08 − 0.02 = 0</span> و EF دست‌نخورده می‌ماند؛ در <strong>q = ۵</strong> فقط ۰٫۱ اضافه می‌شود (رشد آهسته و صبور)؛ و هرچه q بدتر شود، جملهٔ <span class="ltr">d²</span> سنگین‌تر از جریمهٔ خطی رشد می‌کند — کیفیتِ خیلی بد، سقوط EF را تندتر می‌کند. سپس فواصل:</p>
+  <div class="formula">q &lt; 3 ⇒ reset&nbsp;&nbsp;|&nbsp;&nbsp; I(1) = 1&nbsp;&nbsp;,&nbsp;&nbsp; I(2) = 6&nbsp;&nbsp;,&nbsp;&nbsp; I(n) = I(n−1) × EF<span class="fn">زنجیرهٔ مرور — یک غلطِ واقعی (q زیر ۳) زنجیره را به روز اول برمی‌گرداند</span></div>
+  <div class="fig">
+  <svg viewBox="0 0 620 150" xmlns="http://www.w3.org/2000/svg" font-family="Vazirmatn">
+    <defs><marker id="ar3" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0f766e"/></marker></defs>
+    <line x1="30" y1="112" x2="600" y2="112" stroke="#9aa5ad" stroke-width="1.2"/>
+    <g>
+      <rect x="38" y="104" width="52" height="16" rx="8" fill="#f6f4ef" stroke="#9aa5ad"/>
+      <text x="64" y="116" text-anchor="middle" font-size="10.5" fill="#5e7180">یادگیری</text>
+      <circle cx="140" cy="112" r="7" fill="#0f766e"/><text x="140" y="94"  text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">روز ۱</text>
+      <circle cx="240" cy="112" r="7" fill="#0f766e"/><text x="240" y="94"  text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">روز ۶</text>
+      <circle cx="370" cy="112" r="7" fill="#0f766e"/><text x="370" y="94"  text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">روز ۱۵</text>
+      <circle cx="540" cy="112" r="7" fill="#0f766e"/><text x="540" y="94"  text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">روز ۳۸</text>
+    </g>
+    <line x1="93" y1="106" x2="129" y2="106" stroke="#0f766e" stroke-width="1.6" marker-end="url(#ar3)"/>
+    <line x1="150" y1="106" x2="229" y2="106" stroke="#0f766e" stroke-width="1.6" marker-end="url(#ar3)"/>
+    <line x1="250" y1="106" x2="359" y2="106" stroke="#0f766e" stroke-width="1.6" marker-end="url(#ar3)"/>
+    <line x1="380" y1="106" x2="529" y2="106" stroke="#0f766e" stroke-width="1.6" marker-end="url(#ar3)"/>
+    <text x="112" y="128" text-anchor="middle" font-size="11" fill="#5e7180">۱ روز (ثابت)</text>
+    <text x="192" y="128" text-anchor="middle" font-size="11" fill="#5e7180">۵ روز (ثابت)</text>
+    <text x="302" y="128" text-anchor="middle" font-size="11" fill="#5e7180">۶ × ۲٫۵ = ۱۵ روز بعد</text>
+    <text x="456" y="128" text-anchor="middle" font-size="11" fill="#5e7180">۱۵ × ۲٫۵ = ۳۸ روز بعد</text>
+    <text x="315" y="26" text-anchor="middle" font-size="12" fill="#232a33" font-weight="600">با q = ۵ در هر مرور، فاصله‌ها با EF = ۲٫۵ رشد می‌کنند: ۱ ← ۶ ← ۱۵ ← ۳۸ ← …</text>
+    <text x="315" y="46" text-anchor="middle" font-size="11" fill="#9a3412">یک غلط واقعی (q = ۲) وسط راه؟ زنجیره ریست می‌شود و فردا از نو</text>
+  </svg>
+  <div class="fig-cap">شکل ۴ — زنجیرهٔ مرور یک آیتم سالم؛ هر پرش = ضرب در EF همان آیتم</div>
+  </div>
+  <p>یک ظرافت اجرایی: آستانه‌های تأخیر (۱۵ و ۷۰ ثانیه) پیش‌فرض سراسری‌اند و هر سؤال می‌تواند با فیلد <span class="ltr">est_time_sec</span> خودش آن‌ها را override کند — سؤال محاسباتی سنگین حق دارد زمان بیشتری بخواهد. و «مطمئن اما غلط» (q پایینِ با اعتماد بالا) مهم‌ترین سیگنال انفرادی کل محصول است: همان قرینهٔ بدفهمی که در گزارش جلسه ثبت می‌شود.</p>
+</div>

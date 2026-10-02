@@ -1,0 +1,139 @@
+<!-- ==================== فصل ۳: انتخاب سؤال ==================== -->
+<div class="chapter-header">
+  <div class="ch-tag">فصل ۳</div>
+  <div class="ch-title">انتخاب سؤال — ناحیهٔ طلایی</div>
+  <div class="ch-sub">سه فیلتر پشت‌سرهم: چقدر سخت؟ چقدر مفید؟ آیا اخیراً دیده‌ای؟</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p class="lead">حالا که موتور «می‌داند» توان تو چیست، باید تصمیم بگیرد بعدی چه سؤالی سرو کند. این تصمیم مهم‌ترین تجربهٔ کاربری کل محصول است: اگر سؤال‌ها همیشه آسان باشند، اپ را با حس «وقت‌تلف‌کردن» ترک می‌کنی و اگر همیشه سخت باشند، با حس «من نمی‌توانم». سیاست سند، <strong>ناحیهٔ تقریبی توسعه</strong> است: جایی که کار سخت است اما نه به‌قدری که ناامیدکننده باشد. این سیاست در عمل سه لایهٔ پشت‌سرهم دارد که از کلان به خرد اجرا می‌شوند.</p>
+
+<div class="layer-card card-kid">
+  <div class="lc-head"><span class="lc-em">🧒</span><span class="lc-title">اگر یک بچهٔ ۱۰ ساله بپرسد: «چرا این سؤال‌ها را برای من می‌آورد؟»</span></div>
+  <p>تو بازی کرده‌ای: وقتی همهٔ مراحل خیلی آسان باشند، پنج دقیقه‌ای حوصله‌ات سر می‌رود؛ وقتی همه خیلی سخت باشند، گوشی را پرت می‌کنی رفتی. بهترین بخش بازی آن‌جاست که <strong class="s">هفت‌هشت‌بار از ده می‌توانی</strong> — سخت، ولی نه غیرممکن. آزمونک هم دنبال همان حس است: سؤالی که حدود ۷۰٪ دفعه‌ها می‌توانی جوابش بدهی.</p>
+  <p>بعدش هم مثل مربیِ باهوش عمل می‌کند: بین چند سؤالِ «در حد تو»، آن‌که به <strong class="s">ضعفِ تو</strong> مربوط است را اول می‌دهد، آن‌که خیلی وقت است ندیده‌ای را یادت می‌اندازد، و سؤالی که دیروز ده بار دیده‌ای را دوباره جلوتر نمی‌آورد — چون حفظ‌کردنِ صورتِ سؤال، یادگیری نیست!</p>
+</div>
+
+<div class="layer-card card-con">
+  <div class="lc-head"><span class="lc-em">💡</span><span class="lc-title">مفهوم — فیلترها از کلان به خرد</span></div>
+  <p><strong class="s">لایهٔ اول — ناحیهٔ هدف ۶۵٪ تا ۷۵٪.</strong> فرمول انتظار فصل ۱ برای هر سؤالِ کاندید یک عدد می‌دهد؛ سیاست، سؤالی است که این شانس داخل بازه باشد و عملیاتی‌کردنش یعنی انتخاب کمینهٔ فاصله از میانه:</p>
+  <div class="formula">q* = argmin<sub>q ∈ Candidates</sub> | E(R<sub>s</sub>, R<sub>q</sub>) − 0.70 |<span class="fn">معیار کمینهٔ فاصله از نقطهٔ هدف ۰٫۷۰ — از اسلایدهای سند</span></div>
+  <p>چرا ۷۰٪ و نه ۵۰٪؟ در ۵۰٪ عملاً با شانس سکه جلو می‌روی؛ اضطراب بالا می‌رود و بازخورد کم‌اطلاع می‌شود. چرا نه ۹۰٪؟ چون آن‌جا دیگر «چالش» نیست؛ نمرهٔ بالا فقط خودفریبیِ آسان‌گرایی می‌سازد. ۷۰٪ نقطهٔ تعادل حسِ پیشرفت و چالش واقعی است و بازهٔ ۶۵–۷۵٪ هم اجازهٔ تنفس می‌دهد. نکتهٔ جالب ریاضی: چون ۷۰٪ یعنی سؤال باید «کمی آسان‌تر از توان تو» باشد، این ناحیه معمولاً کمی پایین‌تر از R<sub>s</sub> تو قرار می‌گیرد — این باگ نیست، جنسِ تعریف E است.</p>
+  <p><strong class="s">لایهٔ دوم — امتیاز ارزش آموزشی.</strong> معمولاً چند سؤال هم‌زمان داخل ناحیه‌اند؛ این‌جا سیاست از «سخت کدام» به «مفید کدام» سوییچ می‌کند. هر کاندید جمع وزنی سه مؤلفه می‌گیرد:</p>
+  <div class="formula">V(q) = w<sub>1</sub> · Weakness(cat) + w<sub>2</sub> · Importance(topic) + w<sub>3</sub> · Recency(q)<span class="fn">وزن‌ها ۰٫۵ / ۰٫۳ / ۰٫۲ — پیش‌فرض مهندسی و قابل وتو</span></div>
+  <p>Weakness از نردبان سطح (فصل بعد) می‌آید: دسته‌ای که سطحش افتاده امتیاز بیشتری می‌گیرد. Importance ارزش مبحث در سرفصل است که نویسندهٔ محتوا ست می‌کند. Recency هم فاصلهٔ زمانی از آخرین برخورد با آن مبحث است تا مباحث رهاشده کم‌کم بالا بیایند و «فراموشی محض» رخ ندهد.</p>
+  <p><strong class="s">لایهٔ سوم — محدودیت مواجهه.</strong> آخرین فیلتر حفاظتی: سؤالی که در ۲۰ پاسخ اخیر دیده شده، از کاندیدها حذف می‌شود (<span class="ltr">exposure_window = 20</span>). بدون این فیلتر، سیاست ارزش آموزشی ممکن است «عاشق» یک سؤال شود و هر جلسه تکرارش کند؛ نتیجه، حفظِ صورتِ سؤال و تورم مصنوعی نمره است. و یادت باشد: نوار سختیِ کل این انتخابات، از <strong class="s">سطحِ جاری نردبانِ آن دسته</strong> (فصل بعد) می‌آید — دو موتور دست در دست هم کار می‌کنند.</p>
+</div>
+
+<div class="layer-card card-eng">
+  <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/selector.py</span></span><span class="lc-sub">سه فیلتر در یک تابع انتخاب؛ فال‌بک هوشمند برای بانک‌های کم</span></div>
+  <pre class="code"><span class="cm">"""انتخاب سؤال سه‌لایه — ناحیهٔ هدف، ارزش آموزشی، محدودیت مواجهه."""</span>
+
+from elo import expected_success
+
+TARGET = 0.70                    <span class="cm"># میانهٔ ناحیهٔ هدف</span>
+ZONE_LOW, ZONE_HIGH = 0.65, 0.75 <span class="cm"># ناحیهٔ هدف (پیوست الف)</span>
+EXPOSURE_WINDOW = 20             <span class="cm"># پنجرهٔ مواجهه (گپ G8)</span>
+W_WEAKNESS = 0.5                 <span class="cm"># وزن ضعف دسته</span>
+W_IMPORTANCE = 0.3               <span class="cm"># وزن اهمیت مبحث</span>
+W_RECENCY = 0.2                  <span class="cm"># وزن تازگی</span>
+
+
+def educational_value(weakness: float, importance: float,
+                      recency: float) -&gt; float:
+    <span class="cm">"""V(q) = ۰٫۵·ضعف + ۰٫۳·اهمیت + ۰٫۲·تازگی (ورودی‌ها بین ۰ و ۱)."""</span>
+    return W_WEAKNESS * weakness + W_IMPORTANCE * importance \
+        + W_RECENCY * recency</pre>
+  <div class="code-file"><span class="code-name">core/selector.py</span><span class="code-desc">بخش ۲ — تابع اصلی انتخاب</span></div>
+  <pre class="code cont">def select_question(r_student: float, candidates: list[dict],
+                    recent_question_ids: list[int]) -&gt; dict | None:
+    <span class="cm">"""بهترین سؤال بعدی؛ هر آیتم کاندید شامل id، r_question،
+    weakness، importance، recency است."""</span>
+    <span class="cm"># لایهٔ ۳ — محدودیت مواجهه: دیده‌شده‌های ۲۰ پاسخ اخیر حذف</span>
+    seen = set(recent_question_ids[-EXPOSURE_WINDOW:])
+    pool = [c for c in candidates if c["id"] not in seen]
+    if not pool:
+        return None
+
+    <span class="cm"># لایهٔ ۱ — ناحیهٔ هدف (فال‌بک: نزدیک‌ترین به ۰٫۷۰)</span>
+    for c in pool:
+        c["e"] = expected_success(r_student, c["r_question"])
+    zone = [c for c in pool if ZONE_LOW &lt;= c["e"] &lt;= ZONE_HIGH]
+    if not zone:
+        return min(pool, key=lambda c: abs(c["e"] - TARGET))
+
+    <span class="cm"># لایهٔ ۲ — بیشترین ارزش آموزشی</span>
+    for c in zone:
+        c["value"] = educational_value(
+            c["weakness"], c["importance"], c["recency"])
+    return max(zone, key=lambda c: c["value"])</pre>
+  <div class="code-note"><strong>فال‌بک لایهٔ اول</strong> برای روزهای کم‌محتواست: اگر هیچ سؤالی در ناحیه نبود (بانک ۵۰ سؤالیِ هفته‌های اول)، به‌جای خطا، نزدیک‌ترین سؤال به ۰٫۷۰ انتخاب می‌شود. تست‌های فصل ۶ سند توسعه، همین مسیر را پوشش می‌دهند.</div>
+</div>
+
+<div class="example">
+  <div class="ex-title">مثال عددی گام‌به‌گام — دانش‌آموزی با توان ۱۲۳۰ و پنج کاندید</div>
+  <div class="ex-step"><span class="ex-no">۱</span><span>برای هر کاندید E حساب می‌شود: سؤال <span class="frm">900</span> ← <span class="frm">E = 0.870</span> خیلی آسان؛ سؤال <span class="frm">1230</span> ← <span class="frm">E = 0.500</span> سکه‌ای؛ سؤال <span class="frm">1400</span> ← <span class="frm">E = 0.273</span> خیلی سخت — هر سه از ناحیه خارج‌اند.</span></div>
+  <div class="ex-step"><span class="ex-no">۲</span><span>دو کاندید داخل ناحیه ۶۵–۷۵٪ می‌مانند: سؤال <span class="frm">1110</span> با <span class="frm">E = 0.666</span> و سؤال <span class="frm">1100</span> با <span class="frm">E = 0.679</span>.</span></div>
+  <div class="ex-step"><span class="ex-no">۳</span><span>ارزش آموزشی: سؤال <span class="frm">1110</span> ← <span class="frm">V = 0.5×0.3 + 0.3×0.8 + 0.2×0.2 = 0.43</span>؛ سؤال <span class="frm">1100</span> از دستهٔ ضعیف‌تر ← <span class="frm">V = 0.5×0.9 + 0.3×0.6 + 0.2×0.7 = <b>0.77</b></span>.</span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span>برنده: سؤال <strong>1100</strong> — نه سخت‌ترین، نه آسان‌ترین؛ <strong>مفیدترینِ</strong> داخل ناحیه. (کل این جدول، خروجی واقعی تست است.)</span></div>
+</div>
+
+<table class="knobs">
+  <tr><th>دستگیره</th><th>مقدار فعلی</th><th>اگر عوضش کنی چه می‌شود؟</th></tr>
+  <tr><td class="p">TARGET</td><td class="v">0.70</td><td>پایین‌آوردنش (مثلاً ۰٫۶) ← تجربهٔ سخت‌تر و استرس بیشتر؛ بالابردنش ← آسان‌گرایی و ملال</td></tr>
+  <tr><td class="p">ZONE_LOW / HIGH</td><td class="v">0.65 / 0.75</td><td>بازهٔ باریک‌تر ← سخت‌گیری بیشتر در انتخاب؛ بازهٔ بازتر ← تنوع بیشتر در بانک کم‌محتوا</td></tr>
+  <tr><td class="p">W_WEAKNESS</td><td class="v">0.5</td><td>بزرگ‌تر ← سیستم عصبی‌تر دنبال ضعف‌ها می‌رود؛ ریسک یکنواخت‌شدن روی دسته‌های ضعیف</td></tr>
+  <tr><td class="p">EXPOSURE_WINDOW</td><td class="v">20</td><td>کوچک‌تر ← تکرار زودتر (بد برای حفظِ صورت سؤال)؛ بزرگ‌تر ← بانک کم فشار می‌آید</td></tr>
+</table>
+
+<div class="rival"><b>چرا این سه فیلتر و نه Multi-Armed Bandit؟</b> الگوریتم‌های MAB (مثل UCB) مسئلهٔ اکتشاف/بهره‌برداری را بهینه حل می‌کنند، ولی سیاستشان به‌سختی قابل توضیح برای داور یا والد است و رفتار مرزی‌اش سخت دیباگ می‌شود. سه فیلتر آزمونک هر کدام یک جملهٔ قابل‌دفاع دارند («ناحیهٔ توسعه»، «اول ضعف‌ها»، «تکرار ممنوع») و پارامترهایشان مستقیم در آزمایش علمی حساسیت‌سنجی می‌شوند.</div>
+
+<!-- ==================== فصل ۴: نردبان D16 ==================== -->
+<div class="chapter-header">
+  <div class="ch-tag">فصل ۴ — طرح جایگزین پویا</div>
+  <div class="ch-title">نردبان سطح D16 — لیگ‌های هر دسته</div>
+  <div class="ch-sub">سه سطح برای هر دسته؛ سقوط با دو غلط پیاپی، ارتقای محتاطانه با دو درست پیاپی</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p class="lead">یک عدد سراسری («مجموعاً چقدر بلدی؟») به دو سؤال حیاتی جواب نمی‌دهد: «کجای ریاضی‌ام ضعیفم؟» و «الان دقیقاً چه بخوانم؟». دانش‌آموزی با توان ۱۲۵۰ می‌تواند در «قاعدهٔ زنجیره‌ای» عالی و در «حد از چپ» ضعیف باشد. طراحی نخست برای این‌جا «موتور بدفهمی» بود: هر گزینهٔ غلط به یک بدفهمی مفهومی مشخص مپ می‌شد. در بازبینی طراحی، پویا این مکانیزم را <strong>وتو</strong> کرد (D16): نویسندگی مپ برای هر گزینه، بار تولید محتوا را دو تا سه برابر می‌کرد. طرح جایگزینِ خودش، <strong>نردبان سطح دسته‌ای</strong> بود — ساده، شفاف و بدون هیچ ستون جدید دیتابیس — و همین‌جا پیاده‌سازی می‌شود.</p>
+
+<div class="layer-card card-kid">
+  <div class="lc-head"><span class="lc-em">🧒</span><span class="lc-title">اگر یک بچهٔ ۱۰ ساله بپرسد: «این لیگ برنز و نقره و طلا چیست؟»</span></div>
+  <p>بازی‌های آنلاین برای هر مهارتت لیگ دارند: برنز، نقره، طلا. در آزمونک هم <strong class="s">هر درس، لیگ‌های خودش را دارد</strong> — ممکن است در «معادله» لیگ طلا باشی و در «حالت‌های کلمه‌ای» هنوز لیگ برنز! دو بازی ببازی و ببازی (دو سؤال پشت‌سرهم غلط بزنی)؟ یک لیگ می‌افتید پایین. دو تا ببری؟ بالا می‌روی — ولی هر روز حداکثر یک پله، تا از یک جلسهٔ خوش‌شانس هورا نکشی و لیگ‌ها بی‌اعتبار نشوند.</p>
+  <p>و اگر در پایین‌ترین لیگ هم مدام ببازی؟ بازی سرت داد می‌زند: «دوست من، اول برو قواعدش را بخوان!» — همان <strong class="s">بنر مطالعه</strong> که بالای صفحه می‌آید. این‌طوری سیستم تو را غرق سؤال‌های ناممکن نمی‌کند؛ به تو و کتاب درسی‌ات برمی‌گرداند تا اول مطالعه کنی، بعد دوباره چالش را شروع کنی.</p>
+</div>
+
+<div class="layer-card card-con">
+  <div class="lc-head"><span class="lc-em">💡</span><span class="lc-title">مفهوم — سه سطح، دو شمارنده، یک بنر</span></div>
+  <p>هر دسته (همان فیلد <span class="ltr">topic</span> سؤال‌ها) برای هر دانش‌آموز یک سطح ۱ تا ۳ دارد که با سه ردهٔ سختی موجود سینک است: سطح ۱ ← نوار ۱۱۵۰، سطح ۲ ← ۱۲۵۰، سطح ۳ ← ۱۳۵۰. این سطح، «نوار سختی» را برای انتخاب سؤال فصل قبل تعیین می‌کند — پس هیچ ستون جدیدی در دیتابیس لازم نشد؛ فقط ردیف‌های دسته در <span class="ltr">ability_state</span>.</p>
+  <div class="fig">
+  <svg viewBox="0 0 620 208" xmlns="http://www.w3.org/2000/svg" font-family="Vazirmatn">
+    <defs><marker id="ar2" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0f766e"/></marker></defs>
+    <!-- سطح ۳: چپ بالا -->
+    <rect x="18" y="18" width="170" height="56" rx="10" fill="#e6f2f0" stroke="#0f766e" stroke-width="1.4"/>
+    <text x="103" y="41" text-anchor="middle" font-size="13.5" font-weight="700" fill="#115e59">سطح ۳ — سخت</text>
+    <text x="103" y="60" text-anchor="middle" font-size="10.5" fill="#5e7180">نوار ۱۳۵۰ · «طلا»</text>
+    <!-- سطح ۲: وسط -->
+    <rect x="225" y="82" width="170" height="56" rx="10" fill="#e6f2f0" stroke="#0f766e" stroke-width="1.4"/>
+    <text x="310" y="105" text-anchor="middle" font-size="13.5" font-weight="700" fill="#115e59">سطح ۲ — متوسط</text>
+    <text x="310" y="124" text-anchor="middle" font-size="10.5" fill="#5e7180">نوار ۱۲۵۰ · «نقره» · شروع</text>
+    <!-- سطح ۱: راست پایین -->
+    <rect x="432" y="146" width="170" height="56" rx="10" fill="#fdeee9" stroke="#c2410c" stroke-width="1.4"/>
+    <text x="517" y="169" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a3412">سطح ۱ — آسان</text>
+    <text x="517" y="188" text-anchor="middle" font-size="10.5" fill="#5e7180">نوار ۱۱۵۰ · «برنز» · بنر مطالعه</text>
+    <!-- فلش‌ها: صعود (سقوط در RTL از چپ به راست پایین) -->
+    <path d="M 195 60 L 232 79" stroke="#0f766e" stroke-width="1.7" fill="none" marker-end="url(#ar2)"/>
+    <path d="M 402 124 L 439 143" stroke="#0f766e" stroke-width="1.7" fill="none" marker-end="url(#ar2)"/>
+    <path d="M 244 143 L 205 122" stroke="#c2410c" stroke-width="1.7" fill="none" marker-end="url(#ar2)"/>
+    <path d="M 451 124 L 412 145" stroke="#c2410c" stroke-width="1.7" fill="none" marker-end="url(#ar2)"/>
+    <text x="150" y="52" font-size="10.5" fill="#067a5b" font-weight="600">۲ درست پیاپی ← ارتقا</text>
+    <text x="452" y="136" font-size="10.5" fill="#067a5b" font-weight="600">۲ درست پیاپی</text>
+    <text x="140" y="135" font-size="10.5" fill="#9a3412" font-weight="600">۲ غلط پیاپی ← سقوط</text>
+    <text x="448" y="160" font-size="10.5" fill="#9a3412" font-weight="600">۲ غلط پیاپی</text>
+    <text x="310" y="196" text-anchor="middle" font-size="10.5" fill="#6b7480">حداکثر یک ارتقا در هر جلسه · در کف سطح ۱: شمارندهٔ ضعف +۱</text>
+  </svg>
+  <div class="fig-cap">شکل ۳ — نردبان سه‌سطحی هر دسته: سقوط با دو غلط پیاپی، ارتقای محتاطانه با دو درست پیاپی</div>
+  </div>
+  <p><strong class="s">چرا n = ۲ و نه ۱ یا ۳؟</strong> با n=۱ هر غلط سطح را می‌اندازد — واکنشی ولی پرنوسان؛ n=۳ محتاطانه ولی کند است. دو، تعادل سند است و اگر داده نشان دهد سطح‌ها پرش ناخواسته دارند، اول همین n بالا برده می‌شود. <strong class="s">چرا سقف ارتقا در جلسه؟</strong> چون هدف «وضعیت واقعی» است نه «حس خوب لحظه‌ای»؛ ارتقای چندپله‌ای در یک جلسهٔ خوش‌شانس، جلسهٔ بعد را نابود می‌کند. <strong class="s">بنر مطالعه</strong> هم دقیق تعریف شده: سطح ۱ <em>و</em> موفقیت زیر ۳۰٪ در ۵ پاسخ آخرِ همان دسته — یعنی «در پایین‌ترین لیگ هم به‌شدت می‌بازی». آستانهٔ ۳۰٪ = یک از سه؛ بالابردنش بنرهای بیشتری می‌سازد و خطر «کری‌زدن سیستم» دارد.</p>
+</div>

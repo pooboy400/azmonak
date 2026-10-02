@@ -1,0 +1,87 @@
+<!-- ==================== پیوست الف ==================== -->
+<div class="chapter-header">
+  <div class="ch-tag">پیوست الف</div>
+  <div class="ch-title">دستگیره‌های قابل تنظیم — جدول کامل پارامترها</div>
+  <div class="ch-sub">هر عددی که می‌خواهی آزمونک «دیگری» باشد، از این‌جا چرخانده می‌شود (مطابق پیوست الف سند توسعه v1.3)</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p class="lead">این جدول همهٔ پارامترهای تصمیم‌گیر سیستم را یک‌جا دارد. همهٔ آن‌ها در <span class="ltr">params_snapshot</span> هر پاسخ ثبت می‌شوند (G7) و در آزمایش علمی، حساسیت‌سنجی می‌شوند. همین مقادیر، به‌صورت ثابت‌های بالای هر فایل در <span class="ltr">core/</span> هم آمده‌اند — تغییر بدهی، رفتار سیستم عوض می‌شود و هیچ جای دیگری از کد دست‌نخورده می‌ماند؛ این معنای «دستگیره» است.</p>
+
+<table class="knobs">
+  <thead>
+    <tr><th style="width:180px">پارامتر</th><th style="width:120px">مقدار اولیه</th><th>توضیح</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="p">K دانش‌آموز (شروع)</td><td class="v">32</td><td>پس از ۵۰ پاسخ ← ۲۴؛ پس از ۱۵۰ پاسخ ← ۱۶</td></tr>
+    <tr><td class="p">K سؤال</td><td class="v">8</td><td>پس از ۴۰ پاسخ ← ۴؛ رأی هر پاسخ دربارهٔ سؤال کم‌ارزش‌تر است</td></tr>
+    <tr><td class="p">ناحیهٔ هدف انتخاب</td><td class="v">0.65 – 0.75</td><td>حساسیت‌سنجی در آزمایش علمی</td></tr>
+    <tr><td class="p">مرجع انتخاب</td><td class="v">0.70</td><td>کمینهٔ فاصلهٔ E از میانهٔ ناحیهٔ هدف</td></tr>
+    <tr><td class="p">پنجرهٔ مواجهه</td><td class="v">20</td><td>سؤال دیده‌شده در ۲۰ پاسخ اخیر، از کاندیدها حذف (G8)</td></tr>
+    <tr><td class="p">n افت سطح نردبان</td><td class="v">2</td><td>غلط پیاپی در یک دسته؛ کف سطح = ۱؛ در کف: شمارندهٔ ضعف +۱</td></tr>
+    <tr><td class="p">m ارتقای نردبان</td><td class="v">2</td><td>درست پیاپی؛ سقف سطح = ۳؛ حداکثر یک ارتقا در هر جلسه</td></tr>
+    <tr><td class="p">آستانهٔ هشدار مطالعه</td><td class="v">0.30</td><td>سطح ۱ + موفقیت زیر ۳۰٪ در ۵ پاسخ آخر دسته</td></tr>
+    <tr><td class="p">سطوح نردبان</td><td class="v">1150 / 1250 / 1350</td><td>سه ردهٔ سختی؛ سطح جاری، نوار انتخاب سؤال را تعیین می‌کند</td></tr>
+    <tr><td class="p">کف EF در SM-2</td><td class="v">1.3</td><td>سادگی نسبی هرگز زیر کف نمی‌رود</td></tr>
+    <tr><td class="p">EF شروع</td><td class="v">2.5</td><td>آسانی نسبی اولیهٔ هر آیتم مرور</td></tr>
+    <tr><td class="p">t_fast / t_slow</td><td class="v">15s / 70s</td><td>آستانه‌های تأخیر D10؛ پس از MVP: per-category با کالیبراسیون</td></tr>
+    <tr><td class="p">فاصلهٔ حداقلی دو جلسه</td><td class="v">120 دقیقه</td><td>مبنای قاعدهٔ دو شاهد (D12)</td></tr>
+    <tr><td class="p">طول جلسه</td><td class="v">۱۰ سؤال</td><td>جلسهٔ جایابی مستثنی (۳–۵ سؤال)</td></tr>
+    <tr><td class="p">تعریف نمرهٔ جلسه</td><td class="v">وزن‌دار D13</td><td>Σ(وزن×درستی) ÷ Σ(وزن) × ۱۰۰؛ وزن‌های رده: ۱ / ۱٫۵ / ۲</td></tr>
+    <tr><td class="p">وزن روند پیش‌بینی</td><td class="v">λ = 0.85</td><td>وزن نمایی جلسات اخیر در رگرسیون</td></tr>
+    <tr><td class="p">حداقل جلسه برای پیش‌بینی</td><td class="v">8</td><td>پیش از آن، عدد پیش‌بینی نمایش داده نمی‌شود</td></tr>
+    <tr><td class="p">تعداد سؤال جایابی</td><td class="v">4 (بازهٔ ۳–۵)</td><td>سختی پراکنده روی سه رده؛ K ثابت ۳۲ (D1)</td></tr>
+    <tr><td class="p">بودجهٔ حجم صفحهٔ آزمون</td><td class="v">200 KB</td><td>Lighthouse CI از گام ۳ محافظت می‌کند</td></tr>
+    <tr><td class="p">سهمیهٔ بانک سؤال MVP</td><td class="v">۵۰ ← ۱۵۰</td><td>هدف هفتهٔ ۵ / هفتهٔ ۸</td></tr>
+    <tr><td class="p">اندازهٔ گروه‌های آزمایش</td><td class="v">۲۰ + ۲۰</td><td>تصادفی‌سازی بلوکه‌شده؛ آزمایش علمی سند</td></tr>
+  </tbody>
+</table>
+
+<!-- ==================== پیوست ب ==================== -->
+<div class="chapter-header">
+  <div class="ch-tag">پیوست ب</div>
+  <div class="ch-title">واژه‌نامه و اجرای ماژول‌ها</div>
+  <div class="ch-sub">هر اصطلاح این کتاب، یک‌خطی؛ و راه انداختن کد در سه دستور</div>
+  <div class="ch-divider"></div>
+</div>
+
+<h3 class="blk">واژه‌نامه — فارسی ↔ English</h3>
+<table class="knobs">
+  <thead>
+    <tr><th style="width:150px">فارسی</th><th style="width:150px">English</th><th>یعنی</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>توان</td><td class="p">R_s (ability)</td><td>امتیاز Elo دانش‌آموز؛ شروع از ۱۲۵۰ با جلسهٔ جایابی</td></tr>
+    <tr><td>سختی</td><td class="p">R_q (difficulty)</td><td>امتیاز Elo سؤال؛ با رأی پاسخ‌دهندگان اصلاح می‌شود</td></tr>
+    <tr><td>انتظار</td><td class="p">E (expected)</td><td>شانس درست‌زدن؛ از فرمول لجستیک با ثابت ۴۰۰</td></tr>
+    <tr><td>ضریب یادگیری</td><td class="p">K (factor)</td><td>سرعت حرکت امتیاز؛ با تجربه آرام می‌گیرد</td></tr>
+    <tr><td>جایابی</td><td class="p">Placement</td><td>جلسهٔ ۴ سؤالی تعیین توان اولیه (D1)</td></tr>
+    <tr><td>ناحیهٔ هدف</td><td class="p">Target zone</td><td>بازهٔ شانس ۶۵–۷۵٪ برای سؤال بعدی</td></tr>
+    <tr><td>ارزش آموزشی</td><td class="p">V(q)</td><td>امتیاز «مفید بودن»: ضعف + اهمیت + تازگی</td></tr>
+    <tr><td>پنجرهٔ مواجهه</td><td class="p">Exposure window</td><td>سؤالِ دیده‌شده در ۲۰ پاسخ اخیر ممنوع است</td></tr>
+    <tr><td>دسته</td><td class="p">Category</td><td>مبحث ریز سؤال؛ فیلد topic در بانک سؤال</td></tr>
+    <tr><td>نردبان / سطح</td><td class="p">Ladder / Level</td><td>سه لیگ هر دسته: ۱۱۵۰، ۱۲۵۰، ۱۳۵۰ (D16)</td></tr>
+    <tr><td>بنر مطالعه</td><td class="p">Study alert</td><td>هشدار «مطالعه کن»: سطح ۱ + موفقیت زیر ۳۰٪</td></tr>
+    <tr><td>مرور فاصله‌دار</td><td class="p">Spaced repetition</td><td>برگشت سؤال درست قبل از فراموشی؛ موتور SM-2</td></tr>
+    <tr><td>آسانی نسبی</td><td class="p">EF (ease factor)</td><td>ضریب رشد فاصلهٔ هر آیتم؛ شروع ۲٫۵، کف ۱٫۳</td></tr>
+    <tr><td>کیفیت پاسخ</td><td class="p">q (quality)</td><td>عدد ۰ تا ۵ از سه سیگنال: درستی، اعتماد، تأخیر</td></tr>
+    <tr><td>فاصلهٔ مرور</td><td class="p">I(n) (interval)</td><td>روزهای تا مرور بعد: ۱ ← ۶ ← I(n−1) × EF</td></tr>
+    <tr><td>نمرهٔ وزن‌دار</td><td class="p">Weighted score</td><td>نمرهٔ جلسه با وزن سختی سؤال‌ها (D13)</td></tr>
+    <tr><td>رگرسیون نمایی</td><td class="p">λ-weighted trend</td><td>پیش‌بینی با حافظهٔ اخیرگرا؛ λ = ۰٫۸۵</td></tr>
+    <tr><td>اسنپ‌شات پارامترها</td><td class="p">params_snapshot</td><td>ثبت مقادیر همهٔ دستگیره‌ها در هر پاسخ (G7)</td></tr>
+  </tbody>
+</table>
+
+<h3 class="blk">اجرای ماژول‌ها — سه دستور</h3>
+<p>فایل‌های <span class="ltr">core/</span> کنار همین PDF، پایتون خالص‌اند (نسخهٔ ۳٫۱۰ به بالا، بدون هیچ کتابخانه‌ای) و هر عددی که در این کتاب دیدی از همین‌ها بیرون آمده. برای امتحان:</p>
+<pre class="code"><span class="cm"># ۱) تست طلایی Elo را همین حالا بازتولید کن:</span>
+cd azmoonak-algorithms-3layer/core
+python3 -c "from elo import apply_result; print(apply_result(1200, 1350, True))"
+<span class="cm"># خروجی: (1222.51, 1344.37, 0.2966)  ← همان ۱۲۲۲٫۵ و ۱۳۴۴٫۴ کتاب</span>
+
+<span class="cm"># ۲) یک جلسهٔ جایابی کامل:</span>
+python3 -c "from placement import run_placement; print(run_placement([True, False, True, True]))"
+
+<span class="cm"># ۳) همهٔ تست‌های هر شش ماژول (همان اعداد مثال‌های کتاب):</span>
+python3 /path/to/test_core_modules.py   <span class="cm"># خروجی: ALL OK ✔</span></pre>
+<div class="code-note"><strong>پیشنهاد تمرین:</strong> در <span class="ltr">elo.py</span> مقدار <span class="ltr">D_SCALE</span> را به ۲۰۰ تغییر بده و تست را دوباره اجرا کن؛ جهش امتیاز دانش‌آموز چه‌قدر می‌شود؟ بعد <span class="ltr">DROP_STREAK</span> در <span class="ltr">leveling.py</span> را ۱ کن و ببین نردبان چقدر عصبی می‌شود. بازی‌کردن با دستگیره‌ها، بهترین درس است.</div>

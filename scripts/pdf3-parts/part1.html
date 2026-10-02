@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>الگوریتم‌های آزمونک در سه لایه — از بچه ۱۰ ساله تا کد پایتون</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+@page { size: 794px 1123px; margin: 48px 0; }
+
+:root {
+  --c-page: #fdfcf9;         /* کاغذ گرم XL */
+  --c-section: #f6f4ef;      /* بخش L */
+  --c-card: #f4f2ec;
+  --c-primary: #0f766e;      /* سرمه‌ای-فیروزه‌ای ساختاری */
+  --c-primary-d: #115e59;
+  --c-primary-t: #e6f2f0;    /* تینت ساختاری */
+  --c-border: #e0ddd4;
+  --c-text: #232a33;
+  --c-muted: #6b7480;
+  /* کدگذاری سه لایه — پس‌زمینه کم‌اشباع، حاشیه و برچسب اشباع‌تر */
+  --kid-b: #10b981; --kid-bg: #f0faf4; --kid-t: #067a5b;
+  --con-b: #3b82f6; --con-bg: #eff5ff; --con-t: #1d4fc4;
+  --eng-b: #8b5cf6; --eng-bg: #f7f4ff; --eng-t: #6b21d9;
+  --code-bg: #232936; --code-tx: #e6ebf2; --code-cm: #8aa0b6;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  width: 794px;
+  background: var(--c-page);
+  color: var(--c-text);
+  font-family: 'Vazirmatn', 'DejaVu Sans', 'Noto Color Emoji', sans-serif;
+  font-size: 15px;
+  line-height: 1.92;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+@media screen {
+  html { height: auto; display: flex; justify-content: center; background: #e9e6df; }
+  body { margin: 20px auto; box-shadow: 0 2px 24px rgba(35,42,51,.16); }
+}
+
+p { margin: 0 0 10px; text-align: justify; }
+p, td, li { line-break: strict; }
+li { text-align: right; margin-bottom: 5px; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; page-break-inside: avoid; }
+thead + tbody tr:first-child { break-before: avoid; }
+strong { font-weight: 700; color: var(--c-primary-d); }
+.small { font-size: 12.5px; color: var(--c-muted); }
+.ltr { direction: ltr; unicode-bidi: isolate; }
+
+/* ================= COVER ================= */
+.cover { width: 794px; height: 1027px; box-sizing: border-box; break-after: page; position: relative; background: var(--c-page); }
+.cover-bg { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+.cover-grid { position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle 430px at -70px calc(100% + 60px), rgba(15,118,110,.045), transparent 70%),
+    linear-gradient(to left, rgba(15,118,110,.03) 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, rgba(15,118,110,.03) 0.5px, transparent 0.5px);
+  background-size: 100% 100%, 52px 52px, 52px 52px; }
+.cover-struct { position: absolute; inset: 0; z-index: 2; }
+.cover-anchor { position: absolute; right: 95px; top: 110px; bottom: 110px; width: 6px; background: var(--c-primary); }
+.cover-content { position: absolute; inset: 0; z-index: 3; }
+.cv-kicker { position: absolute; top: 140px; right: 148px; left: 60px;
+  font-size: 12.5px; color: var(--c-muted); letter-spacing: 3px; opacity: .9; }
+.cv-hero { position: absolute; top: 214px; right: 148px;
+  font-size: 51px; font-weight: 700; line-height: 1.22; color: var(--c-primary-d); max-width: 570px; }
+.cv-sub { position: absolute; top: 420px; right: 148px;
+  font-size: 19px; font-weight: 300; color: var(--c-primary); max-width: 545px; line-height: 1.55; }
+.cv-layers { position: absolute; top: 530px; right: 148px; left: 64px; display: flex; flex-direction: column; gap: 12px; max-width: 540px; }
+.cv-chip { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-radius: 12px; border-right: 5px solid; break-inside: avoid; }
+.cv-chip .em { font-size: 22px; line-height: 1; }
+.cv-chip .t1 { font-size: 15px; font-weight: 700; }
+.cv-chip .t2 { font-size: 12px; color: var(--c-muted); }
+.chip-kid { background: var(--kid-bg); border-color: var(--kid-b); }
+.chip-kid .t1 { color: var(--kid-t); }
+.chip-con { background: var(--con-bg); border-color: var(--con-b); }
+.chip-con .t1 { color: var(--con-t); }
+.chip-eng { background: var(--eng-bg); border-color: var(--eng-b); }
+.chip-eng .t1 { color: var(--eng-t); }
+.cv-meta { position: absolute; top: 812px; right: 148px; font-size: 14.5px; line-height: 2.05; }
+.cv-meta .lbl { color: var(--c-muted); font-size: 12px; letter-spacing: 1px; }
+.cv-footer { position: absolute; top: 962px; right: 148px; left: 60px;
+  font-size: 11.5px; color: var(--c-muted); letter-spacing: 2.5px; opacity: .65; }
+
+/* ================= TOC ================= */
+.toc { break-after: page; padding: 84px 84px 30px 84px; }
+.toc-kicker { font-size: 11.5px; letter-spacing: 3px; color: var(--c-primary); font-weight: 500; margin-bottom: 8px; }
+.toc-title { font-size: 30px; font-weight: 700; color: var(--c-primary-d); margin-bottom: 6px; }
+.toc-sub { color: var(--c-muted); font-size: 13px; margin-bottom: 24px; }
+.toc-divider { height: 2px; background: linear-gradient(to left, var(--c-primary), transparent); margin-bottom: 30px; }
+.toc-item { display: flex; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--c-border); break-inside: avoid; }
+.toc-num { min-width: 34px; font-weight: 700; font-size: 14.5px; }
+.toc-num.k1 { color: var(--kid-t); } .toc-num.k2 { color: var(--con-t); } .toc-num.k3 { color: var(--eng-t); }
+.toc-num.ap { color: var(--c-muted); }
+.toc-name { font-weight: 500; font-size: 14.5px; }
+.toc-desc { color: var(--c-muted); font-size: 11.5px; margin-right: auto; text-align: left; }
+.toc-note { margin-top: 22px; font-size: 12.5px; color: var(--c-text); background: var(--c-primary-t); padding: 13px 16px; border-right: 3px solid var(--c-primary); border-radius: 8px; break-inside: avoid; }
+
+/* ================= CONTENT ================= */
+.main-content { padding: 52px 84px 40px 84px; }
+.chapter-header { break-after: avoid; break-inside: avoid; margin-top: 26px; margin-bottom: 14px; }
+.chapter-header.first { margin-top: 0; }
+.ch-tag { display: inline-block; font-size: 11.5px; font-weight: 700; color: var(--c-primary);
+  background: var(--c-primary-t); border-radius: 20px; padding: 3px 14px; letter-spacing: 1px; margin-bottom: 8px; }
+.ch-title { font-size: 25px; font-weight: 700; color: var(--c-primary-d); line-height: 1.4; margin-bottom: 4px; }
+.ch-sub { font-size: 13px; color: var(--c-muted); margin-bottom: 10px; }
+.ch-divider { height: 2px; background: linear-gradient(to left, var(--c-primary), transparent); margin-bottom: 14px; }
+
+.lead { font-size: 15px; }
+h3.blk { font-size: 16.5px; font-weight: 700; color: var(--c-text); margin: 18px 0 8px; break-after: avoid; }
+
+/* --- کارت‌های سه‌لایه --- */
+.layer-card { border-radius: 12px; padding: 15px 18px 12px 18px; margin: 0 0 13px 0; }
+.lc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; break-after: avoid; break-inside: avoid; }
+.lc-em { font-size: 21px; line-height: 1; }
+.lc-title { font-size: 15.5px; font-weight: 700; }
+.lc-sub { font-size: 11.5px; opacity: .75; font-weight: 400; }
+.card-kid  { background: var(--kid-bg); border-right: 5px solid var(--kid-b); break-inside: avoid; }
+.card-kid .lc-title, .card-kid strong.s { color: var(--kid-t); }
+.card-con  { background: var(--con-bg); border-right: 5px solid var(--con-b); }
+.card-con .lc-title, .card-con strong.s { color: var(--con-t); }
+.card-eng  { background: var(--eng-bg); border-right: 5px solid var(--eng-b); }
+.card-eng .lc-title, .card-eng strong.s { color: var(--eng-t); }
+.card-kid p:last-child, .card-con p:last-child, .card-eng p:last-child { margin-bottom: 4px; }
+
+/* --- فرمول --- */
+.formula { direction: ltr; text-align: center; font-family: 'DejaVu Serif', serif; font-size: 16px;
+  background: #ffffff; border: 1px solid var(--c-border); border-radius: 10px;
+  padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
+.formula .fn { color: var(--c-muted); font-size: 11.5px; font-family: 'Vazirmatn', sans-serif; direction: rtl; display: block; margin-top: 4px; }
+.vars { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 8px 0 4px; break-inside: avoid; }
+.vars td { border: 1px solid var(--c-border); padding: 4.5px 9px; background: #fff; }
+.vars td.sym { direction: ltr; text-align: center; font-family: 'DejaVu Serif', serif; font-weight: 700; width: 92px; white-space: nowrap; }
+
+/* --- کد --- */
+.code-file { display: flex; align-items: baseline; gap: 10px; margin: 12px 0 7px; break-after: avoid; }
+.code-name { direction: ltr; font-family: 'DejaVu Sans Mono', monospace; font-size: 12.5px; font-weight: 700;
+  color: var(--eng-t); background: #fff; border: 1px solid var(--eng-b); border-radius: 7px; padding: 2px 10px; }
+.code-desc { font-size: 12px; color: var(--c-muted); }
+pre.code { direction: ltr; text-align: left; font-family: 'DejaVu Sans Mono', 'Vazirmatn', monospace;
+  font-size: 10.6px; line-height: 1.62; background: var(--code-bg); color: var(--code-tx);
+  border-radius: 10px; padding: 13px 16px; margin: 0 0 8px 0; white-space: pre-wrap;
+  overflow-wrap: break-word; break-inside: avoid; }
+pre.code.cont { border-top-right-radius: 3px; border-top-left-radius: 3px; margin-top: -4px; }
+pre.code .cm { color: var(--code-cm); }
+.code-note { font-size: 12px; color: var(--c-text); background: #fff; border: 1px dashed var(--eng-b);
+  border-radius: 8px; padding: 8px 13px; margin: 6px 0 12px; break-inside: avoid; }
+
+/* --- مثال عددی --- */
+.example { background: var(--c-primary-t); border: 1px solid #cbe2de; border-radius: 12px;
+  padding: 14px 18px 10px; margin: 2px 0 13px; break-inside: avoid; }
+.ex-title { font-size: 14.5px; font-weight: 700; color: var(--c-primary-d); margin-bottom: 7px; }
+.ex-step { display: flex; gap: 9px; margin-bottom: 6px; font-size: 13.5px; }
+.ex-no { flex-shrink: 0; width: 21px; height: 21px; border-radius: 50%; background: var(--c-primary); color: #fff;
+  font-size: 11.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 4px; }
+.ex-step .frm { direction: ltr; unicode-bidi: isolate; font-family: 'DejaVu Serif', serif; }
+
+/* --- دستگیره‌ها --- */
+table.knobs { width: 100%; border-collapse: collapse; font-size: 12px; margin: 4px 0 12px; }
+table.knobs th { background: var(--c-card); color: var(--c-text); font-weight: 700; padding: 6px 9px; border: 1px solid var(--c-border); font-size: 12px; }
+table.knobs td { border: 1px solid var(--c-border); padding: 5px 9px; background: #fff; vertical-align: top; }
+table.knobs td.p { direction: ltr; text-align: left; font-family: 'DejaVu Sans Mono', monospace; font-size: 11px; color: var(--eng-t); white-space: nowrap; }
+table.knobs td.v { direction: ltr; text-align: center; font-family: 'DejaVu Sans Mono', monospace; font-size: 11px; white-space: nowrap; }
+
+/* --- باکس رقیب --- */
+.rival { background: var(--c-section); border: 1px solid var(--c-border); border-radius: 10px;
+  padding: 10px 15px 8px; margin: 0 0 13px; break-inside: avoid; font-size: 12.8px; }
+.rival b { color: var(--c-primary-d); }
+
+/* --- شکل --- */
+.fig { display: block; width: 100%; margin: 10px auto 12px; break-inside: avoid; }
+.fig svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.fig-cap { text-align: center; font-size: 11.5px; color: var(--c-muted); margin-top: 5px; }
+
+.callout { background: #fff; border: 1px solid var(--c-border); border-right: 4px solid var(--c-primary);
+  border-radius: 10px; padding: 10px 15px 8px; margin: 0 0 12px; break-inside: avoid; font-size: 13px; }
+
+/* ================= ENDING ================= */
+.ending { width: 794px; height: 1027px; box-sizing: border-box; break-before: page; position: relative;
+  background: radial-gradient(circle 480px at 108% 106%, rgba(255,255,255,.07), transparent 70%), var(--c-primary-d); overflow: hidden; }
+.end-inner { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 110px; }
+.end-kicker { color: #7fd6cb; letter-spacing: 4px; font-size: 12px; margin-bottom: 18px; }
+.end-title { color: #ffffff; font-size: 33px; font-weight: 700; line-height: 1.5; margin-bottom: 16px; }
+.end-text { color: #c8e5e1; font-size: 14.5px; line-height: 2.1; margin-bottom: 30px; }
+.end-chips { display: flex; gap: 12px; margin-bottom: 40px; }
+.end-chip { border-radius: 10px; padding: 9px 16px; font-size: 13px; font-weight: 700; }
+.end-foot { position: absolute; bottom: 74px; left: 0; right: 0; text-align: center; color: #6fa8a1; font-size: 11.5px; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ==================== جلد ==================== -->
+<div class="cover">
+  <div class="cover-bg">
+    <div class="cover-grid"></div>
+  </div>
+  <div class="cover-struct"><div class="cover-anchor"></div></div>
+  <div class="cover-content">
+    <div class="cv-kicker">راهنمای سه‌سطحی موتورهای تطبیقی آزمونک (آزمونک)</div>
+    <div class="cv-hero">الگوریتم‌های آزمونک<br>در سه لایه</div>
+    <div class="cv-sub">یک الگوریتم، سه ارتفاع: از توضیحِ بچه ۱۰ ساله تا کدِ آمادهٔ پایتون</div>
+    <div class="cv-layers">
+      <div class="cv-chip chip-kid"><span class="em">🧒</span><span><span class="t1">لایهٔ کودکانه</span><br><span class="t2">قصه و تشبیه — اگر هیچ ریاضی‌ای بلد نباشی هم می‌فهمی</span></span></div>
+      <div class="cv-chip chip-con"><span class="em">💡</span><span><span class="t1">لایهٔ مفهومی</span><br><span class="t2">ایده، فرمول و مثال عددی گام‌به‌گام — مغز الگوریتم</span></span></div>
+      <div class="cv-chip chip-eng"><span class="em">👨‍💻</span><span><span class="t1">لایهٔ مهندسی</span><br><span class="t2">کد پایتون واقعی و تست‌شده — آمادهٔ کپی به هستهٔ پروژه</span></span></div>
+    </div>
+    <div class="cv-meta">
+      <span class="lbl">پدیدآور</span><br>
+      پویا — جشنواره نوجوان خوارزمی<br>
+      رشته رایانه / نرم‌افزار / هوش مصنوعی
+    </div>
+    <div class="cv-footer">AZMOONAK · THREE-LAYER ALGORITHM GUIDE · ۱۴۰۵</div>
+  </div>
+</div>
+
+<!-- ==================== فهرست ==================== -->
+<div class="toc">
+  <div class="toc-kicker">CONTENTS</div>
+  <div class="toc-title">فهرست</div>
+  <div class="toc-sub">هر فصل یک موتور است و هر موتور در سه لایه باز می‌شود؛ ترتیب خواندن پیشنهادی، همان ترتیب این فهرست است</div>
+  <div class="toc-divider"></div>
+  <div class="toc-item"><span class="toc-num k1">۰</span><span class="toc-name">راهنمای خواندن — سه لایه در دو دقیقه</span><span class="toc-desc">چرخهٔ کامل پاسخ آزمونک</span></div>
+  <div class="toc-item"><span class="toc-num k1">۱</span><span class="toc-name">موتور Elo — امتیاز هوشمند</span><span class="toc-desc">عمیق‌ترین فصل؛ قلب تپندهٔ سایت</span></div>
+  <div class="toc-item"><span class="toc-num k2">۲</span><span class="toc-name">جایابی — کجا شروع کنی؟</span><span class="toc-desc">۴ سؤال، ۳ رده، یک عدد</span></div>
+  <div class="toc-item"><span class="toc-num k2">۳</span><span class="toc-name">انتخاب سؤال — ناحیهٔ طلایی</span><span class="toc-desc">سه فیلتر: هدف، ارزش، مواجهه</span></div>
+  <div class="toc-item"><span class="toc-num k2">۴</span><span class="toc-name">نردبان سطح D16 — لیگ‌های هر دسته</span><span class="toc-desc">۲ غلط ← سقوط، ۲ درست ← ارتقا</span></div>
+  <div class="toc-item"><span class="toc-num k2">۵</span><span class="toc-name">SM-2 — مرور فاصله‌دار</span><span class="toc-desc">۱ ← ۶ ← ۱۵ روز؛ قبل از فراموشی</span></div>
+  <div class="toc-item"><span class="toc-num k3">۶</span><span class="toc-name">پیش‌بینی نمره</span><span class="toc-desc">نمرهٔ وزن‌دار + رگرسیون λ</span></div>
+  <div class="toc-item"><span class="toc-num k3">۷</span><span class="toc-name">قواعد اجرا — قانون‌های بازی</span><span class="toc-desc">جلسه، اعتماد، بنر مطالعه</span></div>
+  <div class="toc-item"><span class="toc-num k3">۸</span><span class="toc-name">همه‌چیز در یک نگاه</span><span class="toc-desc">چرخه + جدول تصمیم‌های D1 تا D16</span></div>
+  <div class="toc-item"><span class="toc-num ap">الف</span><span class="toc-name">پیوست الف — دستگیره‌های قابل تنظیم</span><span class="toc-desc">جدول کامل پارامترها</span></div>
+  <div class="toc-item"><span class="toc-num ap">ب</span><span class="toc-name">پیوست ب — واژه‌نامه و اجرای ماژول‌ها</span><span class="toc-desc">فارسی ↔ English + تست سریع</span></div>
+  <div class="toc-note">💡 این سند نسخهٔ سه‌لایه است و کنار «الگوریتم‌های آزمونک» (نسخهٔ تخصصی ۳۱ صفحه‌ای) می‌نشیند؛ آن‌جا استخراج کامل ریاضی و مقایسه‌های مفصل آمده و این‌جا هدف «فهمِ واقعی» است.</div>
+</div>

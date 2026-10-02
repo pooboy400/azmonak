@@ -1,0 +1,142 @@
+<div class="layer-card card-eng">
+  <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/sm2.py</span></span><span class="lc-sub">سه تابع خالص: کیفیت، آسانی، فاصله؛ حالت آیتم در دیتابیس می‌ماند</span></div>
+  <pre class="code"><span class="cm">"""SM-2 آزمونک — مرور فاصله‌دار با کیفیت سه‌سیگنالی."""</span>
+
+EF_START = 2.5      <span class="cm"># آسانی نسبی اولیه</span>
+EF_FLOOR = 1.3      <span class="cm"># کف EF — هرگز زیر آن نمی‌رود</span>
+T_FAST = 15         <span class="cm"># ثانیه؛ زیر آن: حدس رفلکسی (سقف q=۴)</span>
+T_SLOW = 70         <span class="cm"># ثانیه؛ بالای آن: سخت به جواب رسیده (−۰٫۵)</span>
+BASE_CORRECT = 4.0  <span class="cm"># q پایه برای پاسخ درست</span>
+BASE_WRONG = 2.0    <span class="cm"># q پایه برای غلط (زیر ۳ ← ریست فاصله)</span>
+CONFIDENT_BONUS = 1.0  <span class="cm"># «مطمئن بودم» +۱</span>
+GUESS_CAP = 4.0     <span class="cm"># سقف q برای «حدس می‌زدم ولی درست»</span>
+
+
+def quality(correct: bool, confident: bool | None,
+            elapsed_sec: float) -&gt; float:
+    <span class="cm">"""کیفیت q بین ۰ تا ۵ از سه سیگنال پاسخ."""</span>
+    q = BASE_CORRECT if correct else BASE_WRONG
+    if confident is True:
+        q = min(5.0, q + CONFIDENT_BONUS)
+    elif confident is False and correct:
+        q = min(q, GUESS_CAP)  <span class="cm"># حدسِ درست، حافظه واقعی قوی‌تر نیست</span>
+    if elapsed_sec &lt; T_FAST:
+        q = min(q, 4.0)        <span class="cm"># پاسخ آنی مشکوک به حدس رفلکسی</span>
+    elif elapsed_sec &gt; T_SLOW:
+        q -= 0.5               <span class="cm"># تلاش طولانی = یادگیری متزلزل‌تر</span>
+    return max(0.0, min(5.0, q))</pre>
+  <div class="code-file"><span class="code-name">core/sm2.py</span><span class="code-desc">بخش ۲ — آپدیت EF و محاسبهٔ فاصلهٔ بعدی</span></div>
+  <pre class="code cont">def update_ef(ease_factor: float, q: float) -&gt; float:
+    <span class="cm">"""EF' = EF + 0.1 − d·0.08 − d²·0.02 که d = 5 − q؛ کف ۱٫۳."""</span>
+    d = 5.0 - q
+    new_ef = ease_factor + 0.1 - d * 0.08 - d * d * 0.02
+    return max(EF_FLOOR, new_ef)
+
+
+def next_interval(repetition: int, ease_factor: float, q: float,
+                  previous_interval: int = 0) -&gt; int:
+    <span class="cm">"""فاصلهٔ مرور بعدی برحسب روز؛ q&lt;3 یعنی ریست به ۱ روز."""</span>
+    if q &lt; 3.0:
+        return 1
+    if repetition &lt;= 1:
+        return 1
+    if repetition == 2:
+        return 6
+    return max(1, round(previous_interval * ease_factor))</pre>
+  <div class="code-note"><strong>جدا‌سازی حالت از منطق:</strong> این فایل «بی‌حالت» است — <span class="ltr">repetition</span>، <span class="ltr">ease_factor</span> و <span class="ltr">previous_interval</span> را از دیتابیس می‌گیرد و عدد برمی‌گرداند. به همین دلیل تست‌کردنش بی‌نیاز از سرور است و هسته (core) طبق قاعدهٔ پروژه هیچ I/O ندارد.</div>
+</div>
+
+<div class="example">
+  <div class="ex-title">مثال عددی گام‌به‌گام — یک آیتم مرور در سه سناریو (خروجی واقعی تست)</div>
+  <div class="ex-step"><span class="ex-no">۱</span><span><strong>سناریوی درستِ مطمئن:</strong> درست + «مطمئن بودم» + ۳۰ ثانیه ← <span class="frm">q = min(5, 4+1) = 5</span> ← <span class="frm">EF: 2.5 → 2.6</span> (فقط +۰٫۱) و زنجیره: <span class="frm">1 → 6 → 15 → 38</span>.</span></div>
+  <div class="ex-step"><span class="ex-no">۲</span><span><strong>سناریوی حدسِ درستِ سریع:</strong> درست + «حدس می‌زدم» + ۱۰ ثانیه ← دو سقف هم‌زمان: <span class="frm">q = 4</span> ← <span class="frm">EF: 2.5 → 2.5</span> — ثابت! سیستم نه جریمه می‌کند نه جایزه؛ حدسِ درست رشد مرور نمی‌خرد.</span></div>
+  <div class="ex-step"><span class="ex-no">۳</span><span><strong>سناریوی غلطِ مطمئن:</strong> غلط + «مطمئن بودم» + ۳۰ ثانیه ← <span class="frm">q = 2+1 = 3</span> ← <span class="frm">EF: 2.5 → 2.36</span> و چون <span class="frm">q ≥ 3</span> زنجیره حفظ می‌شود؛ اما همان غلط بدون اعتماد ← <span class="frm">q = 2 &lt; 3</span> ← فاصلهٔ بعدی <strong>۱ روز</strong> (ریست کامل) با <span class="frm">EF → 2.18</span>.</span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span><strong>کف EF:</strong> آیتمی با EF=۱٫۳۵ که q=۰ بگیرد ← جریمهٔ d=۵ یعنی <span class="frm">1.35 − 0.8 = 0.55</span>، ولی کف اعمال می‌شود: <span class="frm">EF = 1.3</span> — سادگیِ نسبی هرگز زیر کف نمی‌رود تا آیتم «غیرقابل‌بخشش» نشود.</span></div>
+</div>
+
+<table class="knobs">
+  <tr><th>دستگیره</th><th>مقدار فعلی</th><th>اگر عوضش کنی چه می‌شود؟</th></tr>
+  <tr><td class="p">T_FAST / T_SLOW</td><td class="v">15 / 70</td><td>پس از MVP قرار است per-category با کالیبراسیون دادهٔ واقعی شود (D10)؛ سؤال‌ها با est_time_sec می‌توانند override کنند</td></tr>
+  <tr><td class="p">BASE_CORRECT / WRONG</td><td class="v">4 / 2</td><td>q پایه؛ مرزِ جادویی ۳ جداکنندهٔ «ادامهٔ زنجیره» از «ریست» است — این دو را فاصله نده</td></tr>
+  <tr><td class="p">CONFIDENT_BONUS</td><td class="v">1.0</td><td>صفرش کنی ← دکمهٔ اعتماد فقط سیگنال بدفهمی می‌دهد و در زمان‌بندی اثر ندارد</td></tr>
+  <tr><td class="p">EF_FLOOR</td><td class="v">1.3</td><td>پایین‌تر ← آیتم‌های مشکل‌دار خیلی دیر برمی‌گردند و عملاً رها می‌شوند</td></tr>
+</table>
+
+<div class="rival"><b>چرا SM-2 و نه Leitner / Pimsleur / FSRS / HLR؟</b> لایتنر فقط پنج جعبهٔ ثابت دارد — برای «چه زمانی مرور» بسیار خشن است. Pimsleur برای واژگان صوتی طراحی شده و تعمیمش به ریاضی و علوم محدود است. FSRS و HLR (دوئولینگو) مدل‌های رگرسیونی/عصبی مدرنی‌اند که به دادهٔ واقعی هر کاربر برای کالیبراسیون نیاز دارند — در MVP داده نداریم. SM-2 نقطهٔ طلایی است: بدون نیاز به داده شروع می‌شود، از روز اول منطقی رفتار می‌کند و بعداً با دادهٔ جمع‌شده می‌تواند به FSRS ارتقا یابد.</div>
+
+<!-- ==================== فصل ۶: پیش‌بینی ==================== -->
+<div class="chapter-header">
+  <div class="ch-tag">فصل ۶</div>
+  <div class="ch-title">پیش‌بینی نمره — شفاف‌سازیِ راز</div>
+  <div class="ch-sub">نمرهٔ وزن‌دار با سختی (D13) + رگرسیون نمایی λ = ۰٫۸۵</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p class="lead">آخرین پازل داشبورد: عددی که به دانش‌آموز می‌گوید «اگر همین‌طور ادامه بدهی، جلسهٔ بعد حدوداً این‌قدر می‌گیری». این عدد دو وظیفه دارد: انگیزه‌سازی صادقانه و روایت‌سازی برای داوری («سیستم ما روند یادگیری را پیش‌بینی می‌کند»). ولی پیش‌بینیِ روی نمرهٔ خام، فریب است — ۷۰٪ از سؤال‌های آسان با ۷۰٪ از سؤال‌های سخت یکی نیستند. پس اول نمرهٔ جلسه باید «سخت‌گیرانه» تعریف شود (D13) و بعد روندش مدل شود.</p>
+
+<div class="layer-card card-kid">
+  <div class="lc-head"><span class="lc-em">🧒</span><span class="lc-title">اگر یک بچهٔ ۱۰ ساله بپرسد: «چطور نمرهٔ جلسهٔ بعدی من را حدس می‌زند؟»</span></div>
+  <p>معلم‌تان را تصور کن که برگه‌های ده‌تایی‌ات را نگه داشته و می‌گوید: «این هفته‌ها همیشه بهتر شدی؛ آخرین برگه‌ها هم خوب بودند — به نظرم جلسهٔ بعد حدود ۷۵ می‌گیری». آزمونک هم همین کار را می‌کند ولی منصفانه‌تر: برگه‌های <strong class="s">آخر</strong> را بیشتر جدی می‌گیرد (شاید هفتهٔ اولت بد بود چون تازه بودی!) و برگه‌های خیلی قدیمی را کم‌کم فراموش می‌کند.</p>
+  <p>و نکتهٔ مهمِ انصاف: سؤال سختِ درست‌زده بیشتر نمره دارد! اگر کسی فقط سؤال‌های آسان را بزند، نمره‌اش همان‌قدر بالا نمی‌رود — مثل این است که معلم بگوید «ده تا درست زدی ولی همه‌شان از بخش‌های آسان بود، پس نمرهٔ کامل نمی‌گیرم». همان هفت‌تای درست، اگر از سؤال‌های سخت باشد، نمرهٔ خیلی بهتری می‌آورد!</p>
+</div>
+
+<div class="layer-card card-con">
+  <div class="lc-head"><span class="lc-em">💡</span><span class="lc-title">مفهوم — اول نمرهٔ منصفانه، بعد روندِ وزن‌دار</span></div>
+  <p><strong class="s">گام اول — نمرهٔ جلسه (D13).</strong> هر سؤال، وزنی برابر با ردهٔ سختی‌اش می‌گیرد: آسان (۱۱۵۰) ×۱، متوسط (۱۲۵۰) ×۱٫۵، سخت (۱۳۵۰) ×۲. نمرهٔ جلسه یعنی سهمِ وزنیِ درست‌ها از کل وزن:</p>
+  <div class="formula">Score = Σ ( w<sub>i</sub> × s<sub>i</sub> ) ÷ Σ w<sub>i</sub> × 100<span class="fn">نمرهٔ وزن‌دار جلسه — وزن تابع سختی Elo سؤال؛ سیگنال اعتماد عمداً این‌جا نیست</span></div>
+  <p><strong class="s">گام دوم — رگرسیون روند.</strong> پیش‌بینی، میانگینِ وزن‌دارِ نماییِ نمره‌های جلسات است: جلسهٔ آخر وزن <span class="ltr">λ⁰ = 1</span>، یکی مانده‌به‌آخر <span class="ltr">λ = 0.85</span>، دوتا مانده <span class="ltr">λ² ≈ 0.72</span> و به همین ترتیب. λ = ۰٫۸۵ یعنی «حافظهٔ بلندمدت با احتیاط»: جلسات اخیر حاکم‌اند ولی گذشته هنوز صدا دارد. پیش از ۸ جلسه، پیش‌بینی اصلاً نمایش داده نمی‌شود — عددِ کم‌پایه اعتماد می‌سوزاند. توان <span class="ltr">R_s</span> هم جداگانه در نمودار روند رسم می‌شود (D15): نمره برای دانش‌آموز، R<sub>s</sub> برای روایت دفاع.</p>
+</div>
+
+<div class="layer-card card-eng">
+  <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/predict.py</span></span><span class="lc-sub">سه تابع: وزن سختی، نمرهٔ جلسه، پیش‌بینی روند</span></div>
+  <pre class="code"><span class="cm">"""پیش‌بینی نمره — نمرهٔ وزن‌دار D13 + رگرسیون نمایی λ."""</span>
+
+LAMBDA = 0.85            <span class="cm"># وزن نمایی جلسات اخیر</span>
+MIN_SESSIONS = 8         <span class="cm"># حداقل جلسه برای نمایش پیش‌بینی</span>
+TIER_WEIGHTS = {1150: 1.0, 1250: 1.5, 1350: 2.0}
+
+
+def question_weight(r_question: float) -&gt; float:
+    <span class="cm">"""وزن سؤال از سختی Elo — نزدیک‌ترین ردهٔ ۱۱۵۰/۱۲۵۰/۱۳۵۰."""</span>
+    nearest_tier = min(TIER_WEIGHTS, key=lambda t: abs(t - r_question))
+    return TIER_WEIGHTS[nearest_tier]
+
+
+def session_score(answers: list[tuple[bool, float]]) -&gt; float:
+    <span class="cm">"""نمرهٔ وزن‌دار: Σ(وزن×درستی) ÷ Σ(وزن) × ۱۰۰."""</span>
+    total_weight = 0.0
+    earned_weight = 0.0
+    for correct, r_question in answers:
+        w = question_weight(r_question)
+        total_weight += w
+        if correct:
+            earned_weight += w
+    if total_weight == 0:
+        return 0.0
+    return earned_weight / total_weight * 100.0
+
+
+def predict_next_score(session_scores: list[float],
+                       lam: float = LAMBDA) -&gt; dict:
+    <span class="cm">"""میانگین نمایی وزن‌دار؛ i=۰ یعنی آخرین جلسه."""</span>
+    if len(session_scores) &lt; MIN_SESSIONS:
+        return {"available": False,
+                "reason": f"حداقل {MIN_SESSIONS} جلسه لازم است"}
+    weights = [lam ** i for i in range(len(session_scores))]
+    forecast = (sum(w * s for w, s in zip(weights, session_scores))
+                / sum(weights))
+    naive_mean = sum(session_scores) / len(session_scores)
+    return {"available": True, "forecast": round(forecast, 1),
+            "naive_mean": round(naive_mean, 1),
+            "direction": "up" if forecast &gt;= naive_mean else "down"}</pre>
+</div>
+
+<div class="example">
+  <div class="ex-title">مثال عددی گام‌به‌گام — همان مثال G1 سند (خروجی واقعی تست)</div>
+  <div class="ex-step"><span class="ex-no">۱</span><span>جلسه‌ای با وزن‌های <span class="frm">(۶ آسان ×۱، ۳ متوسط ×۱٫۵، ۱ سخت ×۲)</span> ← کل وزن <span class="frm">Σw = 12.5</span>.</span></div>
+  <div class="ex-step"><span class="ex-no">۲</span><span>هفت درستِ «۴ آسان + ۲ متوسط + ۱ سخت» ← <span class="frm">(4×1 + 2×1.5 + 1×2) ÷ 12.5 × 100 = 9 ÷ 12.5 × 100 = <b>۷۲</b></span>.</span></div>
+  <div class="ex-step"><span class="ex-no">۳</span><span>همان هفت درست اما اگر همگی از سؤال‌های آسان بود ← <span class="frm">7 × 1 ÷ 12.5 × 100 = <b>۵۶</b></span> — سختی واقعاً دیده می‌شود؛ دقیقاً چیزی که نمرهٔ خام نمی‌فهمد.</span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span>پیش‌بینی با نمره‌های آزمایشی <span class="frm">[52, 58, 60, 65, 63, 70, 68, 74]</span> ← میانگین نمایی <span class="frm">61.4</span> در برابر میانگین سادهٔ <span class="frm">63.8</span>؛ چون جلسات اخیر گاهی پایین‌ترند، پیش‌بینی حساب‌شده محافظه‌کارتر از میانگین بی‌وزن است.</span></div>
+</div>
+
+<div class="rival"><b>چرا میانگین نمایی و نه رگرسیون خطی / LSTM؟</b> رگرسیون خطی روی نمره‌های ناپایدارِ ۸ جلسه‌ایِ اول، به نوسان‌ها بیش‌ازحد واکنش نشان می‌دهد و LSTM به هزاران داده نیاز دارد. میانگین نمایی با یک پارامتر (λ) رفتار «حافظهٔ اخیرگرا» را دقیق کنترل می‌کند، در آزمایش علمی قابل تفسیر است و اگر بد پیش‌بینی کرد، معلوم است کدام پارامتر را بچرخانی.</div>

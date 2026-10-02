@@ -1,0 +1,144 @@
+<div class="layer-card card-eng">
+  <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/elo.py</span></span><span class="lc-sub">۳۰ خط پایتون خالص؛ بدون هیچ کتابخانه‌ای</span></div>
+  <p>کل موتور Elo در یک فایل کوچک جا می‌شود. سه تابع دارد: محاسبهٔ انتظار، ضرایب متغیر K و آپدیت دوطرفه. کامنت‌ها فارسی‌اند تا موقع خواندن گم نشوی؛ اسم توابع و متغیرها انگلیسی است (طبق D5 — کد انگلیسی، مستندات فارسی).</p>
+  <div class="code-file"><span class="code-name">core/elo.py</span><span class="code-desc">بخش ۱ — ثابت‌ها و تابع انتظار</span></div>
+  <pre class="code"><span class="cm">"""موتور Elo آزمونک — رتبه‌بندی دوطرفه دانش‌آموز و سؤال."""</span>
+
+K_STUDENT_START = 32    <span class="cm"># K دانش‌آموز در شروع</span>
+K_QUESTION_START = 8    <span class="cm"># K سؤال در شروع</span>
+D_SCALE = 400.0         <span class="cm"># ثابت مقیاس لجستیک؛ هر ۴۰۰ امتیاز = شانس ۱۰ برابر</span>
+
+
+def expected_success(r_student: float, r_question: float) -&gt; float:
+    <span class="cm">"""شانس درست‌زدن دانش‌آموز روی سؤال — فرمول لجستیک Elo."""</span>
+    return 1.0 / (1.0 + 10.0 ** ((r_question - r_student) / D_SCALE))
+
+
+def k_student(total_answers: int) -&gt; int:
+    <span class="cm">"""K متغیر دانش‌آموز: ۳۲ تا ۵۰ پاسخ، ۲۴ تا ۱۵۰، بعد ۱۶."""</span>
+    if total_answers &lt; 50:
+        return 32
+    if total_answers &lt; 150:
+        return 24
+    return 16
+
+
+def k_question(total_answers: int) -&gt; int:
+    <span class="cm">"""K متغیر سؤال: هر پاسخ دربارهٔ سؤال اطلاعات کمتری دارد."""</span>
+    return K_QUESTION_START if total_answers &lt; 40 else 4</pre>
+  <div class="code-file"><span class="code-name">core/elo.py</span><span class="code-desc">بخش ۲ — آپدیت دوطرفه پس از هر پاسخ</span></div>
+  <pre class="code cont">def apply_result(
+    r_student: float,
+    r_question: float,
+    correct: bool,
+    k_s: int = K_STUDENT_START,
+    k_q: int = K_QUESTION_START,
+) -&gt; tuple[float, float, float]:
+    <span class="cm">"""دانش‌آموز: R' = R + K_s*(S−E) | سؤال: R' = R + K_q*(E−S)
+
+    Returns:
+        (توان جدید دانش‌آموز، سختی جدید سؤال، انتظار E قبل از پاسخ)
+    """</span>
+    e = expected_success(r_student, r_question)
+    s = 1.0 if correct else 0.0
+    new_student = r_student + k_s * (s - e)
+    new_question = r_question + k_q * (e - s)
+    return new_student, new_question, e</pre>
+  <div class="code-note"><strong>چرا تابع، سه‌تایی برمی‌گرداند؟</strong> چون سرویس جلسه به E قبل از پاسخ هم نیاز دارد — برای انتخاب سؤال بعدی (فصل ۳) و ذخیره در <span class="ltr">params_snapshot</span> (G7). یک محاسبه، سه مصرف.</div>
+</div>
+
+<div class="example">
+  <div class="ex-title">مثال عددی گام‌به‌گام — همان «تست طلایی» سند اصلی</div>
+  <div class="ex-step"><span class="ex-no">۱</span><span>دانش‌آموزی با توان <span class="frm">1200</span> به سؤالی با سختی <span class="frm">1350</span> می‌رسد. انتظار: <span class="frm">E = 1/(1+10^(150/400)) = 1/(1+2.371) ≈ 0.296</span> — فقط <strong>۲۹٫۶٪</strong> شانس درست‌زدن.</span></div>
+  <div class="ex-step"><span class="ex-no">۲</span><span>او درست جواب می‌دهد! سورپرایز: <span class="frm">S − E = 1 − 0.296 = 0.704</span> — خبر بزرگ، چون کاری بهتر از انتظار انجام شد.</span></div>
+  <div class="ex-step"><span class="ex-no">۳</span><span>دانش‌آموز: <span class="frm">1200 + 32 × 0.704 = <b>۱۲۲۲٫۵</b></span> — جهشی حدود ۲۲ امتیازی؛ با K متغیر، دفعات بعد این جهش کوچک‌تر می‌شود.</span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span>سؤال: <span class="frm">1350 + 8 × (0.296 − 1) = 1350 − 5.6 = <b>۱۳۴۴٫۴</b></span> — سؤال کمی آسان‌تر شد؛ این همان «رأی جامعه» بر سختی است. <span class="small">(هر دو عدد با تست خودکار بازتولید می‌شوند: <span class="ltr">python scripts/test_core_modules.py</span>)</span></span></div>
+</div>
+
+<table class="knobs">
+  <tr><th>دستگیره</th><th>مقدار فعلی</th><th>اگر عوضش کنی چه می‌شود؟</th></tr>
+  <tr><td class="p">D_SCALE</td><td class="v">400</td><td>بزرگ‌تر ← منحنی ملایم‌تر؛ سورپرایزها کوچک‌تر و امتیازها آرام‌تر حرکت می‌کنند</td></tr>
+  <tr><td class="p">K_STUDENT_START</td><td class="v">32</td><td>بزرگ‌تر ← رتبه تندتر بالا/پایین می‌رود ولی پرنوسان‌تر؛ نوسانِ پس از هر جلسه بدتر می‌شود</td></tr>
+  <tr><td class="p">K_QUESTION_START</td><td class="v">8</td><td>بزرگ‌تر ← سختی سؤال‌ها سریع‌تر اصلاح می‌شود ولی یک بچهٔ خوش‌شانس می‌تواند سختی را بپیچاند</td></tr>
+  <tr><td class="p">آستانه‌های کاهش K</td><td class="v">50 / 150</td><td>کم‌تر کردنشان ← رتبه زودتر «آرام» می‌گیرد؛ زیاد کردنشان ← رتبه دیرتر پایدار می‌شود</td></tr>
+</table>
+
+<div class="rival"><b>چرا Elo و نه IRT / Glicko-2 / TrueSkill؟</b> IRT (نظریهٔ پاسخ به سؤال) جامع‌تر است و در توفل و PISA کار می‌کند، ولی برای کالیبره‌شدن به صدها پاسخ در هر سؤال نیاز دارد — بانک سؤال MVP ما ۵۰ تا ۱۵۰ سؤال است و این سرمایه وجود ندارد. Glicko-2 و TrueSkill «عدم‌قطعیت» را هم مدل می‌کنند ولی پیچیدگی‌شان برای موتوری که باید یک دانش‌آموز دبیرستانی بتواند توضیحش بدهد، هزینه است نه فایده. Elo با ۳۰ خط پایتون، شفاف و قابل دفاع است و اگر روزی داده انبوه شد، مهاجرت به IRT از روی همان دو ستون توان/سختی ممکن است.</div>
+
+<!-- ==================== فصل ۲: جایابی ==================== -->
+<div class="chapter-header">
+  <div class="ch-tag">فصل ۲</div>
+  <div class="ch-title">جایابی — کجا شروع کنی؟</div>
+  <div class="ch-sub">۴ سؤال، ۳ رده سختی، یک عدد قابل اعتماد (تصمیم D1)</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p class="lead">اولین روزی که وارد آزمونک می‌شوی، سیستم هیچ‌چیز درباره‌ات نمی‌داند. سه راه رایج وجود دارد: خوداظهاری («خودت بگو چه‌قدر بلدی»)، پیش‌فرض ثابت (به همه ۱۲۰۰ بده) و پیش‌آزمون. هر سه رد شده‌اند: خوداظهاری سوگیری دارد، پیش‌فرض ثابت برای نصف بچه‌ها اشتباه است و پیش‌آزمون هزینه و استرس دارد. انتخاب شد <strong>جلسهٔ جایابی</strong>: خودِ موتور Elo با ۴ سؤال، سطح واقعی‌ات را پیدا کند — همان کاری را بکند که در بقیهٔ عمرش می‌کند، فقط با K بزرگ‌تر و ثابت.</p>
+
+<div class="layer-card card-kid">
+  <div class="lc-head"><span class="lc-em">🧒</span><span class="lc-title">اگر یک بچهٔ ۱۰ ساله بپرسد: «چطور بازی از سطح من سر در می‌آورد؟»</span></div>
+  <p>مثل بازی‌ای که اولش از تو می‌پرسد «تا حالا بازی کردی؟» و بعد چند مرحلهٔ آزمایشی می‌دهد: آسانی می‌دهد، اگر راحت رد کردی سخت‌تر می‌دهد، اگر سختش گیر کردی برمی‌گردد عقب. آزمونک هم اول ۴ سؤال از سه پلهٔ مختلف می‌دهد — پلهٔ متوسط، پلهٔ آسان، پلهٔ سخت — و با جواب‌هایت می‌فهمد «قدِ» امتیازیت حدوداً چقدر است.</p>
+  <p>یک راز کوچک: ترتیب این سؤال‌ها <strong class="s">پراکنده</strong> است، نه اول آسان و بعد سخت! چون اگر ترتیب منظم باشد، بچه‌ها الگو را می‌فهمند و شروع می‌کنند به حدس‌زدنِ سیستماتیک: «جونِ سؤال قبلی سخت بود، این یکی حتماً آسان است». پراکندگی این تقلب را می‌بندد.</p>
+</div>
+
+<div class="layer-card card-con">
+  <div class="lc-head"><span class="lc-em">💡</span><span class="lc-title">مفهوم — جایابی، همان Elo است با پدال گاز</span></div>
+  <p>هیچ فرمول جدیدی این‌جا وجود ندارد؛ همان آپدیت دوطرفهٔ فصل ۱ است با سه تفاوت حساب‌شده. <strong class="s">تفاوت اول:</strong> نقطهٔ شروع ۱۲۵۰ است — وسطِ ناحیهٔ ممکن، بی‌طرف نسبت به هیچ‌کس. <strong class="s">تفاوت دوم:</strong> سختی ۴ سؤال روی سه ردهٔ ۱۱۵۰ / ۱۲۵۰ / ۱۳۵۰ پخش می‌شود (سه سؤال اول) و سؤال چهارم از رده‌ای انتخاب می‌شود که به برآورد جاری نزدیک است؛ این‌طوری هر پاسخ، برآورد را واقعاً جابه‌جا می‌کند. <strong class="s">تفاوت سوم:</strong> در طول این ۴ پاسخ، K ثابت روی ۳۲ می‌ماند (تصمیم D1) — می‌خواهیم سریع به سطح واقعی برسیم؛ «آرام‌گیری» K شروع جلسهٔ بعد است. خروجی جایابی دو چیز است: توان اولیه <span class="ltr">R_s</span> و یک <strong>شاخص عدم‌قطعیت</strong> که با هر پاسخ کوچک‌تر می‌شود؛ اگر دفعه‌های بعد شاهد پرش‌های عجیب بودیم، همین شاخص به سیستم می‌گوید هنوز مطمئن نیستیم.</p>
+</div>
+
+<div class="layer-card card-eng">
+  <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/placement.py</span></span><span class="lc-sub">همان آپدیت Elo، با ترتیب پراکنده و K ثابت</span></div>
+  <pre class="code"><span class="cm">"""جایابی ۴ سؤالی (D1) — پیدا کردن سطح واقعی دانش‌آموز تازه‌وارد."""</span>
+
+from elo import apply_result
+
+START_RATING = 1250.0    <span class="cm"># برآورد خنثی قبل از اولین پاسخ</span>
+PLACEMENT_K = 32         <span class="cm"># K ثابت در طول جایابی (تصمیم D1)</span>
+QUESTION_K = 8           <span class="cm"># K سؤال در جایابی</span>
+<span class="cm"># سه رده سختی با «ترتیب پراکنده» — دنبالهٔ صعودی الگو می‌سازد و حدس می‌آورد</span>
+SPREAD = (1250.0, 1150.0, 1350.0)
+BASE_UNCERTAINTY = 100.0  <span class="cm"># شاخص عدم‌قطعیت پایه = نصف پراکندگی</span>
+UNCERTAINTY_DECAY = 15.0  <span class="cm"># کاهش عدم‌قطعیت با هر پاسخ</span>
+MIN_UNCERTAINTY = 40.0
+
+
+def next_question_rating(index: int, r_student: float) -&gt; float:
+    <span class="cm">"""سختی سؤال iاُم: سه سؤال اول پخش روی رده‌ها، چهارمی نزدیک برآورد."""</span>
+    if index &lt; len(SPREAD):
+        return SPREAD[index]
+    return min(1350.0, max(1150.0, r_student))
+
+
+def run_placement(answers: list[bool]) -&gt; dict:
+    <span class="cm">"""کل جلسهٔ جایابی؛ خروجی: R_s اولیه + شاخص عدم‌قطعیت + ردپا."""</span>
+    r_student = START_RATING
+    trace = []
+    for i, correct in enumerate(answers):
+        r_question = next_question_rating(i, r_student)
+        new_student, new_question, e = apply_result(
+            r_student, r_question, correct, PLACEMENT_K, QUESTION_K
+        )
+        trace.append({
+            "step": i + 1, "r_question": r_question,
+            "expected": round(e, 3), "correct": correct,
+            "r_student": round(r_student, 1),
+            "r_student_new": round(new_student, 1),
+        })
+        r_student = new_student
+    uncertainty = max(
+        MIN_UNCERTAINTY,
+        BASE_UNCERTAINTY - UNCERTAINTY_DECAY * len(answers),
+    )
+    return {"r_student": round(r_student, 1),
+            "uncertainty": uncertainty, "trace": trace}</pre>
+</div>
+
+<div class="example">
+  <div class="ex-title">مثال عددی گام‌به‌گام — جلسهٔ جایابی با الگوی «درست، غلط، درست، درست»</div>
+  <div class="ex-step"><span class="ex-no">۱</span><span>سؤال <span class="frm">1250</span> (ردهٔ میانی): <span class="frm">E = 0.500</span>؛ درست → <span class="frm">1250 + 32×0.5 = <b>1266</b></span>.</span></div>
+  <div class="ex-step"><span class="ex-no">۲</span><span>سؤال <span class="frm">1150</span> (پراکنده به عقب): <span class="frm">E = 0.661</span>؛ غلط → <span class="frm">1266 − 32×0.661 = <b>1244.8</b></span> — غلطِ «غیرمنتظره» سقوط می‌آورد.</span></div>
+  <div class="ex-step"><span class="ex-no">۳</span><span>سؤال <span class="frm">1350</span>: <span class="frm">E = 0.353</span>؛ درست → <span class="frm">1244.8 + 32×0.647 = <b>1265.5</b></span> — جهشِ زیر فشار.</span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span>سؤال چهارم از نزدیک‌ترین رده به برآورد: <span class="frm">1266</span>؛ <span class="frm">E = 0.5</span>؛ درست → <span class="frm"><b>1281.5</b></span>. خروجی: توان اولیه <strong>۱۲۸۱٫۵</strong> + عدم‌قطعیت <strong>۴۰</strong>.</span></div>
+</div>
+
+<div class="rival"><b>چرا جایابی «کوچک» و نه آزمون تطبیقی کامل (CAT)؟</b> آزمون تطبیقی استاندارد، هر سؤال را با بهینه‌سازی آماری برمی‌گزیند و به ده‌ها سؤال و بانک کالیبره نیاز دارد. جایابی ۴ سؤالی، ۸۰٪ فایده را با ۵٪ هزینه می‌گیرد و چون از همان موتور Elo استفاده می‌کند، هیچ گذار و ناسازگاری بعد از جلسهٔ اول وجود ندارد؛ کد هم یک حلقهٔ ۴ خطی است.</div>
