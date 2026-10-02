@@ -52,7 +52,7 @@ def k_question(total_answers: int) -&gt; int:
   <div class="ex-step"><span class="ex-no">۱</span><span>دانش‌آموزی با توان <span class="frm">1200</span> به سؤالی با سختی <span class="frm">1350</span> می‌رسد. انتظار: <span class="frm">E = 1/(1+10^(150/400)) = 1/(1+2.371) ≈ 0.296</span> — فقط <strong>۲۹٫۶٪</strong> شانس درست‌زدن.</span></div>
   <div class="ex-step"><span class="ex-no">۲</span><span>او درست جواب می‌دهد! سورپرایز: <span class="frm">S − E = 1 − 0.296 = 0.704</span> — خبر بزرگ، چون کاری بهتر از انتظار انجام شد.</span></div>
   <div class="ex-step"><span class="ex-no">۳</span><span>دانش‌آموز: <span class="frm">1200 + 32 × 0.704 = <b>۱۲۲۲٫۵</b></span> — جهشی حدود ۲۲ امتیازی؛ با K متغیر، دفعات بعد این جهش کوچک‌تر می‌شود.</span></div>
-  <div class="ex-step"><span class="ex-no">۴</span><span>سؤال: <span class="frm">1350 + 8 × (0.296 − 1) = 1350 − 5.6 = <b>۱۳۴۴٫۴</b></span> — سؤال کمی آسان‌تر شد؛ این همان «رأی جامعه» بر سختی است. <span class="small">(هر دو عدد با تست خودکار بازتولید می‌شوند: <span class="ltr">python scripts/test_core_modules.py</span>)</span></span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span>سؤال: <span class="frm">1350 + 8 × (0.296 − 1) = 1350 − 5.6 = <b>۱۳۴۴٫۴</b></span> — سؤال کمی آسان‌تر شد؛ این همان «رأی جامعه» بر سختی است. <span class="small">(هر دو عدد با تست خودکار بازتولید می‌شوند: <span class="ltr">python3 core/tests/test_core.py</span>)</span></span></div>
 </div>
 
 <table class="knobs">
@@ -90,7 +90,7 @@ def k_question(total_answers: int) -&gt; int:
   <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/placement.py</span></span><span class="lc-sub">همان آپدیت Elo، با ترتیب پراکنده و K ثابت</span></div>
   <pre class="code"><span class="cm">"""جایابی ۴ سؤالی (D1) — پیدا کردن سطح واقعی دانش‌آموز تازه‌وارد."""</span>
 
-from elo import apply_result
+from .elo import apply_result
 
 START_RATING = 1250.0    <span class="cm"># برآورد خنثی قبل از اولین پاسخ</span>
 PLACEMENT_K = 32         <span class="cm"># K ثابت در طول جایابی (تصمیم D1)</span>

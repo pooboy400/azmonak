@@ -5,7 +5,7 @@
 لایه ۳: سؤال دیده‌شده در ۲۰ پاسخ اخیر حذف می‌شود.
 """
 
-from elo import expected_success
+from .elo import expected_success
 
 # --- دستگیره‌های قابل تنظیم ---
 TARGET = 0.70                    # میانه ناحیه هدف

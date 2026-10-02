@@ -258,7 +258,7 @@ table.knobs td.v { direction: ltr; text-align: center; font-family: 'DejaVu Sans
 
 <div class="layer-card card-eng">
   <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">لایهٔ مهندسی</span><span class="lc-sub">پلهٔ سوم — کد پایتون واقعی، تست‌شده و آمادهٔ کپی به core</span></div>
-  <p>هر فصل یک فایل واقعی دارد (<span class="ltr"><b>elo.py</b></span>، <span class="ltr"><b>sm2.py</b></span> و…) که همین الان اجرا شده و تست‌هایش پاس شده‌اند. این فایل‌ها در پوشهٔ <span class="ltr">core/</span> کنار همین PDF هستند؛ می‌توانی بازشان کنی، مقادیر را عوض کنی و ببینی نتیجه چه می‌شود — بهترین راه فهمیدنِ عمیق.</p>
+  <p>هر فصل یک فایل واقعی دارد (<span class="ltr"><b>elo.py</b></span>، <span class="ltr"><b>sm2.py</b></span> و…) که همین الان اجرا شده و تست‌هایش پاس شده‌اند. این فایل‌ها در پوشهٔ <span class="ltr">core/</span> ریشهٔ مخزن آزمونک هستند؛ می‌توانی بازشان کنی، مقادیر را عوض کنی و ببینی نتیجه چه می‌شود — بهترین راه فهمیدنِ عمیق.</p>
 </div>
 
 <h3 class="blk">چرخهٔ کامل یک جلسه آزمونک</h3>
@@ -419,7 +419,7 @@ def k_question(total_answers: int) -&gt; int:
   <div class="ex-step"><span class="ex-no">۱</span><span>دانش‌آموزی با توان <span class="frm">1200</span> به سؤالی با سختی <span class="frm">1350</span> می‌رسد. انتظار: <span class="frm">E = 1/(1+10^(150/400)) = 1/(1+2.371) ≈ 0.296</span> — فقط <strong>۲۹٫۶٪</strong> شانس درست‌زدن.</span></div>
   <div class="ex-step"><span class="ex-no">۲</span><span>او درست جواب می‌دهد! سورپرایز: <span class="frm">S − E = 1 − 0.296 = 0.704</span> — خبر بزرگ، چون کاری بهتر از انتظار انجام شد.</span></div>
   <div class="ex-step"><span class="ex-no">۳</span><span>دانش‌آموز: <span class="frm">1200 + 32 × 0.704 = <b>۱۲۲۲٫۵</b></span> — جهشی حدود ۲۲ امتیازی؛ با K متغیر، دفعات بعد این جهش کوچک‌تر می‌شود.</span></div>
-  <div class="ex-step"><span class="ex-no">۴</span><span>سؤال: <span class="frm">1350 + 8 × (0.296 − 1) = 1350 − 5.6 = <b>۱۳۴۴٫۴</b></span> — سؤال کمی آسان‌تر شد؛ این همان «رأی جامعه» بر سختی است. <span class="small">(هر دو عدد با تست خودکار بازتولید می‌شوند: <span class="ltr">python scripts/test_core_modules.py</span>)</span></span></div>
+  <div class="ex-step"><span class="ex-no">۴</span><span>سؤال: <span class="frm">1350 + 8 × (0.296 − 1) = 1350 − 5.6 = <b>۱۳۴۴٫۴</b></span> — سؤال کمی آسان‌تر شد؛ این همان «رأی جامعه» بر سختی است. <span class="small">(هر دو عدد با تست خودکار بازتولید می‌شوند: <span class="ltr">python3 core/tests/test_core.py</span>)</span></span></div>
 </div>
 
 <table class="knobs">
@@ -457,7 +457,7 @@ def k_question(total_answers: int) -&gt; int:
   <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/placement.py</span></span><span class="lc-sub">همان آپدیت Elo، با ترتیب پراکنده و K ثابت</span></div>
   <pre class="code"><span class="cm">"""جایابی ۴ سؤالی (D1) — پیدا کردن سطح واقعی دانش‌آموز تازه‌وارد."""</span>
 
-from elo import apply_result
+from .elo import apply_result
 
 START_RATING = 1250.0    <span class="cm"># برآورد خنثی قبل از اولین پاسخ</span>
 PLACEMENT_K = 32         <span class="cm"># K ثابت در طول جایابی (تصمیم D1)</span>
@@ -540,7 +540,7 @@ def run_placement(answers: list[bool]) -&gt; dict:
   <div class="lc-head"><span class="lc-em">👨‍💻</span><span class="lc-title">مهندسی — فایل <span class="ltr">core/selector.py</span></span><span class="lc-sub">سه فیلتر در یک تابع انتخاب؛ فال‌بک هوشمند برای بانک‌های کم</span></div>
   <pre class="code"><span class="cm">"""انتخاب سؤال سه‌لایه — ناحیهٔ هدف، ارزش آموزشی، محدودیت مواجهه."""</span>
 
-from elo import expected_success
+from .elo import expected_success
 
 TARGET = 0.70                    <span class="cm"># میانهٔ ناحیهٔ هدف</span>
 ZONE_LOW, ZONE_HIGH = 0.65, 0.75 <span class="cm"># ناحیهٔ هدف (پیوست الف)</span>
@@ -1069,17 +1069,16 @@ def predict_next_score(session_scores: list[float],
 </table>
 
 <h3 class="blk">اجرای ماژول‌ها — سه دستور</h3>
-<p>فایل‌های <span class="ltr">core/</span> کنار همین PDF، پایتون خالص‌اند (نسخهٔ ۳٫۱۰ به بالا، بدون هیچ کتابخانه‌ای) و هر عددی که در این کتاب دیدی از همین‌ها بیرون آمده. برای امتحان:</p>
-<pre class="code"><span class="cm"># ۱) تست طلایی Elo را همین حالا بازتولید کن:</span>
-cd azmoonak-algorithms-3layer/core
-python3 -c "from elo import apply_result; print(apply_result(1200, 1350, True))"
+<p>فایل‌های <span class="ltr">core/</span> در ریشهٔ مخزن آزمونک، پایتون خالص‌اند (نسخهٔ ۳٫۱۰ به بالا، بدون هیچ کتابخانه‌ای) و هر عددی که در این کتاب دیدی از همین‌ها بیرون آمده. برای امتحان:</p>
+<pre class="code"><span class="cm"># ۱) تست طلایی Elo را همین حالا بازتولید کن (از ریشهٔ مخزن):</span>
+python3 -c "from core.elo import apply_result; print(apply_result(1200, 1350, True))"
 <span class="cm"># خروجی: (1222.51, 1344.37, 0.2966)  ← همان ۱۲۲۲٫۵ و ۱۳۴۴٫۴ کتاب</span>
 
 <span class="cm"># ۲) یک جلسهٔ جایابی کامل:</span>
-python3 -c "from placement import run_placement; print(run_placement([True, False, True, True]))"
+python3 -c "from core.placement import run_placement; print(run_placement([True, False, True, True]))"
 
 <span class="cm"># ۳) همهٔ تست‌های هر شش ماژول (همان اعداد مثال‌های کتاب):</span>
-python3 /path/to/test_core_modules.py   <span class="cm"># خروجی: ALL OK ✔</span></pre>
+python3 core/tests/test_core.py   <span class="cm"># خروجی: 9 passed / ALL OK ✔</span></pre>
 <div class="code-note"><strong>پیشنهاد تمرین:</strong> در <span class="ltr">elo.py</span> مقدار <span class="ltr">D_SCALE</span> را به ۲۰۰ تغییر بده و تست را دوباره اجرا کن؛ جهش امتیاز دانش‌آموز چه‌قدر می‌شود؟ بعد <span class="ltr">DROP_STREAK</span> در <span class="ltr">leveling.py</span> را ۱ کن و ببین نردبان چقدر عصبی می‌شود. بازی‌کردن با دستگیره‌ها، بهترین درس است.</div>
 </div>
 <!-- ==================== صفحهٔ پایانی ==================== -->

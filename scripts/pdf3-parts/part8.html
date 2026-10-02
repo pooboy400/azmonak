@@ -73,15 +73,14 @@
 </table>
 
 <h3 class="blk">اجرای ماژول‌ها — سه دستور</h3>
-<p>فایل‌های <span class="ltr">core/</span> کنار همین PDF، پایتون خالص‌اند (نسخهٔ ۳٫۱۰ به بالا، بدون هیچ کتابخانه‌ای) و هر عددی که در این کتاب دیدی از همین‌ها بیرون آمده. برای امتحان:</p>
-<pre class="code"><span class="cm"># ۱) تست طلایی Elo را همین حالا بازتولید کن:</span>
-cd azmoonak-algorithms-3layer/core
-python3 -c "from elo import apply_result; print(apply_result(1200, 1350, True))"
+<p>فایل‌های <span class="ltr">core/</span> در ریشهٔ مخزن آزمونک، پایتون خالص‌اند (نسخهٔ ۳٫۱۰ به بالا، بدون هیچ کتابخانه‌ای) و هر عددی که در این کتاب دیدی از همین‌ها بیرون آمده. برای امتحان:</p>
+<pre class="code"><span class="cm"># ۱) تست طلایی Elo را همین حالا بازتولید کن (از ریشهٔ مخزن):</span>
+python3 -c "from core.elo import apply_result; print(apply_result(1200, 1350, True))"
 <span class="cm"># خروجی: (1222.51, 1344.37, 0.2966)  ← همان ۱۲۲۲٫۵ و ۱۳۴۴٫۴ کتاب</span>
 
 <span class="cm"># ۲) یک جلسهٔ جایابی کامل:</span>
-python3 -c "from placement import run_placement; print(run_placement([True, False, True, True]))"
+python3 -c "from core.placement import run_placement; print(run_placement([True, False, True, True]))"
 
 <span class="cm"># ۳) همهٔ تست‌های هر شش ماژول (همان اعداد مثال‌های کتاب):</span>
-python3 /path/to/test_core_modules.py   <span class="cm"># خروجی: ALL OK ✔</span></pre>
+python3 core/tests/test_core.py   <span class="cm"># خروجی: 9 passed / ALL OK ✔</span></pre>
 <div class="code-note"><strong>پیشنهاد تمرین:</strong> در <span class="ltr">elo.py</span> مقدار <span class="ltr">D_SCALE</span> را به ۲۰۰ تغییر بده و تست را دوباره اجرا کن؛ جهش امتیاز دانش‌آموز چه‌قدر می‌شود؟ بعد <span class="ltr">DROP_STREAK</span> در <span class="ltr">leveling.py</span> را ۱ کن و ببین نردبان چقدر عصبی می‌شود. بازی‌کردن با دستگیره‌ها، بهترین درس است.</div>

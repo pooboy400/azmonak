@@ -13,6 +13,13 @@ node_modules
 # testing
 /coverage
 
+# python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+
 # next.js
 /.next/
 /out/
@@ -52,3 +59,4 @@ prompt
 server.log
 # Skills directory
 /skills/
+.zscripts/
