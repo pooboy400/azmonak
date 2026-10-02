@@ -169,3 +169,23 @@ Stage Summary:
 - تحویل: /home/z/my-project/download/azmoonak-algorithms-3layer/ — PDF (۳۰ صفحه، ۸۲۴KB، برداری)، HTML منبع، fonts.css + fonts/ وزیرمتن، core/ با ۶ ماژول تست‌شده، preview-cover.png
 - الگوی فصل‌ها: کارت سبز قصه → کارت آبی فرمول+جدول نماد+مثال عددی تست‌شده → کارت بنفش کد کامل + جدول «دستگیره‌ها» + باکس «چرا این و نه رقیب؟»
 - نسخه تخصصی ۳۱ صفحه‌ای قبلی سر جای خودش ماند (فایل جداگانه به انتخاب پویا)
+
+---
+Task ID: 11
+Agent: Super Z (main agent)
+Task: اجرای دستور معماری پویا: «پوشهٔ core باید جای مناسب‌تری باشد؛ معماری پروژه حرفه‌ای و اصولی باشد»
+
+Work Log:
+- ارجاع‌سنجی کامل: ۶ ماژول الگوریتم داخل پوشهٔ PDF (download/azmoonak-algorithms-3layer/core/) بود؛ طبق گام ۰٫۱ و گام ۱ سند v1.3 خانهٔ رسمی core = ریشهٔ مونوریپو
+- انتقال با git mv (حفظ تاریخچه): ۶ ماژول به core/ ریشه + اسکریپت تست به core/tests/test_core.py؛ دو import هم‌سطح به relative (from .elo import ...) برای سازگاری پکیجی
+- ساختار حرفه‌ای جدید: core/__init__.py (کد انگلیسی D5)، core/pyproject.toml (نام azmoonak-core، pytest+pythonpath، ruff)، core/README.md فارسی، core/tests/conftest.py
+- بازنویسی تست به pytest: ۹ تست طلایی — کشف شد انتظار جهت پیش‌بینی من غلط بود؛ قرارداد ماژول (جلسهٔ اخیر اول لیست، وزن λ⁰=1) با مثال فصل ۶ کتاب (۶۱٫۴ در برابر ۶۳٫۸، جهت down) منطبق است → تست به مثال طلایی کتاب گره خورد؛ ۹/۹ پاس در هر دو حالت pytest و standalone
+- راستی‌آزمایی نصب: venv ساخته شد؛ pip install -e ./core موفق — import core از هر مسیری کار می‌کند؛ زنجیرهٔ ۱→۶→۱۵ درست
+- همگام‌سازی سند سه‌لایه (۸ ویرایش در part2/3/4/8): «کنار همین PDF»→«ریشهٔ مخزن آزمونک»، دستورهای پیوست B به from core.elo/core.placement و python3 core/tests/test_core.py (خروجی 9 passed)، لیستینگ‌های کد به from .elo import؛ رندر مجدد → ۳۰ صفحه (بدون تغییر صفحه‌بندی)، شماره‌گذاری فارسی + متادیتا، QA فقط ۱۱ هشدار آرتیفکت RTL شناخته‌شده، صفر U+FFFD، بازرسی بصری صفحات ۳/۸/۱۰/۲۹ پاس
+- باگ حیاتی خودی کشف و رفع شد: echo >> .gitignore بدون newline منتهی، خط /skills/ را با .zscripts/ ادغام کرد → قانون /skills/.zscripts/ بی‌اثر → git add -A کل skills/ (۱۰۶۲ فایل، ۲۶۲k خط) را در کامیت کشید → git rm -r --cached skills/ + دو amend + تعمیر gitignore → کامیت نهایی دقیقاً ۲۰ فایل (299+/120-)؛ zero skills tracked؛ .zscripts/ و بخش python به .gitignore اضافه شد
+- download/README.md فارسی به‌روز شد (اشاره به خانهٔ جدید core)
+
+Stage Summary:
+- کامیت 1800dc4 «refactor: promote core algorithms to top-level installable Python package» — درخت کار تمیز، main جلوتر از origin به میزان ۳ کامیت (پوش منتظر توکن پویا)
+- معماری فعلی ریشه: core/ (پکیج پایتون خالص + تست + pyproject + README)، download/ (فقط تحویل‌دادنی‌ها)، scripts/ (ابزار سند) — web/backend/content/analysis/docs طبق گام ۰ منتظر دستور صریح پویا
+- تدریس‌پذیری حفظ شد: docstring فارسی ماژول‌ها دست‌نخورده؛ کتاب سه‌لایه اکنون دقیقاً همان کدی را نشان می‌دهد که در مخزن اجرا می‌شود
