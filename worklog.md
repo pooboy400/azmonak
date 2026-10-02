@@ -189,3 +189,4 @@ Stage Summary:
 - کامیت 1800dc4 «refactor: promote core algorithms to top-level installable Python package» — درخت کار تمیز، main جلوتر از origin به میزان ۳ کامیت (پوش منتظر توکن پویا)
 - معماری فعلی ریشه: core/ (پکیج پایتون خالص + تست + pyproject + README)، download/ (فقط تحویل‌دادنی‌ها)، scripts/ (ابزار سند) — web/backend/content/analysis/docs طبق گام ۰ منتظر دستور صریح پویا
 - تدریس‌پذیری حفظ شد: docstring فارسی ماژول‌ها دست‌نخورده؛ کتاب سه‌لایه اکنون دقیقاً همان کدی را نشان می‌دهد که در مخزن اجرا می‌شود
+- پوش با توکن جدید پویا (اسکوپ repo، حساب pooboy400) انجام شد: 898c90c..3754044 main→main؛ راستی‌آزمایی API: کامیت 1800dc4 روی گیت‌هاب، پکیج core/ کامل (۱۰ آیتم)، صفر فایل skills؛ توکن ذخیره نشد (credential helper یک‌باره)؛ به پویا توصیه شد توکن را revoke کند (در چت plaintext است)
