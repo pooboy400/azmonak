@@ -131,3 +131,20 @@ Stage Summary:
 - تحویل: /home/z/my-project/download/azmoonak-algorithms/ — azmoonak-algorithms.pdf (۳۱ صفحه، ۷۴۸KB، برداری)، azmoonak-algorithms.html (منبع قابل ویرایش)، fonts.css + fonts/ (وزیرمتن)، preview-cover.png
 - محتوا: ۹ فصل (چرخه پاسخ، Elo+IRT/Glicko-2/TrueSkill، جایابی، انتخاب سؤال، نردبان D16+BKT/DKT/KST، SM-2+لایتنر/Pimsleur/FSRS/HLR، پیش‌بینی، چارچوب اجرا، جمع‌بندی تصمیم‌ها) + ضمیمه الف پارامترها/ب پرسش‌های داور/ج واژه‌نامه/د مراجع
 - الگوی تکرارشونده برای هدف پویا: هر فصل با کارت «دستگیره‌های قابل تنظیم» تمام می‌شود (پارامتر، مقدار فعلی، اثر تغییر)
+
+---
+Task ID: 9
+Agent: Super Z (main agent)
+Task: اجرای دستور پویا: «کل پروژه رو پوش کن تو گیت هاب کامل بدون ادیت» با توکن ارائه‌شده
+
+Work Log:
+- وضعیت git بررسی شد: ریپوی محلی تمیز (۱۱۳ فایل tracked، صفر تغییر commit‌نشده)، شاخه main، ۲۹ کامیت خودکار پلتفرم، بدون remote
+- توکن راستی‌آزمایی شد (اسکوپ repo، حساب pooboy400)؛ ریپوی خالی pooboy400/azmonak (ساخته ۲۰۲۶-۱۰-۰۲، size=0) به‌عنوان مقصد شناسایی شد — مطابق D7 (اول خصوصی)
+- پیش از push بررسی امنیتی: .env فقط DATABASE_URL لوکال (file:...db/custom.db) بدون هیچ secret؛ node_modules (1.1G) و .next (109M) و skills/ طبق .gitignore موجود مستثنی — هیچ فایلی ادیت یا اضافه نشد
+- remote = https://github.com/pooboy400/azmonak.git اضافه شد؛ push با credential helper یک‌باره انجام شد (توکن در .git/config ذخیره نشد)
+- push موفق: main → main (۲۹ کامیت)؛ راستی‌آزمایی API: ۲۹ کامیت روی GitHub، default_branch=main، status -sb همگام
+
+Stage Summary:
+- تحویل: https://github.com/pooboy400/azmonak (خصوصی، طبق D7) — کل پروژه بدون هیچ ادیتی: src/، download/ (سند v1.3 + PDF الگوریتم‌ها + فونت‌ها)، scripts/pdf-parts، tests، examples، upload/، worklog
+- توکن کاربر در چت plaintext بود؛ به او توصیه شد بعد از اتمام کار توکن را در GitHub revoke/regenerate کند
+- dev server روی 3000 دست‌نخورده ماند؛ هیچ فایل پروژه‌ای تغییر نکرد
