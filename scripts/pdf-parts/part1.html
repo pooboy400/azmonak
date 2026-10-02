@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>الگوریتم‌های آزمونک — کتابچه کامل موتورهای تطبیقی</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+@page { size: 794px 1123px; margin: 48px 0; }
+
+:root {
+  --c-page: #fafbfc;
+  --c-section: #f1f4f7;
+  --c-card: #f3f6f9;
+  --c-stripe: #eef3f7;
+  --c-header: #2b4356;
+  --c-primary: #1e3a5c;
+  --c-accent: #2b7cab;
+  --c-accent-l: #d9e9f3;
+  --c-border: #d5dee6;
+  --c-text: #1c2733;
+  --c-muted: #5e7180;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  width: 794px;
+  background: #fafbfc;
+  color: var(--c-text);
+  font-family: 'Vazirmatn', 'DejaVu Sans', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.9;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+@media screen {
+  html { height: auto; display: flex; justify-content: center; background: #e4e8ec; }
+  body { margin: 20px auto; box-shadow: 0 2px 24px rgba(28,39,51,.18); }
+}
+
+p { margin: 0 0 10px; text-align: justify; }
+p, td, li { line-break: strict; }
+li { text-align: right; margin-bottom: 6px; }
+strong { font-weight: 700; color: var(--c-primary); }
+
+/* ---------- COVER ---------- */
+.cover {
+  width: 794px; height: 1027px;
+  box-sizing: border-box;
+  break-after: page;
+  position: relative;
+  background: var(--c-page);
+  border: none; outline: none; box-shadow: none;
+}
+.cover-bg {
+  position: absolute; inset: 0; overflow: hidden; z-index: 1;
+}
+.cover-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to left, rgba(30,58,92,.025) 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, rgba(30,58,92,.025) 0.5px, transparent 0.5px);
+  background-size: 50px 50px;
+}
+.cover-struct { position: absolute; inset: 0; z-index: 2; }
+.cover-anchor {
+  position: absolute; right: 95px; top: 100px; bottom: 100px;
+  width: 6px; background: var(--c-primary);
+}
+.cover-tick {
+  position: absolute; right: 85px; width: 10px; height: 2px;
+  background: var(--c-accent); opacity: .55;
+}
+.cover-content { position: absolute; inset: 0; z-index: 3; }.cv-kicker {
+  position: absolute; top: 152px; right: 148px; left: 60px;
+  font-size: 13px; font-weight: 400; color: var(--c-muted);
+  letter-spacing: 4px; opacity: .85;
+}
+.cv-hero {
+  position: absolute; top: 244px; right: 148px;
+  font-size: 54px; font-weight: 700; line-height: 1.18;
+  color: var(--c-primary); max-width: 560px;
+}
+.cv-hero-sub {
+  position: absolute; top: 402px; right: 148px;
+  font-size: 20px; font-weight: 300; color: var(--c-accent);
+  max-width: 540px; line-height: 1.5;
+}
+.cv-summary {
+  position: absolute; top: 542px; right: 148px;
+  font-size: 15.5px; font-weight: 400; color: var(--c-text);
+  opacity: .85; max-width: 480px; line-height: 1.95; text-align: justify;
+}
+.cv-meta {
+  position: absolute; top: 792px; right: 148px;
+  font-size: 15px; color: var(--c-text); line-height: 2.1;
+}
+.cv-meta .lbl { color: var(--c-muted); font-size: 12.5px; letter-spacing: 1px; }
+.cv-footer {
+  position: absolute; top: 962px; right: 148px; left: 60px;
+  font-size: 12px; color: var(--c-muted); letter-spacing: 2.5px; opacity: .65;
+}
+
+/* ---------- TOC ---------- */
+.toc { break-after: page; padding: 88px 84px 40px 84px; }
+.toc-kicker { font-size: 12px; letter-spacing: 3px; color: var(--c-accent); font-weight: 500; margin-bottom: 8px; }
+.toc-title { font-size: 30px; font-weight: 700; color: var(--c-primary); margin-bottom: 6px; }
+.toc-sub { color: var(--c-muted); font-size: 13.5px; margin-bottom: 26px; }
+.toc-divider { height: 2px; background: linear-gradient(to left, var(--c-accent), transparent); margin-bottom: 38px; }
+.toc-item { display: flex; align-items: baseline; gap: 12px; padding: 7.5px 0; border-bottom: 1px solid var(--c-border); break-inside: avoid; }
+.toc-num { min-width: 30px; font-weight: 700; color: var(--c-accent); font-size: 15px; }
+.toc-name { font-weight: 500; color: var(--c-text); font-size: 15px; }
+.toc-desc { color: var(--c-muted); font-size: 12px; margin-right: auto; text-align: left; }
+.toc-item.app .toc-num { color: var(--c-muted); }
+.toc-note { margin-top: 24px; font-size: 12.5px; color: var(--c-muted); background: var(--c-card); padding: 12px 16px; border-right: 3px solid var(--c-accent); break-inside: avoid; }
+
+/* ---------- MAIN CONTENT ---------- */
+.main-content { padding: 56px 84px 44px 84px; }
+
+.chapter-header { break-after: avoid; break-inside: avoid; margin-top: 28px; margin-bottom: 16px; }
+.chapter-header.first { margin-top: 0; }
+.ch-tag { display: inline-block; font-size: 11.5px; font-weight: 500; letter-spacing: 2.5px; color: var(--c-accent); border: 1px solid var(--c-accent); padding: 2px 12px; border-radius: 999px; margin-bottom: 10px; }
+.ch-title { font-size: 26px; font-weight: 700; color: var(--c-primary); line-height: 1.35; }
+.ch-divider { height: 2px; background: linear-gradient(to left, var(--c-accent) 0 90px, var(--c-border) 90px 100%); margin-top: 10px; }
+
+h3 { font-size: 17.5px; font-weight: 700; color: var(--c-primary); margin: 20px 0 8px; break-after: avoid; }
+h3 .hn { color: var(--c-accent); font-weight: 700; }
+
+.formula {
+  direction: ltr; text-align: center;
+  font-family: 'Tinos', 'Liberation Serif', 'DejaVu Serif', serif;
+  font-size: 18px; color: var(--c-text);
+  padding: 12px 8px; margin: 6px auto 12px;
+  break-inside: avoid; line-height: 1.6;
+}
+.formula .var { font-style: italic; }
+.formula .frac { display: inline-block; vertical-align: middle; text-align: center; margin: 0 3px; }
+.formula .frac .top { display: block; padding: 0 6px 1px; border-bottom: 1.4px solid var(--c-text); }
+.formula .frac .bot { display: block; padding: 1px 6px 0; }
+.flabel { direction: ltr; text-align: left; font-family: 'Tinos', 'Liberation Serif', 'DejaVu Serif', serif; font-size: 13px; color: var(--c-muted); margin: -8px 4px 12px; }
+.inm {
+  direction: ltr; unicode-bidi: isolate;
+  font-family: 'Tinos', 'Liberation Serif', 'DejaVu Serif', serif;
+  font-size: 15px; font-style: italic; padding: 0 2px;
+}
+
+.example-box {
+  background: var(--c-card); border: 1px solid var(--c-border);
+  border-right: 3px solid var(--c-accent);
+  padding: 14px 18px; margin: 12px 0 14px;
+  break-inside: avoid; border-radius: 4px;
+}
+.example-box .ex-title { font-weight: 700; color: var(--c-primary); font-size: 14.5px; margin-bottom: 6px; }
+.example-box p { margin-bottom: 7px; font-size: 14.5px; }
+.example-box p:last-child { margin-bottom: 0; }
+
+.knobs { margin: 14px 0 6px; break-inside: avoid; }
+.knobs-title { font-weight: 700; color: var(--c-accent); font-size: 15px; margin-bottom: 8px; }
+.knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.knob { background: #fff; border: 1px solid var(--c-border); border-top: 3px solid var(--c-accent); padding: 10px 14px; break-inside: avoid; border-radius: 4px; }
+.knob .k-name { font-weight: 700; font-size: 13.5px; color: var(--c-primary); direction: ltr; text-align: right; unicode-bidi: isolate; }
+.knob .k-val { font-size: 12.5px; color: var(--c-accent); font-weight: 500; margin: 1px 0 4px; }
+.knob .k-eff { font-size: 12.5px; color: var(--c-muted); line-height: 1.75; text-align: justify; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 13.5px; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th { background: var(--c-header); color: #fff; font-weight: 500; padding: 8px 10px; text-align: right; font-size: 13px; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--c-border); vertical-align: top; text-align: right; overflow-wrap: break-word; }
+tbody tr:nth-child(odd) { background: var(--c-stripe); }
+tbody tr:nth-child(even) { background: #fff; }
+table.keep { break-inside: avoid; }
+td .inm, th .inm { font-size: 13.5px; }
+.tbl-caption { font-size: 12.5px; color: var(--c-muted); margin: -10px 2px 14px; text-align: right; }
+
+ul.plain { margin: 6px 0 12px; padding-right: 22px; }
+ol.plain { margin: 6px 0 12px; padding-right: 24px; }
+
+.flow-note { background: var(--c-section); border-right: 3px solid var(--c-primary); padding: 12px 16px; margin: 12px 0; break-inside: avoid; border-radius: 4px; font-size: 14px; }
+.flow-note p { margin-bottom: 6px; }
+
+svg.fig { display: block; max-width: 100%; height: auto; margin: 10px auto 4px; break-inside: avoid; }
+.fig-caption { font-size: 12.5px; color: var(--c-muted); text-align: center; margin-bottom: 14px; }
+
+/* ---------- ENDING ---------- */
+.ending {
+  width: 794px; height: 1027px; box-sizing: border-box;
+  break-before: page; position: relative; overflow: hidden;
+  background: var(--c-page);
+}
+.end-grid { position: absolute; inset: 0; background-image: linear-gradient(to left, rgba(30,58,92,.02) 0.5px, transparent 0.5px), linear-gradient(to bottom, rgba(30,58,92,.02) 0.5px, transparent 0.5px); background-size: 50px 50px; }
+.end-line { position: absolute; right: 95px; top: 100px; bottom: 100px; width: 6px; background: var(--c-primary); }
+.end-wrap { position: absolute; top: 350px; right: 148px; left: 80px; }
+.end-big { font-size: 30px; font-weight: 700; color: var(--c-primary); line-height: 1.5; margin-bottom: 20px; }
+.end-text { font-size: 15px; color: var(--c-text); opacity: .85; max-width: 520px; line-height: 2; text-align: justify; }
+.end-meta { position: absolute; top: 938px; right: 148px; font-size: 12px; color: var(--c-muted); letter-spacing: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<div class="cover">
+  <div class="cover-bg"><div class="cover-grid"></div></div>
+  <div class="cover-struct">
+    <div class="cover-anchor"></div>
+    <div class="cover-tick" style="top: 244px;"></div>
+    <div class="cover-tick" style="top: 542px;"></div>
+    <div class="cover-tick" style="top: 792px;"></div>
+  </div>
+  <div class="cover-content">
+    <div class="cv-kicker">آزمونک · سند آموزشی داخلی · نسخه ۱٫۰</div>
+    <div class="cv-hero">الگوریتم‌های<br>موتور تطبیقی</div>
+    <div class="cv-hero-sub">از ریاضی Elo تا FSRS — استخراج کامل، مثال‌های عددی و دستگیره‌های تنظیم</div>
+    <div class="cv-summary">این کتابچه هر شش موتور الگوریتمی آزمونک را از صفر توضیح می‌دهد: انگیزه و مسئله، استخراج ریاضی گام‌به‌گام، مثال عددی با اعداد واقعی سند، مقایسه کامل با خانواده‌های جایگزین (IRT، Glicko-2، TrueSkill، BKT، DKT، لایتنر، Pimsleur، FSRS و Half-Life Regression) و در پایانِ هر فصل، فهرست دستگیره‌هایی که می‌توان برای تنظیم یا ویرایش هر الگوریتم چرخاند.</div>
+    <div class="cv-meta">
+      <div class="lbl">پدیدآور</div>
+      <div>پویا — جشنواره نوجوان خوارزمی، رشته رایانه / نرم‌افزار / هوش مصنوعی</div>
+      <div class="lbl" style="margin-top:10px;">مهندس همراه</div>
+      <div>سند برنامه توسعه نسخه ۱٫۳ — مهر ۱۴۰۵</div>
+    </div>
+    <div class="cv-footer">AZMOONAK · ADAPTIVE ENGINE HANDBOOK</div>
+  </div>
+</div>
+
+<!-- ================= TOC ================= -->
+<div class="toc">
+  <div class="toc-kicker">فهرست مطالب</div>
+  <div class="toc-title">چیدمان فصل‌ها</div>
+  <div class="toc-sub">نُه فصل اصلی + چهار ضمیمه — ترتیب، همان ترتیب «چرخه یک پاسخ» در سیستم است.</div>
+  <div class="toc-divider"></div>
+
+  <div class="toc-item"><span class="toc-num">۱</span><span class="toc-name">نقشه کلی — چرخه یک پاسخ</span><span class="toc-desc">چرا شش موتور جدا؟</span></div>
+  <div class="toc-item"><span class="toc-num">۲</span><span class="toc-name">موتور Elo — سنجش توان</span><span class="toc-desc">استخراج + IRT، Glicko-2، TrueSkill</span></div>
+  <div class="toc-item"><span class="toc-num">۳</span><span class="toc-name">جایابی — مشکل شروع سرد</span><span class="toc-desc">جلسه چهار سؤالی</span></div>
+  <div class="toc-item"><span class="toc-num">۴</span><span class="toc-name">انتخاب سؤال — سه لایه فیلتر</span><span class="toc-desc">ناحیه هدف ۶۵–۷۵٪</span></div>
+  <div class="toc-item"><span class="toc-num">۵</span><span class="toc-name">نردبان سطح دسته‌ای (D16)</span><span class="toc-desc">+ BKT، DKT، KST</span></div>
+  <div class="toc-item"><span class="toc-num">۶</span><span class="toc-name">SM-2 — مرور فاصله‌دار</span><span class="toc-desc">+ لایتنر، Pimsleur، FSRS، HLR</span></div>
+  <div class="toc-item"><span class="toc-num">۷</span><span class="toc-name">پیش‌بینی نمره</span><span class="toc-desc">نمره وزن‌دار + رگرسیون λ=۰٫۸۵</span></div>
+  <div class="toc-item"><span class="toc-num">۸</span><span class="toc-name">چارچوب اجرا و قواعد پشتیبان</span><span class="toc-desc">جلسه، اعتماد، تراکنش، snapshot</span></div>
+  <div class="toc-item"><span class="toc-num">۹</span><span class="toc-name">جمع‌بندی تصمیم‌ها — چرا این‌ها؟</span><span class="toc-desc">جدول انتخاب‌ها + نقشه دستگیره‌ها</span></div>
+  <div class="toc-item app"><span class="toc-num">الف</span><span class="toc-name">ضمیمه الف — جدول کامل پارامترها</span><span class="toc-desc">مقدار، منبع، اثر تغییر</span></div>
+  <div class="toc-item app"><span class="toc-num">ب</span><span class="toc-name">ضمیمه ب — ده پرسش داوری</span><span class="toc-desc">پرسش + پاسخ کوتاه</span></div>
+  <div class="toc-item app"><span class="toc-num">ج</span><span class="toc-name">ضمیمه ج — واژه‌نامه اصطلاحات</span><span class="toc-desc">انگلیسی ← فارسی</span></div>
+  <div class="toc-item app"><span class="toc-num">د</span><span class="toc-name">ضمیمه د — مراجع علمی</span><span class="toc-desc">مقالات اصلی</span></div>
+
+  <div class="toc-note">هدف این سند «مالکیت الگوریتم‌ها» است: بعد از خواندن هر فصل باید بتوانی بگویی هر پارامتر چه می‌کند، چرا این مقدار انتخاب شده و اگر تغییرش دهی چه اتفاقی می‌افتد. همه مقادیر پیش‌فرض با نشان «قابل وتو» در سند برنامه هم ثبت‌اند.</div>
+</div>

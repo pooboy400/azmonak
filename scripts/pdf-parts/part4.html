@@ -1,0 +1,97 @@
+<!-- ====== CHAPTER 5 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۵</span>
+  <div class="ch-title">نردبان سطح دسته‌ای (D16)</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>تا این‌جا سیستم یک عدد سراسری دارد: «این دانش‌آموز مجموعاً چقدر بلد است». اما «مجموعاً» جواب مناسبی برای دو سؤال حیاتی نیست: <strong>«کجای ریاضی‌ام ضعیف است؟»</strong> و <strong>«الان دقیقاً چه بخوانم؟»</strong>. یک دانش‌آموز با توان ۱۲۵۰ می‌تواند در «قاعده زنجیره‌ای» عالی و در «حد از چپ» ضعیف باشد؛ اگر سیستم فقط عدد سراسری را ببیند، برای هر دو مبحث همان سختی را سرو می‌کند و در دسته ضعیف، تجربه ناامیدکننده می‌سازد.</p>
+
+<p>نسخه نخست طراحی، پاسخ مفصل‌تری داشت: «موتور بدفهمی» — هر گزینه غلطِ هر سؤال به یک گره بدفهمی مشخص (مثل «مشتق را تفاضل می‌فهمد نه نرخ لحظه‌ای») مپ می‌شد و با قاعده دو شاهد، بدفهمی تثبیت‌شده اعلام می‌شد. در بازبینی طراحی، پویا این مکانیزم را وتو کرد (D16): نویسندگی مپ بدفهمی برای هر گزینه، بار تولید محتوا را دو تا سه برابر می‌کند و برای تیم فعلی غیرقابل انجام است. تصمیم نهایی: <strong>فرمت حفظ، مکانیزم عوض</strong>. ستون <span class="inm">distractor_map</span>، شیت misconceptions و سه جدول دیتابیس در اسکیما بمانند (اختیاری، پیش‌فرض خالی) برای فعال‌سازی آینده؛ و مکانیزم فعال جایگزین شود با چیزی که پویا طراحی کرد: <strong>نردبان سطح دسته‌ای</strong>.</p>
+
+<h3><span class="hn">۵٫۱</span> مدل داده: سه چیز به‌ازای هر دسته</h3>
+
+<p>هر سؤال دو مشخصه دارد: <strong>دسته</strong> (همان فیلد <span class="inm">topic</span> موجود — مثلاً «قاعده زنجیره‌ای») و <strong>سطح ۱ تا ۳</strong> (همان سه رده سختی موجود ← ۱۱۵۰ / ۱۲۵۰ / ۱۳۵۰). به همین دلیل این مکانیزم «تقریباً مجانی» بود: هیچ ستون جدیدی لازم نشد. برای هر دانش‌آموز، به‌ازای هر (درس، دسته) یک ردیف پروفایل در جدول <span class="inm">ability_state</span> نگه می‌داریم با این حالت:</p>
+
+<div class="formula"><span class="var">State</span>(<span class="var">user</span>, <span class="var">cat</span>) = { <span class="var">L</span> ∈ {1,2,3};&nbsp; <span class="var">s</span><sub>w</sub>;&nbsp; <span class="var">s</span><sub>r</sub>;&nbsp; <span class="var">w</span>;&nbsp; <span class="var">H</span><sub>5</sub> }</div>
+
+<p class="flabel">(5.1) سطح جاری L، استریک غلط s_w، استریک درست s_r، شمارنده ضعف w، بافر پنج پاسخ آخر H_5</p>
+
+<p><span class="inm">L</span> تعیین می‌کند سؤال‌های این دسته از کدام نوار سختی سرو شوند؛ دو استریک «پیاپی بودن» را نگه می‌دارند؛ شمارنده ضعف <span class="inm">w</span> می‌شمارد چند بار دانش‌آموز در کف سطح ۱ سقوط کرده (سیگنال «بدتر از سطح آسان هم»)؛ و بافر <span class="inm">H<sub>5</sub></span> پنج نتیجه آخر همان دسته را برای محاسبه نرخ موفقیت نگه می‌دارد.</p>
+
+<h3><span class="hn">۵٫۲</span> قواعد انتقال — کامل و بدون استثنا</h3>
+
+<table>
+  <thead><tr><th style="width:22%">رویداد</th><th style="width:44%">به‌روزرسانی</th><th>قید</th></tr></thead>
+  <tbody>
+    <tr><td>پاسخ غلط در دسته c</td><td><span class="inm">s<sub>w</sub> += 1</span> ؛ <span class="inm">s<sub>r</sub> = 0</span> ؛ اگر <span class="inm">s<sub>w</sub> ≥ 2</span>: <span class="inm">L = max(1, L−1)</span> و ری‌ست استریک؛ اگر L قبل هم ۱ بود: <span class="inm">w += 1</span></td><td>افت سطح همیشه با ری‌ست استریک همراه است تا حلقه بی‌نهایت افت‌های متوالی نگیرد</td></tr>
+    <tr><td>پاسخ درست در دسته c</td><td><span class="inm">s<sub>r</sub> += 1</span> ؛ <span class="inm">s<sub>w</sub> = 0</span> ؛ اگر <span class="inm">s<sub>r</sub> ≥ 2</span> و هنوز در این جلسه ارتقا نگرفته: <span class="inm">L = min(3, L+1)</span> و ری‌ست استریک</td><td>حداکثر یک ارتقا در هر جلسه برای هر دسته («یواش یواش»)</td></tr>
+    <tr><td>پایان هر پاسخ</td><td>نتیجه به <span class="inm">H<sub>5</sub></span> اضافه می‌شود (پنجره لغزان ۵تایی)</td><td>مبنای محاسبه نرخ موفقیت اخیر</td></tr>
+    <tr><td>بررسی هشدار</td><td>اگر <span class="inm">L = 1</span> و نرخ درست <span class="inm">H<sub>5</sub></span> کمتر از ۳۰٪: بنر «برای دسته X مطالعه کن» در داشبورد و خلاصه جلسه</td><td>هر دو شرط هم‌زمان لازم‌اند</td></tr>
+    <tr><td>بررسی دبیر</td><td>اگر سطح دسته c در ۵ جلسه آخر ۳ بار یا بیشتر تغییر کرده: به صف بازبینی دبیر می‌رود</td><td>هشدار نوسان — جانشین انسانیِ «قابل اعتراض بودن تشخیص»</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۵-۱ — ماشین حالت نردبان. پارامترهای n=۲، m=۲ و آستانه ۳۰٪ پیش‌فرض مهندس‌اند و قابلیت وتو دارند (پویا هر وقت رأی بدهد جایگزین می‌شود).</div>
+
+<p>سه طراحی دقیق در این قواعد ارزش دفاع دارند. <strong>چرا استریک (پیاپی) و نه مجموع؟</strong> دو غلط با وسطش یک درست، الگوی خطای پراکنده است — شاید بی‌حوصلگی، شاید غلط تایپ؛ اما دو غلط پیاپی در یک دسته، الگوی «اینجا چیزی را نمی‌فهمم» است. استریک نویز را فیلتر می‌کند بدون اینکه ریاضی پیچیده شود. <strong>چرا حداکثر یک ارتقا در جلسه؟</strong> چون یک جلسه شانس‌آور (یا جلسه‌ای که بچه از دوستش جواب گرفت) نباید دو سطح بپرد؛ ارتقا باید از جلسه به جلسه «رسوب» کند، مثل یادگیری واقعی. <strong>چرا هشدار مطالعه دو شرط دارد؟</strong> سطح ۱ تنها، برای دانش‌آموزی که تازه سقوط کرده طبیعی است؛ ۳۰٪ ضعیف است ولی اگر کل پنج پاسخ اخیرش در سطح آسان هم کمتر از ۳۰٪ باشد، مشکل دیگر «سختی سؤال» نیست — مشکل «مفهوم خوانده نشده» است و راه‌حل الگوریتم نیست، مطالعه است. صادق‌ترین کاری که سیستم می‌کند همین است که بگوید: «من کاری نمی‌توانم بکنم؛ برو اول بخوان».</p>
+
+<svg class="fig" width="620" height="205" viewBox="0 0 620 205" xmlns="http://www.w3.org/2000/svg">
+  <rect x="235" y="15" width="150" height="46" rx="8" fill="#eef3f7" stroke="#2b4356" stroke-width="1.5"/>
+  <text x="310" y="35" font-size="13" fill="#1e3a5c" text-anchor="middle" font-weight="bold" font-family="Vazirmatn">سطح ۳ — سخت</text>
+  <text x="310" y="52" font-size="11" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">۱۳۵۰</text>
+  <rect x="235" y="79" width="150" height="46" rx="8" fill="#eef3f7" stroke="#2b4356" stroke-width="1.5"/>
+  <text x="310" y="99" font-size="13" fill="#1e3a5c" text-anchor="middle" font-weight="bold" font-family="Vazirmatn">سطح ۲ — متوسط</text>
+  <text x="310" y="116" font-size="11" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">۱۲۵۰</text>
+  <rect x="235" y="143" width="150" height="46" rx="8" fill="#f7ece9" stroke="#ac5952" stroke-width="1.5"/>
+  <text x="310" y="163" font-size="13" fill="#7c3b34" text-anchor="middle" font-weight="bold" font-family="Vazirmatn">سطح ۱ — آسان</text>
+  <text x="310" y="180" font-size="11" fill="#a06a63" text-anchor="middle" font-family="Vazirmatn">۱۱۵۰ + شمارنده ضعف + هشدار مطالعه</text>
+  <path d="M 400 40 C 445 40, 450 95, 445 100" fill="none" stroke="#2b7cab" stroke-width="2" marker-end="url(#ar)"/>
+  <path d="M 400 104 C 445 104, 450 159, 445 164" fill="none" stroke="#2b7cab" stroke-width="2" marker-end="url(#ar)"/>
+  <path d="M 220 164 C 172 164, 168 109, 175 104" fill="none" stroke="#508e65" stroke-width="2" marker-end="url(#arg)"/>
+  <path d="M 220 100 C 172 100, 168 45, 175 40" fill="none" stroke="#508e65" stroke-width="2" marker-end="url(#arg)"/>
+  <text x="462" y="75" font-size="12" fill="#2b7cab" text-anchor="middle" font-family="Vazirmatn">۲ غلط پیاپی</text>
+  <text x="462" y="92" font-size="12" fill="#2b7cab" text-anchor="middle" font-family="Vazirmatn">← افت</text>
+  <text x="148" y="75" font-size="12" fill="#508e65" text-anchor="middle" font-family="Vazirmatn">۲ درست پیاپی</text>
+  <text x="148" y="92" font-size="12" fill="#508e65" text-anchor="middle" font-family="Vazirmatn">← ارتقا (در جلسه یک‌بار)</text>
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#2b7cab" stroke-width="1.4"/></marker>
+    <marker id="arg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#508e65" stroke-width="1.4"/></marker>
+  </defs>
+</svg>
+<div class="fig-caption">شکل ۵ — نردبان سه‌سطحی هر دسته: سقوط با دو غلط پیاپی، ارتقای محتاطانه با دو درست پیاپی</div>
+
+<h3><span class="hn">۵٫۳</span> خانواده رقیب — BKT و DKT و KST</h3>
+
+<p><strong>BKT (ردیابی دانش بیزی)</strong> — کلاسیک‌ترین مدل «وضعیت یادگیری هر مفهوم» (کوربت و اندرسون، ۱۹۹۴؛ پایه سیستم‌های تیوتر هوشمند از Carnegie Mellon). BKT برای هر مفهوم یک متغیر پنهان <span class="inm">P(L)</span> نگه می‌دارد: «احتمال اینکه دانش‌آموز این مفهوم را واقعاً یاد گرفته باشد». چهار پارامتر دارد: احتمال اولیه <span class="inm">P<sub>0</sub></span>، نرخ یادگیری <span class="inm">T</span>، شانس حدس <span class="inm">g</span> و شانس لغزش <span class="inm">s</span>. با هر مشاهده، قضیه بیزی وضعیت را به‌روز می‌کند — مثلاً برای پاسخ درست:</p>
+
+<div class="formula">P(<span class="var">L</span>|<span class="var">correct</span>) = <span class="frac"><span class="top">P(<span class="var">L</span>)(1−<span class="var">s</span>)</span><span class="bot">P(<span class="var">L</span>)(1−<span class="var">s</span>) + (1−P(<span class="var">L</span>))<span class="var">g</span></span></span>&nbsp;&nbsp;;&nbsp;&nbsp; سپس&nbsp; P* = P(<span class="var">L</span>|<span class="var">correct</span>) + (1−P(<span class="var">L</span>|<span class="var">correct</span>))·<span class="var">T</span></div>
+
+<p class="flabel">(5.2) به‌روزرسانی BKT پس از مشاهده پاسخ درست + قدم یادگیری</p>
+
+<p>BKT از نظر مفهومی خوشگل‌ترین پاسخ به سؤال «نمی‌دانم بچه واقعاً بلده یا حدس زده» است — گره g و s همین‌ها را مدل می‌کنند. اما برای آزمونک دو مانع عملی دارد: نخست، برآورد چهار پارامتر خوب به‌ازای هر مفهوم، به داده پایدارِ هر مفهوم نیاز دارد (ده‌ها پاسخ به‌ازای هر دسته برای هر دانش‌آموز یا برای کل جمعیت) — داده ۴۰ آزمودنیِ ما در ۱۰ هفته به‌سختی این را می‌دهد و بدترین حالت این است که پارامترها با داده کم، برآورد سرگردان شوند. دوم، خروجی BKT «احتمال» است — «۷۰٪ بلده» — که برای دانش‌آموز و دبیر قابل اقدام مستقیم نیست؛ نردبان همین را به «سطح ۲ از ۳، دو درست پیاپی تا ارتقا» ترجمه می‌کند که هر نوجوانی می‌فهمد.</p>
+
+<p><strong>DKT (ردیابی دانش عمیق)</strong> — نسل جدید همین ایده با شبکه بازگشتی (LSTM) است (پیچ و همکاران، ۲۰۱۵): دنباله کل پاسخ‌ها وارد شبکه می‌شود و در هر لحظه برداری از احتمال تسلط همه مفاهیم بیرون می‌دهد. DKT در مقاله اصلی روی داده صدها هزار دانش‌آموز آموزش دید و در مسابقات knowledge tracing رکورد دارد؛ ولی سه ویژگی برای ما نامناسب است: نیاز به داده انبوه، خروجی جعبه‌سیاه غیرقابل توضیح (داور می‌پرسد «چرا سطحش را پایین آوردی؟» و جواب بردار ۱۰۰ بعدی است!) و وابستگی به زیرساخت GPU که بودجه پروژه دانش‌آموزی نیست. در روایت دفاعی، DKT را به‌عنوان «مسیر تحول آینده» نام می‌بریم — نشان می‌دهیم می‌دانیم از کجا می‌توان آمد — نه به‌عنوان گزینه فعلی.</p>
+
+<p><strong>KST (نظریه فضای دانش)</strong> — رویکرد صوری‌تر (دوین‌یون و فالماگن، ۱۹۸۵): مجموعه‌ای از «حالت‌های دانش» تعریف می‌شود (کدام مفاهیم با هم شناخته‌اند) و آزمون تطبیقی، سریع‌ترین مسیر به حالت درست را می‌جوید. ریاضیاتش زیباست ولی طراحیاش برای هر بانک سؤال، تحلیل وابستگی مفاهیم دستی سنگین می‌خواهد؛ همان‌جایی است که بار محتوایی دوباره از آستانه تیم ما رد می‌شود.</p>
+
+<table>
+  <thead><tr><th style="width:18%">معیار</th><th style="width:26%">نردبان (انتخاب ما)</th><th style="width:20%">BKT</th><th style="width:18%">DKT</th><th style="width:18%">KST</th></tr></thead>
+  <tbody>
+    <tr><td>داده لازم برای شروع</td><td>تقریباً صفر — قواعد ثابت</td><td>چهار پارامتر به‌ازای هر مفهوم</td><td>صدها هزار پاسخ</td><td>گراف مفهومی دستی</td></tr>
+    <tr><td>توضیح‌پذیری</td><td>کامل — سه قاعده آشکار</td><td>متوسط — احتمال خروجی</td><td>ضعیف — جعبه‌سیاه</td><td>متوسط</td></tr>
+    <tr><td>بار محتوایی</td><td>صفر اضافه — از topic و سختی موجود</td><td>کالیبراسیون پارامترها</td><td>پایپ‌لاین ML</td><td>تحلیل مفاهیم سنگین</td></tr>
+    <tr><td>خروجی قابل اقدام برای نوجوان</td><td>سطح + پیام مطالعه</td><td>احتمال تسلط</td><td>بردار احتمال‌ها</td><td>حالت دانش</td></tr>
+    <tr><td>شبیه‌سازی خطای ضعف پایدار</td><td>شمارنده ضعف در کف</td><td>فتادگی P(L)</td><td>فتادگی بردار</td><td>محدودیت حالت</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۵-۲ — مقایسه خانواده «تشخیص وضعیت مفهومی». نردبان، BKT را می‌شود در فاز دو با داده انباشته‌شده فعال کرد — snapshot پارامترها برای همین نگه داشته می‌شود.</div>
+
+<div class="knobs">
+  <div class="knobs-title">دستگیره‌های قابل تنظیم این فصل</div>
+  <div class="knob-grid">
+    <div class="knob"><div class="k-name">n (drop streak)</div><div class="k-val">۲ غلط پیاپی</div><div class="k-eff">n=۱ یعنی هر غلط، سطح را می‌اندازد — واکنشی ولی پرنوسان؛ n=۳ محتاطانه ولی کند. ۲ تعادل سند است. اگر داده نشان دهد سطح‌ها پرش‌های ناخواسته دارند، اول n را بالا ببر.</div></div>
+    <div class="knob"><div class="k-name">m (rise streak)</div><div class="k-val">۲ درست پیاپی</div><div class="k-eff">کاهشش (m=۱) حس پیشرفت سریع‌تری می‌دهد ولی سطح‌ها را شکننده می‌کند؛ سقف «یک ارتقا در جلسه» را با m از هم جدا نگه دار.</div></div>
+    <div class="knob"><div class="k-name">study_alert</div><div class="k-val">سطح ۱ + موفقیت &lt;۳۰٪ در ۵ پاسخ</div><div class="k-eff">۳۰٪ = یک از سه. بالا بردنش (مثلاً ۴۰٪) بنرهای بیشتری می‌سازد — خطر «کری هشدار» و بی‌اثر شدن پیام برای دانش‌آموز.</div></div>
+    <div class="knob"><div class="k-name">oscillation_alert</div><div class="k-val">≥۳ تغییر در ۵ جلسه ← صف دبیر</div><div class="k-eff">این شیر اطمینان انسانی است. اگر دبیر صف پرشدگی دید، یعنی یکی از n/m/آستانه‌ها باید سخت‌گیرانه‌تر شود — عیب‌یابی از همین‌جا شروع کن.</div></div>
+  </div>
+</div>

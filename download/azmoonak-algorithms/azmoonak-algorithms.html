@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>الگوریتم‌های آزمونک — کتابچه کامل موتورهای تطبیقی</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+@page { size: 794px 1123px; margin: 48px 0; }
+
+:root {
+  --c-page: #fafbfc;
+  --c-section: #f1f4f7;
+  --c-card: #f3f6f9;
+  --c-stripe: #eef3f7;
+  --c-header: #2b4356;
+  --c-primary: #1e3a5c;
+  --c-accent: #2b7cab;
+  --c-accent-l: #d9e9f3;
+  --c-border: #d5dee6;
+  --c-text: #1c2733;
+  --c-muted: #5e7180;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  width: 794px;
+  background: #fafbfc;
+  color: var(--c-text);
+  font-family: 'Vazirmatn', 'DejaVu Sans', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.9;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+@media screen {
+  html { height: auto; display: flex; justify-content: center; background: #e4e8ec; }
+  body { margin: 20px auto; box-shadow: 0 2px 24px rgba(28,39,51,.18); }
+}
+
+p { margin: 0 0 10px; text-align: justify; }
+p, td, li { line-break: strict; }
+li { text-align: right; margin-bottom: 6px; }
+strong { font-weight: 700; color: var(--c-primary); }
+
+/* ---------- COVER ---------- */
+.cover {
+  width: 794px; height: 1027px;
+  box-sizing: border-box;
+  break-after: page;
+  position: relative;
+  background: var(--c-page);
+  border: none; outline: none; box-shadow: none;
+}
+.cover-bg {
+  position: absolute; inset: 0; overflow: hidden; z-index: 1;
+}
+.cover-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to left, rgba(30,58,92,.025) 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, rgba(30,58,92,.025) 0.5px, transparent 0.5px);
+  background-size: 50px 50px;
+}
+.cover-struct { position: absolute; inset: 0; z-index: 2; }
+.cover-anchor {
+  position: absolute; right: 95px; top: 100px; bottom: 100px;
+  width: 6px; background: var(--c-primary);
+}
+.cover-tick {
+  position: absolute; right: 85px; width: 10px; height: 2px;
+  background: var(--c-accent); opacity: .55;
+}
+.cover-content { position: absolute; inset: 0; z-index: 3; }.cv-kicker {
+  position: absolute; top: 152px; right: 148px; left: 60px;
+  font-size: 13px; font-weight: 400; color: var(--c-muted);
+  letter-spacing: 4px; opacity: .85;
+}
+.cv-hero {
+  position: absolute; top: 244px; right: 148px;
+  font-size: 54px; font-weight: 700; line-height: 1.18;
+  color: var(--c-primary); max-width: 560px;
+}
+.cv-hero-sub {
+  position: absolute; top: 402px; right: 148px;
+  font-size: 20px; font-weight: 300; color: var(--c-accent);
+  max-width: 540px; line-height: 1.5;
+}
+.cv-summary {
+  position: absolute; top: 542px; right: 148px;
+  font-size: 15.5px; font-weight: 400; color: var(--c-text);
+  opacity: .85; max-width: 480px; line-height: 1.95; text-align: justify;
+}
+.cv-meta {
+  position: absolute; top: 792px; right: 148px;
+  font-size: 15px; color: var(--c-text); line-height: 2.1;
+}
+.cv-meta .lbl { color: var(--c-muted); font-size: 12.5px; letter-spacing: 1px; }
+.cv-footer {
+  position: absolute; top: 962px; right: 148px; left: 60px;
+  font-size: 12px; color: var(--c-muted); letter-spacing: 2.5px; opacity: .65;
+}
+
+/* ---------- TOC ---------- */
+.toc { break-after: page; padding: 88px 84px 40px 84px; }
+.toc-kicker { font-size: 12px; letter-spacing: 3px; color: var(--c-accent); font-weight: 500; margin-bottom: 8px; }
+.toc-title { font-size: 30px; font-weight: 700; color: var(--c-primary); margin-bottom: 6px; }
+.toc-sub { color: var(--c-muted); font-size: 13.5px; margin-bottom: 26px; }
+.toc-divider { height: 2px; background: linear-gradient(to left, var(--c-accent), transparent); margin-bottom: 38px; }
+.toc-item { display: flex; align-items: baseline; gap: 12px; padding: 7.5px 0; border-bottom: 1px solid var(--c-border); break-inside: avoid; }
+.toc-num { min-width: 30px; font-weight: 700; color: var(--c-accent); font-size: 15px; }
+.toc-name { font-weight: 500; color: var(--c-text); font-size: 15px; }
+.toc-desc { color: var(--c-muted); font-size: 12px; margin-right: auto; text-align: left; }
+.toc-item.app .toc-num { color: var(--c-muted); }
+.toc-note { margin-top: 24px; font-size: 12.5px; color: var(--c-muted); background: var(--c-card); padding: 12px 16px; border-right: 3px solid var(--c-accent); break-inside: avoid; }
+
+/* ---------- MAIN CONTENT ---------- */
+.main-content { padding: 56px 84px 44px 84px; }
+
+.chapter-header { break-after: avoid; break-inside: avoid; margin-top: 28px; margin-bottom: 16px; }
+.chapter-header.first { margin-top: 0; }
+.ch-tag { display: inline-block; font-size: 11.5px; font-weight: 500; letter-spacing: 2.5px; color: var(--c-accent); border: 1px solid var(--c-accent); padding: 2px 12px; border-radius: 999px; margin-bottom: 10px; }
+.ch-title { font-size: 26px; font-weight: 700; color: var(--c-primary); line-height: 1.35; }
+.ch-divider { height: 2px; background: linear-gradient(to left, var(--c-accent) 0 90px, var(--c-border) 90px 100%); margin-top: 10px; }
+
+h3 { font-size: 17.5px; font-weight: 700; color: var(--c-primary); margin: 20px 0 8px; break-after: avoid; }
+h3 .hn { color: var(--c-accent); font-weight: 700; }
+
+.formula {
+  direction: ltr; text-align: center;
+  font-family: 'Tinos', 'Liberation Serif', 'DejaVu Serif', serif;
+  font-size: 18px; color: var(--c-text);
+  padding: 12px 8px; margin: 6px auto 12px;
+  break-inside: avoid; line-height: 1.6;
+}
+.formula .var { font-style: italic; }
+.formula .frac { display: inline-block; vertical-align: middle; text-align: center; margin: 0 3px; }
+.formula .frac .top { display: block; padding: 0 6px 1px; border-bottom: 1.4px solid var(--c-text); }
+.formula .frac .bot { display: block; padding: 1px 6px 0; }
+.flabel { direction: ltr; text-align: left; font-family: 'Tinos', 'Liberation Serif', 'DejaVu Serif', serif; font-size: 13px; color: var(--c-muted); margin: -8px 4px 12px; }
+.inm {
+  direction: ltr; unicode-bidi: isolate;
+  font-family: 'Tinos', 'Liberation Serif', 'DejaVu Serif', serif;
+  font-size: 15px; font-style: italic; padding: 0 2px;
+}
+
+.example-box {
+  background: var(--c-card); border: 1px solid var(--c-border);
+  border-right: 3px solid var(--c-accent);
+  padding: 14px 18px; margin: 12px 0 14px;
+  break-inside: avoid; border-radius: 4px;
+}
+.example-box .ex-title { font-weight: 700; color: var(--c-primary); font-size: 14.5px; margin-bottom: 6px; }
+.example-box p { margin-bottom: 7px; font-size: 14.5px; }
+.example-box p:last-child { margin-bottom: 0; }
+
+.knobs { margin: 14px 0 6px; break-inside: avoid; }
+.knobs-title { font-weight: 700; color: var(--c-accent); font-size: 15px; margin-bottom: 8px; }
+.knob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.knob { background: #fff; border: 1px solid var(--c-border); border-top: 3px solid var(--c-accent); padding: 10px 14px; break-inside: avoid; border-radius: 4px; }
+.knob .k-name { font-weight: 700; font-size: 13.5px; color: var(--c-primary); direction: ltr; text-align: right; unicode-bidi: isolate; }
+.knob .k-val { font-size: 12.5px; color: var(--c-accent); font-weight: 500; margin: 1px 0 4px; }
+.knob .k-eff { font-size: 12.5px; color: var(--c-muted); line-height: 1.75; text-align: justify; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 13.5px; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th { background: var(--c-header); color: #fff; font-weight: 500; padding: 8px 10px; text-align: right; font-size: 13px; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--c-border); vertical-align: top; text-align: right; overflow-wrap: break-word; }
+tbody tr:nth-child(odd) { background: var(--c-stripe); }
+tbody tr:nth-child(even) { background: #fff; }
+table.keep { break-inside: avoid; }
+td .inm, th .inm { font-size: 13.5px; }
+.tbl-caption { font-size: 12.5px; color: var(--c-muted); margin: -10px 2px 14px; text-align: right; }
+
+ul.plain { margin: 6px 0 12px; padding-right: 22px; }
+ol.plain { margin: 6px 0 12px; padding-right: 24px; }
+
+.flow-note { background: var(--c-section); border-right: 3px solid var(--c-primary); padding: 12px 16px; margin: 12px 0; break-inside: avoid; border-radius: 4px; font-size: 14px; }
+.flow-note p { margin-bottom: 6px; }
+
+svg.fig { display: block; max-width: 100%; height: auto; margin: 10px auto 4px; break-inside: avoid; }
+.fig-caption { font-size: 12.5px; color: var(--c-muted); text-align: center; margin-bottom: 14px; }
+
+/* ---------- ENDING ---------- */
+.ending {
+  width: 794px; height: 1027px; box-sizing: border-box;
+  break-before: page; position: relative; overflow: hidden;
+  background: var(--c-page);
+}
+.end-grid { position: absolute; inset: 0; background-image: linear-gradient(to left, rgba(30,58,92,.02) 0.5px, transparent 0.5px), linear-gradient(to bottom, rgba(30,58,92,.02) 0.5px, transparent 0.5px); background-size: 50px 50px; }
+.end-line { position: absolute; right: 95px; top: 100px; bottom: 100px; width: 6px; background: var(--c-primary); }
+.end-wrap { position: absolute; top: 350px; right: 148px; left: 80px; }
+.end-big { font-size: 30px; font-weight: 700; color: var(--c-primary); line-height: 1.5; margin-bottom: 20px; }
+.end-text { font-size: 15px; color: var(--c-text); opacity: .85; max-width: 520px; line-height: 2; text-align: justify; }
+.end-meta { position: absolute; top: 938px; right: 148px; font-size: 12px; color: var(--c-muted); letter-spacing: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<div class="cover">
+  <div class="cover-bg"><div class="cover-grid"></div></div>
+  <div class="cover-struct">
+    <div class="cover-anchor"></div>
+    <div class="cover-tick" style="top: 244px;"></div>
+    <div class="cover-tick" style="top: 542px;"></div>
+    <div class="cover-tick" style="top: 792px;"></div>
+  </div>
+  <div class="cover-content">
+    <div class="cv-kicker">آزمونک · سند آموزشی داخلی · نسخه ۱٫۰</div>
+    <div class="cv-hero">الگوریتم‌های<br>موتور تطبیقی</div>
+    <div class="cv-hero-sub">از ریاضی Elo تا FSRS — استخراج کامل، مثال‌های عددی و دستگیره‌های تنظیم</div>
+    <div class="cv-summary">این کتابچه هر شش موتور الگوریتمی آزمونک را از صفر توضیح می‌دهد: انگیزه و مسئله، استخراج ریاضی گام‌به‌گام، مثال عددی با اعداد واقعی سند، مقایسه کامل با خانواده‌های جایگزین (IRT، Glicko-2، TrueSkill، BKT، DKT، لایتنر، Pimsleur، FSRS و Half-Life Regression) و در پایانِ هر فصل، فهرست دستگیره‌هایی که می‌توان برای تنظیم یا ویرایش هر الگوریتم چرخاند.</div>
+    <div class="cv-meta">
+      <div class="lbl">پدیدآور</div>
+      <div>پویا — جشنواره نوجوان خوارزمی، رشته رایانه / نرم‌افزار / هوش مصنوعی</div>
+      <div class="lbl" style="margin-top:10px;">مهندس همراه</div>
+      <div>سند برنامه توسعه نسخه ۱٫۳ — مهر ۱۴۰۵</div>
+    </div>
+    <div class="cv-footer">AZMOONAK · ADAPTIVE ENGINE HANDBOOK</div>
+  </div>
+</div>
+
+<!-- ================= TOC ================= -->
+<div class="toc">
+  <div class="toc-kicker">فهرست مطالب</div>
+  <div class="toc-title">چیدمان فصل‌ها</div>
+  <div class="toc-sub">نُه فصل اصلی + چهار ضمیمه — ترتیب، همان ترتیب «چرخه یک پاسخ» در سیستم است.</div>
+  <div class="toc-divider"></div>
+
+  <div class="toc-item"><span class="toc-num">۱</span><span class="toc-name">نقشه کلی — چرخه یک پاسخ</span><span class="toc-desc">چرا شش موتور جدا؟</span></div>
+  <div class="toc-item"><span class="toc-num">۲</span><span class="toc-name">موتور Elo — سنجش توان</span><span class="toc-desc">استخراج + IRT، Glicko-2، TrueSkill</span></div>
+  <div class="toc-item"><span class="toc-num">۳</span><span class="toc-name">جایابی — مشکل شروع سرد</span><span class="toc-desc">جلسه چهار سؤالی</span></div>
+  <div class="toc-item"><span class="toc-num">۴</span><span class="toc-name">انتخاب سؤال — سه لایه فیلتر</span><span class="toc-desc">ناحیه هدف ۶۵–۷۵٪</span></div>
+  <div class="toc-item"><span class="toc-num">۵</span><span class="toc-name">نردبان سطح دسته‌ای (D16)</span><span class="toc-desc">+ BKT، DKT، KST</span></div>
+  <div class="toc-item"><span class="toc-num">۶</span><span class="toc-name">SM-2 — مرور فاصله‌دار</span><span class="toc-desc">+ لایتنر، Pimsleur، FSRS، HLR</span></div>
+  <div class="toc-item"><span class="toc-num">۷</span><span class="toc-name">پیش‌بینی نمره</span><span class="toc-desc">نمره وزن‌دار + رگرسیون λ=۰٫۸۵</span></div>
+  <div class="toc-item"><span class="toc-num">۸</span><span class="toc-name">چارچوب اجرا و قواعد پشتیبان</span><span class="toc-desc">جلسه، اعتماد، تراکنش، snapshot</span></div>
+  <div class="toc-item"><span class="toc-num">۹</span><span class="toc-name">جمع‌بندی تصمیم‌ها — چرا این‌ها؟</span><span class="toc-desc">جدول انتخاب‌ها + نقشه دستگیره‌ها</span></div>
+  <div class="toc-item app"><span class="toc-num">الف</span><span class="toc-name">ضمیمه الف — جدول کامل پارامترها</span><span class="toc-desc">مقدار، منبع، اثر تغییر</span></div>
+  <div class="toc-item app"><span class="toc-num">ب</span><span class="toc-name">ضمیمه ب — ده پرسش داوری</span><span class="toc-desc">پرسش + پاسخ کوتاه</span></div>
+  <div class="toc-item app"><span class="toc-num">ج</span><span class="toc-name">ضمیمه ج — واژه‌نامه اصطلاحات</span><span class="toc-desc">انگلیسی ← فارسی</span></div>
+  <div class="toc-item app"><span class="toc-num">د</span><span class="toc-name">ضمیمه د — مراجع علمی</span><span class="toc-desc">مقالات اصلی</span></div>
+
+  <div class="toc-note">هدف این سند «مالکیت الگوریتم‌ها» است: بعد از خواندن هر فصل باید بتوانی بگویی هر پارامتر چه می‌کند، چرا این مقدار انتخاب شده و اگر تغییرش دهی چه اتفاقی می‌افتد. همه مقادیر پیش‌فرض با نشان «قابل وتو» در سند برنامه هم ثبت‌اند.</div>
+</div>
+<!-- ================= MAIN CONTENT ================= -->
+<div class="main-content">
+
+<!-- ====== CHAPTER 1 ====== -->
+<div class="chapter-header first">
+  <span class="ch-tag">فصل ۱</span>
+  <div class="ch-title">نقشه کلی — چرخه یک پاسخ</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>آزمونک از شش موتور الگوریتمی ساخته شده که هرکدام فقط یک سؤال را جواب می‌دهند: <strong>جایابی</strong> می‌گوید «اولین بار از کجا شروع کنم؟»، <strong>Elo</strong> می‌گوید «الان چقدر بلدم؟»، <strong>انتخاب سؤال</strong> می‌گوید «الان کدام سؤال را بدهم؟»، <strong>نردبان سطح</strong> می‌گوید «کجای مسیر هر دسته هستم و چه بخوانم؟»، <strong>SM-2</strong> می‌گوید «چه زمانی یادم می‌رود و باید مرور کنم؟» و <strong>پیش‌بینی</strong> می‌گوید «با این روند، فردا کجا می‌رسم؟». جداسازی این شش وظیفه عمدی است: هیچ الگوریتمی نباید همزمان دو نگرانی مختلف را مدیریت کند، چون آنگاه نه می‌توان جداگانه تستش کرد، نه جداگانه تنظیمش کرد، نه به داور توضیحش داد.</p>
+
+<p>قاعده معماری سند برنامه صریح است: <strong>«هیچ منطق الگوریتمی خارج از core نوشته نمی‌شود»</strong>. یعنی تمام ریاضی این شش موتور در یک پکیج پایتون خالص به نام <span class="inm">core</span> زندگی می‌کند — بدون دسترسی به دیتابیس، بدون HTTP، بدون فریم‌ورک. بک‌اند FastAPI فقط core را صدا می‌زند و نتیجه را به وب می‌دهد. این تفکیک سه پیامد عملی دارد: نخست، هر الگوریتم را می‌توان با «تست طلایی» (اعداد دقیق سند) تست کرد بدون اینکه دیتابیس بالا بیاید؛ دوم، اگر خواستی یک الگوریتم را ویرایش کنی، دقیقاً می‌دانی کدام فایل و کدام تابع را باز کنی؛ سوم، برای داوری می‌توانی ادعای «تفکیک الگوریتم از رابط» را با کد اثبات کنی — ادعایی که داوران جشنواره به آن امتیاز می‌دهند.</p>
+
+<h3><span class="hn">۱٫۱</span> چرخه کامل: از «سؤال بعدی» تا «پیش‌بینی فردا»</h3>
+
+<p>وقتی دانش‌آموزی یک گزینه را انتخاب می‌کند، در سرور یک زنجیره رویداد رخ می‌دهد که همه شش موتور را دست‌کم یک‌بار لمس می‌کند. این زنجیره را باید مثل یک کارخانه خط مونتاژ دید: ورودی خام «پاسخ + اعتماد + زمان» است و خروجی نهایی «سؤال بعدی + پروفایل به‌روز + صف مرور فردا».</p>
+
+<div class="flow-note">
+  <p><strong>۱)</strong> پاسخ ثبت می‌شود با سه سیگنال: گزینه انتخابی، دکمه اعتماد («مطمئن بودم / حدس می‌زدم» — D14) و زمان پاسخ.</p>
+  <p><strong>۲)</strong> <strong>Elo</strong> اجرا می‌شود: توان سراسری دانش‌آموز و سختی همان سؤال هر دو آپدیت می‌شوند (فصل ۲).</p>
+  <p><strong>۳)</strong> <strong>نردبان سطح</strong> اجرا می‌شود: استریک غلط/درستِ دسته همان سؤال به‌روز می‌شود؛ اگر شرایط افت یا ارتقا فراهم باشد سطح تغییر می‌کند و اگر ضعف پایدار باشد بنر «مطالعه کن» فعال می‌شود (فصل ۵).</p>
+  <p><strong>۴)</strong> <strong>SM-2</strong> اجرا می‌شود: از ترکیب درستی، اعتماد و زمان، کیفیت q ساخته می‌شود و فاصله مرور بعدی همان مفهوم تعیین می‌شود (فصل ۶).</p>
+  <p><strong>۵)</strong> همه این‌ها در <strong>یک تراکنش اتمیک</strong> نوشته می‌شود، همراه با snapshot پارامترها — یا همه می‌نویسند یا هیچ‌کدام (فصل ۸).</p>
+  <p><strong>۶)</strong> برای سؤال بعدی، <strong>سیاست انتخاب</strong> با نوار سختیِ سطح جاری دسته، سؤال جدیدی برمی‌دارد (فصل ۴). پایان جلسه، <strong>پیش‌بینی</strong> با جلسه جدید به‌روز می‌شود (فصل ۷).</p>
+</div>
+
+<p>دو اصل طراحی هم روی کل چرخه حاکم‌اند. اول، <strong>توضیح‌پذیری برای انسان</strong>: هر تصمیم سیستم باید در یک جمله برای دانش‌آموز یا داور قابل بازگویی باشد — به همین دلیل پیش‌بینی زیر هشت جلسه نمایش داده نمی‌شود و افت سطح دسته با پیام مشخص «برای دسته X مطالعه کن» همراه است. دوم، <strong>تکرارپذیری علمی</strong>: هر رکورد پاسخ، مقدار لحظه‌ای همه پارامترها را در فیلد <span class="inm">params_snapshot</span> نگه می‌دارد تا تحلیل‌گر بتواند هر پاسخ را با همان پارامترهای لحظه پاسخ بازمحاسبه کند — این دقیقاً چیزی است که داور با «قابل تکرار بودن آزمایش» می‌سنجد.</p>
+
+<!-- ====== CHAPTER 2 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۲</span>
+  <div class="ch-title">موتور Elo — سنجش توان</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>Elo در دهه ۱۹۶۰ توسط آرپد الُو، فیزیک‌دان و استاد شطرنج آمریکایی، برای ریتینگ بازیکنان شطرنج طراحی شد و بعدها توسط FIDE استاندارد شد. ایده مرکزی ساده اما عمیق است: <strong>هم بازیکن عدد دارد، هم حریف</strong> — و نتیجه هر برخورد، مقایسه‌ای بین دو عدد است که هر دو را جابه‌جا می‌کند. در آزمونک، برخورد «دانش‌آموز و سؤال» جای برخورد «بازیکن و بازیکن» می‌نشیند: توان دانش‌آموز <span class="inm">R_s</span> و سختی سؤال <span class="inm">R_q</span> هر دو روی یک مقیاس مشترک (حدود ۱۱۰۰ تا ۱۴۰۰) تعریف می‌شوند.</p>
+
+<p>چرا این تفاوت بنیادی با نمره مدرسه است؟ نمره خام به سؤال‌های بسته شده بستگی دارد: ۷۰٪ در آزمون سخت و ۷۰٪ در آزمون آسان یک عدد یکسان‌اند، در حالی که دو توان کاملاً متفاوت را نشان می‌دهند. اما در Elo، اگر سؤال‌ها سخت‌تر باشند توان بالاتری می‌گیری — چون خود سؤال‌ها هم ریتینگ دارند و سیستم «شجاعت انتخاب آزمون سخت» را می‌بیند. این ویژگی، مقایسه بین دانش‌آموزان و بین زمان‌های مختلف را عادلانه می‌کند و همین است که به پیش‌بینی نمره (فصل ۷) یک ورودی پایدار می‌دهد.</p>
+
+<h3><span class="hn">۲٫۱</span> استخراج گام‌به‌گام فرمول انتظار</h3>
+
+<p>ریشه ریاضی Elo مدل <strong>Bradley–Terry</strong> است: برای هر بازیکن i یک «قدرت مثبت» <span class="inm">π<sub>i</sub></span> تعریف می‌کنیم و احتمال بردِ A روی B را نسبت قدرت‌ها می‌گیریم:</p>
+
+<div class="formula"><span class="var">P</span>(<span class="var">A</span> beats <span class="var">B</span>) = <span class="frac"><span class="top"><span class="var">π</span><sub>A</sub></span><span class="bot"><span class="var">π</span><sub>A</sub> + <span class="var">π</span><sub>B</sub></span></span></div>
+
+<p>اکنون انتخاب نبوغ‌آمیز Elo: قدرت را نمایی از ریتینگ تعریف می‌کنیم، <span class="inm">π = 10<sup>R/400</sup></span>. با جای‌گذاری در کسر بالا، <span class="inm">10<sup>R_A/400</sup></span> از صورت و مخرج فاکتور می‌شود:</p>
+
+<div class="formula">P = <span class="frac"><span class="top">10<sup>R<sub>s</sub>/400</sup></span><span class="bot">10<sup>R<sub>s</sub>/400</sup> + 10<sup>R<sub>q</sub>/400</sup></span></span> = <span class="frac"><span class="top">1</span><span class="bot">1 + 10<sup>(R<sub>q</sub> − R<sub>s</sub>)/400</sup></span></span></div>
+
+<p class="flabel">(2.1) فرمول انتظار — قلب موتور</p>
+
+<p>این همان تابع لجستیک پایه ۱۰ است. دو نکته از این استخراج مهم است. اول، <strong>معنای مقیاس ۴۰۰</strong>: اختلاف ۴۰۰ امتیازی یعنی نسبت قدرت <span class="inm">10<sup>400/400</sup> = 10</span> برابر، یعنی شانس برد حدود ۹۱٪. اختلاف ۱۵۰ امتیازی (فاصله دو رده سختی آزمونک: ۱۲۰۰ مقابل ۱۳۵۰) شانس <span class="inm">10<sup>150/400</sup> ≈ 2.37</span> برابر می‌دهد — یعنی حدود ۳۰٪ برای ضعیف‌تر. دقیقاً همان عددی که در مثال طلایی سند آمده.</p>
+
+<p>دوم، این تابع <strong>سیگموئیدی</strong> است: در تفاضل صفر شانس ۵۰٪ است، در دنباله‌ها به ۰ یا ۱ اشباع می‌شود اما هرگز به آن نمی‌رسد. چرا اشباع خوب است؟ چون سیستم هرگز «مطمئن مطلق» نمی‌شود: حتی دانش‌آموز ۱۴۰۰ مقابل سؤال ۱۱۰۰ هم ۹٪ احتمال خطا دارد، پس یک غلط ناگهانی توانش را نمی‌سوزاند — فقط کمی پایین می‌آورد.</p>
+
+<h3><span class="hn">۲٫۲</span> آپدیت دوطرفه و معنای واقعی K</h3>
+
+<p>بعد از هر پاسخ، هر دو ریتینگ حرکت می‌کنند. اگر <span class="inm">S</span> نتیجه واقعی باشد (۱ برای درست، ۰ برای غلط)، آپدیت به این شکل است:</p>
+
+<div class="formula">R<sub>s</sub>' = R<sub>s</sub> + K<sub>s</sub>·(<span class="var">S</span> − <span class="var">E</span>)&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;&nbsp;&nbsp;R<sub>q</sub>' = R<sub>q</sub> + K<sub>q</sub>·(<span class="var">E</span> − <span class="var">S</span>)</div>
+
+<p class="flabel">(2.2) آپدیت دوطرفه — حاصل‌ضرب K در «سورپرایز»</p>
+
+<p>نکته کلیدی، عبارت <span class="inm">(S − E)</span> است که به آن «سورپرایز» می‌گوییم: اگر نتیجه دقیقاً همان چیزی باشد که انتظار می‌رفت (<span class="inm">S = E</span> در حد)، هیچ‌کس حرکت نمی‌کند؛ هرچه نتیجه دور از انتظار باشد، جابه‌جایی بزرگ‌تر است. ضریب <span class="inm">K</span> حداکثر سرعت حرکت را می‌سازد و از نگاه بهینه‌سازی ریاضی، آپدیت Elo یک <strong>گام گرادیان تصادفی</strong> است: سیستم دارد خطای پیش‌بینی‌اش را با گام‌های K کمینه می‌کند. K بزرگ = یادگیری سریع اما ناپایدار (هر جلسه شانس‌آور، ریتینگ را می‌پراند)؛ K کوچک = پایدار اما کند. این نگاه، برنامه K را کاملاً توجیه می‌کند:</p>
+
+<table class="keep">
+  <thead><tr><th style="width:24%">پارامتر</th><th style="width:24%">مقدار</th><th>چرا این مقدار؟</th></tr></thead>
+  <tbody>
+    <tr><td><span class="inm">K<sub>s</sub></span> — شروع</td><td>۳۲</td><td>در ابتدا توان واقعی ناشناخته است؛ حرکت سریع به سطح درست، هزینه‌اش پذیرفتنی است.</td></tr>
+    <tr><td><span class="inm">K<sub>s</sub></span> — پس از ۵۰ پاسخ</td><td>۲۴</td><td>تخمین حالا تقریباً رسیده؛ حرکت آرام‌تر، نویز جلسه‌های شانس‌آور را فیلتر می‌کند.</td></tr>
+    <tr><td><span class="inm">K<sub>s</sub></span> — پس از ۱۵۰ پاسخ</td><td>۱۶</td><td>فاز پایداری: تغییرات توان باید واقعی و تدریجی باشد، نه بازتاب نوسان روزانه.</td></tr>
+    <tr><td><span class="inm">K<sub>q</sub></span> — سؤال</td><td>۸ ← ۴ پس از ۴۰ پاسخ</td><td>سختی سؤال از تجمیع ده‌ها دانش‌آموز می‌آید؛ هر پاسخ واحد اطلاعات کمتری درباره سؤال دارد تا درباره یک دانش‌آموز. پس K کوچک‌تر و کاهشی.</td></tr>
+  </tbody>
+</table>
+
+<h3><span class="hn">۲٫۳</span> مثال عددی کامل (تست طلایی سند)</h3>
+
+<div class="example-box">
+  <div class="ex-title">دانش‌آموز توان ۱۲۰۰، سؤال سختی ۱۳۵۰ — پاسخ درست</div>
+  <p><strong>گام ۱ — انتظار:</strong> تفاضل <span class="inm">R<sub>q</sub> − R<sub>s</sub> = 150</span>؛ <span class="inm">10<sup>150/400</sup> = 10<sup>0.375</sup> ≈ 2.371</span>؛ پس <span class="inm">E = 1/(1+2.371) ≈ 0.296</span> — شانس درست‌زدن فقط ۲۹٫۶٪.</p>
+  <p><strong>گام ۲ — سورپرایز:</strong> پاسخ درست بود، پس <span class="inm">S − E = 1 − 0.296 = 0.704</span>.</p>
+  <p><strong>گام ۳ — آپدیت دانش‌آموز:</strong> <span class="inm">R<sub>s</sub>' = 1200 + 32 × 0.704 = <strong>۱۲۲۲٫۵</strong></span> — حدود ۲۲ امتیاز جهش، چون کاری بهتر از انتظار انجام شد.</p>
+  <p><strong>گام ۴ — آپدیت سؤال:</strong> <span class="inm">R<sub>q</sub>' = 1350 + 8 × (0.296 − 1) = 1350 − 5.6 = <strong>۱۳۴۴٫۴</strong></span> — سؤال کمی آسان‌تر شد؛ سؤالی که همه به آن جواب درست بدهند به‌تدریج به سختی واقعی‌اش می‌رسد. این همان «رأی جامعه» بر سختی است.</p>
+  <p>تست طلایی: مقدارهای ۱۲۲۲٫۵ و ۱۳۴۴٫۴ با خطای کمتر از ۰٫۱ باید در تست core بازتولید شوند.</p>
+</div>
+
+<svg class="fig" width="620" height="240" viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg">
+  <line x1="50" y1="200" x2="590" y2="200" stroke="#d5dee6" stroke-width="1.5"/>
+  <line x1="50" y1="200" x2="50" y2="20" stroke="#d5dee6" stroke-width="1.5"/>
+  <line x1="320" y1="200" x2="320" y2="205" stroke="#5e7180" stroke-width="1"/>
+  <line x1="50" y1="110" x2="45" y2="110" stroke="#5e7180" stroke-width="1"/>
+  <text x="325" y="218" font-size="12" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">Rq − Rs = 0</text>
+  <text x="325" y="232" font-size="12" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">(توان برابر سختی ← ۵۰٪)</text>
+  <text x="40" y="115" font-size="12" fill="#5e7180" text-anchor="end" font-family="Vazirmatn">۰٫۵</text>
+  <text x="495" y="218" font-size="12" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">+۴۰۰</text>
+  <text x="148" y="218" font-size="12" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">−۴۰۰</text>
+  <path d="M 65 195 C 200 193, 260 170, 320 110 C 380 50, 440 27, 585 25" fill="none" stroke="#2b7cab" stroke-width="2.5"/>
+  <circle cx="320" cy="110" r="4.5" fill="#1e3a5c"/>
+  <circle cx="233" cy="163" r="4.5" fill="#1e3a5c"/>
+  <text x="233" y="148" font-size="12.5" fill="#1e3a5c" text-anchor="middle" font-family="Vazirmatn">اختلاف ۱۵۰ ← ۳۰٪</text>
+  <text x="60" y="40" font-size="12.5" fill="#1c2733" font-family="Vazirmatn">E = 1 / (1 + 10^((Rq−Rs)/400))</text>
+</svg>
+<div class="fig-caption">شکل ۲ — منحنی لجستیک انتظار: در تفاضل صفر، ۵۰٪؛ هر ۴۰۰ امتیاز، شانس را ده برابر می‌کند</div>
+
+<h3><span class="hn">۲٫۴</span> خانواده رقیب — IRT، Glicko-2 و TrueSkill</h3>
+
+<p><strong>IRT (نظریه پاسخ به سؤال)</strong> جامع‌ترین پاسخ علمی به همین مسئله است و از دهه ۱۹۶۰ در آزمون‌های استاندارد بین‌المللی (توفل، GRE، PISA) استفاده می‌شود. مدل سه‌پارامتری آن احتمال درستی را این‌طور می‌سازد:</p>
+
+<div class="formula">P(<span class="var">correct</span> | <span class="var">θ</span>) = <span class="var">c</span> + (1 − <span class="var">c</span>) · <span class="frac"><span class="top">exp[<span class="var">a</span>(<span class="var">θ</span> − <span class="var">b</span>)]</span><span class="bot">1 + exp[<span class="var">a</span>(<span class="var">θ</span> − <span class="var">b</span>)]</span></span></div>
+
+<p class="flabel">(2.3) IRT سه‌پارامتری — θ توان، b سختی، a قدرت تمایز، c شانس حدس</p>
+
+<p>سه پارامتر هر سؤال معنا دارد: <span class="inm">b</span> سختی (معادل <span class="inm">R<sub>q</sub></span>)، <span class="inm">a</span> تمایز (چقدر این سؤال توانِ باطل‌کننده است — شیب منحنی) و <span class="inm">c</span> سقف حدس (برای چهارگزینه‌ای حدود ۰٫۲۵). از دید ساختاری، Elo یک IRT دوپارامتری با <span class="inm">a</span> ثابت و <span class="inm">c = 0</span> است؛ برتری IRT در همان دو پارامتر اضافه است، اما بهای آن برآورد پسروی (Bayesian/MLE) روی کل داده است — یعنی هر بار داده جدید می‌آید، بازبرآورد دسته‌جمعی لازم دارد، در حالی که Elo با یک جمع و تفریق ساده، لحظه‌ای به‌روز می‌شود و روی موبایل هم جا می‌شود.</p>
+
+<p><strong>Glicko-2</strong> (مارک گلیکمن، دانشگاه بوستون) نسخه پیشرفته Elo است که به هر ریتینگ یک <strong>انحراف معیار RD</strong> اضافه می‌کند — «چقدر از تخمین مطمئنیم» — و یک پارامتر وولاتیلتی برای تغییرپذیری عملکرد. دو بازیکنِ بی‌فعال، RD‌شان خودبه‌خود بزرگ می‌شود؛ یعنی سیستم اذعان می‌کند تخمینش کهنه شده است. این دقیقاً همان «شاخص عدم‌قطعیت» است که خروجی جایابی آزمونک (فصل ۳) لازم دارد و می‌توان در نسخه‌های بعد به Elo اضافه‌اش کرد — ولی پیاده‌سازی کاملش شش تا هفت برابر Elo کد می‌برد و تفسیرش برای دبیر و دانش‌آموز سخت‌تر است.</p>
+
+<p><strong>TrueSkill</strong> (مایکروسافت ریسرچ، برای Xbox Live) مدل گاوسی کامل است: توان هر بازیکن یک توزیع نرمال <span class="inm">N(μ, σ²)</span> است و آپدیت با گراف‌های فاکتور بیزی انجام می‌شود؛ رنک نمایشی <span class="inm">μ − 3σ</span> است تا بچه‌های کم‌تجربه بالای رتبه نگیرند. TrueSkill برای بازی تیمی چندنفره بی‌رقیب است، اما برای «یک دانش‌آموز در برابر یک سؤال» پیچیدگی‌اش اسراف منابع است. جدول زیر جمع‌بندی انتخاب آزمونک است:</p>
+
+<table class="keep">
+  <thead><tr><th style="width:17%">معیار</th><th style="width:22%">Elo (انتخاب ما)</th><th style="width:22%">IRT 3PL</th><th style="width:20%">Glicko-2</th><th style="width:19%">TrueSkill</th></tr></thead>
+  <tbody>
+    <tr><td>هزینه محاسبه در هر پاسخ</td><td>یک جمع و تفریق — لحظه‌ای</td><td>بازبرآورد دسته‌جمعی دوره‌ای</td><td>میانه — چند فرمول بسته</td><td>تقریب بیزی تکراری</td></tr>
+    <tr><td>حجم داده لازم</td><td>کم — از اولین پاسخ</td><td>زیاد (ده‌ها پاسخ به ازای هر سؤال)</td><td>کم</td><td>متوسط</td></tr>
+    <tr><td>توضیح‌پذیری برای داور/دبیر</td><td>بالا — دو عدد و یک فرمول</td><td>متوسط — سه پارامتر به‌ازای هر سؤال</td><td>متوسط — RD باید توضیح داده شود</td><td>پایین — گراف فاکتور</td></tr>
+    <tr><td>مدل‌سازی حدس</td><td>غیرمستقیم (دکمه اعتماد D14)</td><td>مستقیم با پارامتر c</td><td>غیرمستقیم</td><td>غیرمستقیم</td></tr>
+    <tr><td>عدم‌قطعیت داخلی</td><td>ندارد (K برنامه‌ای جایگزین)</td><td>دارد</td><td>دارد (RD)</td><td>دارد (σ)</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۲-۱ — مقایسه خانواده سنجش توان. انتخاب آزمونک: Elo برای موتور اصلی؛ پارامتر c مدل‌سازی حدس را با دکمه اعتماد (سیگنال انسانی، فصل ۸) جبران می‌کنیم؛ RD هم در فاز جایابی با شاخص ساده پراکندگی تقریب می‌شود.</div>
+
+<div class="knobs">
+  <div class="knobs-title">دستگیره‌های قابل تنظیم این فصل</div>
+  <div class="knob-grid">
+    <div class="knob"><div class="k-name">K_s schedule</div><div class="k-val">۳۲ ← ۲۴ (۵۰ پاسخ) ← ۱۶ (۱۵۰ پاسخ)</div><div class="k-eff">بالا بردن گام‌ها = واکنش سریع‌تر به تغییر واقعی توان ولی ناپایداری بیشتر در برابر شانس. کاهش آستانه‌ها (مثلاً ۲۵/۱۰۰) یعنی «سریع‌تر به حالت پایدار برو».</div></div>
+    <div class="knob"><div class="k-name">K_q / decay</div><div class="k-val">۸ ← ۴ پس از ۴۰ پاسخ</div><div class="k-eff">کاهشش یعنی سختی سؤال‌ها سفت‌تر و مقاوم‌تر می‌شود؛ افزایشش برای فاز پرکردن بانک سؤال جدید منطقی است (جذب سریع رأی جامعه).</div></div>
+    <div class="knob"><div class="k-name">Scale constant</div><div class="k-val">۴۰۰ در نمای ریتینگ</div><div class="k-eff">عدد بزرگ‌تر = منحنی لجستیک کِش‌آمده و اثر تفاضل‌ها ملایم‌تر؛ تغییرش همه ثابت‌های تاریخی (۱۱۰۰–۱۴۰۰) را هم باید جابه‌جا کند. توصیه: دست نزن.</div></div>
+    <div class="knob"><div class="k-name">Initial R_s</div><div class="k-val">جایابی (فصل ۳) — نه مقدار ثابت</div><div class="k-eff">اگر روزی خواستی جایابی را کوتاه کنی، مقدار پیش‌فرض ۱۲۰۰ به‌عنوان محافظ fallback در core هست؛ ولی دقت جایابی از آن بهتر است.</div></div>
+  </div>
+</div>
+<!-- ====== CHAPTER 3 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۳</span>
+  <div class="ch-title">جایابی — مشکل شروع سرد</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>هر موتور تطبیقی یک ماده منفجره کوچک دارد: <strong>دانش‌آموز جدید هنوز هیچ پاسخی ثبت نکرده، پس Elo هیچ داده‌ای برای تخمین توانش ندارد</strong>. به این «شروع سرد» (cold start) می‌گویند و راه‌حل‌های بد آن می‌تواند کل اعتبار سیستم را در پنج دقیقه اول بسوزاند: اگر به دانش‌آموز قوی، سؤال‌های آسان بدهی، حوصله‌اش سر می‌رود؛ اگر به دانش‌آموز ضعیف سؤال‌های سخت بدهی، ناامید می‌شود و اپ را می‌بندد. بدترین حالت، هر دو اتفاق در اولین تجربه محصول است — جایی که هیچ فرصت دومی وجود ندارد.</p>
+
+<p>گزینه‌های موجود در بازبینی طراحی (گپ G1 سند) سه تا بود: <strong>خوداظهاری</strong> («خودت را چه امتیازی می‌دهی؟») که ارزان است ولی تقریباً بی‌ارزش — نوجوان‌ها یا متواضع یا جسورند و هیچ‌کدام دقیق؛ <strong>پیش‌فرض ثابت ۱۲۰۰</strong> که ساده است ولی به هر چهار نفر یک نقطه شروع یکسان می‌دهد و جلسه‌های اول هر چهار نفر را خراب می‌کند؛ و <strong>نمره پیش‌آزمون</strong> که دقت دارد ولی دو مشکل دارد: همه‌ی کاربران پیش‌آزمون ندارند (فقط شرکت‌کنندگان آزمایش علمی دارند) و به‌علاوه سند صریح گفته در سناریوی آزمایش، نمره پیش‌آزمون فقط برای «بلوکه‌سازی تصادفی» استفاده می‌شود نه توان اولیه — تا پیش‌آزمون و موتور مستقل بمانند و منبع نشت داده نشود.</p>
+
+<p>انتخاب مصوب (D1) <strong>جلسه جایابی</strong> است: خودِ موتور، سطح را پیدا کند. جزئیات طراحی:</p>
+
+<ul class="plain">
+  <li><strong>۴ سؤال با سختی پراکنده</strong> از استخر ۱۱۵۰ / ۱۲۵۰ / ۱۳۵۰. «پراکنده» کلیدی است — دنباله صعودی یا نزولی به دانش‌آموز اجازه می‌دهد الگو بفهمد و حدس سیستماتیک بزند؛ پراکندگی این را می‌بندد. محدوده مجاز سند ۳ تا ۵ سؤال است و پیش‌فرض مهندسی ۴.</li>
+  <li><strong>K ثابت روی ۳۲</strong> در کل جایابی: منطق این است که در جایابی، توان ناشناخته است و باید سریع‌ترین همگرایی اتفاق بیفتد؛ برنامه کاهشی K هنوز فعال نمی‌شود.</li>
+  <li><strong>تشخیص کیفیت جایابی:</strong> اگر پراکندگی پاسخ‌ها بالا باشد — مثلاً سخت را درست و آسان را غلط بزند — سیگنال ناسازگار است؛ جلسه با ۲ سؤال تکمیلی ادامه می‌یابد تا تخمین جا بیفتد. این همان «شاخص عدم‌قطعیت» سند است: جایابی بد = عدم‌قطعیت بالا = سؤال بیشتر.</li>
+  <li><strong>خروجی:</strong> <span class="inm">R<sub>s</sub></span> اولیه ذخیره می‌شود و جلسه عادی ۱۰ سؤالی آغاز می‌شود. تجربه کاربری هم صادقانه طراحی شده: پیام «چند سؤال برای شناخت سطحت» — نه ادعای آزمون سرنوشت‌ساز.</li>
+</ul>
+
+<div class="example-box">
+  <div class="ex-title">جایابی در عمل — دو سناریو</div>
+  <p><strong>سناریوی سالم:</strong> پاسخ‌ها «آسان ✓، متوسط ✗، سخت ✗، متوسط ✓» — الگو با توانِ حوالی ۱۲۰۰ سازگار است. توان اولیه حدود ۱۲۱۰–۱۲۳۰ در می‌آید و جلسه عادی شروع می‌شود.</p>
+  <p><strong>سناریوی ناسازگار:</strong> «آسان ✗، متوسط ✓، سخت ✓، آسان ✓» — دو ناسازگاری مستقیم. شاخص پراکندگی بالا می‌رود؛ دو سؤال تکمیلی (بازه ۱۱۵۰–۱۳۵۰) سرو می‌شود و تخمین با ۶ نقطه ادامه می‌یابد. اگر باز هم ناسازگار ماند، سیستم با K بزرگ‌تر به کار می‌رود — یعنی توانش زودتر خودش را نشان می‌دهد.</p>
+</div>
+
+<p>یک نکته ریز اما مهم برای دفاع: جایابی «تست» نیست، «تنظیم خودکار» است. هیچ نمره‌ای نمایش داده نمی‌شود، قبولی و مردودی در کار نیست و اگر نوجوان بد کند، سیستم به‌جای تنبیه، فقط شناختش را کندتر و محتاطانه‌تر ادامه می‌دهد. این تمایز دقیقاً همان چیزی است که حس «دستیار» را در برابر حس «امتحان‌دهنده» می‌سازد — و موضع رقابتی آزمونک با اپ‌های آزمون‌ساز سنتی است.</p>
+
+<div class="knobs">
+  <div class="knobs-title">دستگیره‌های قابل تنظیم این فصل</div>
+  <div class="knob-grid">
+    <div class="knob"><div class="k-name">placement_length</div><div class="k-val">۴ سؤال (محدوده ۳–۵)</div><div class="k-eff">کوتاه‌تر = تجربه کاربری بهتر ولی تخمین خشن‌تر. اگر داده آزمایش میدانی نشان دهد پراکندگی اولیه زیاد است، ۵ را امتحان کن.</div></div>
+    <div class="knob"><div class="k-name">extra_on_bad_fit</div><div class="k-val">۲ سؤال تکمیلی</div><div class="k-eff">سقف حفاظتی است تا حلقه بدشکلی نشود؛ اگر نرخ «جایابی ناموفق» در داده واقعی بالای ~۲۰٪ آمد، آستانه تشخیص پراکندگی را بازبینی کن، نه این عدد را.</div></div>
+    <div class="knob"><div class="k-name">difficulty_pool</div><div class="k-val">۱۱۵۰ / ۱۲۵۰ / ۱۳۵۰</div><div class="k-eff">فاصله ۱۰۰ امتیازی بین رده‌ها یعنی نسبت شانس تقریباً ×۱٫۸ بین هر دو رده متوالی — به‌قدری که پراکندگی واقعاً «پراکندگی» باشد.</div></div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 4 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۴</span>
+  <div class="ch-title">انتخاب سؤال — سه لایه فیلتر</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>موتور Elo می‌گوید «الان چقدر بلدم»، اما تصمیم بعدی این است: <strong>«خب، پس الان کدام سؤال را سرو کنم؟»</strong>. این تصمیم از نظر آموزشی مهم‌ترین لنگر کل سیستم است، چون ناحیه‌ای که سؤال‌ها انتخاب می‌شوند، تعیین می‌کند دانش‌آموز در «منطقه تقریبی توسعه» بماند یا نه — ناحیه‌ای که در آن کار سخت است اما نه به‌قدری که ناامیدکننده باشد. سیاست آزمونک سه لایه دارد که از کلان به خرد اجرا می‌شوند.</p>
+
+<h3><span class="hn">۴٫۱</span> لایه اول — ناحیه هدف ۶۵٪ تا ۷۵٪</h3>
+
+<p>فرمول انتظار (۲٫۱) برای هر سؤالِ کاندید یک عدد می‌دهد: شانس موفقیت این دانش‌آموز روی این سؤال. سیاست سند: سؤالی انتخاب کن که این شانس در بازه <strong>۰٫۶۵ تا ۰٫۷۵</strong> باشد؛ عملیاتی‌اش، سؤالی با <strong>کمینه فاصله از ۰٫۷۰</strong> (میانه ناحیه):</p>
+
+<div class="formula"><span class="var">q*</span> = argmin<sub>q ∈ Candidates</sub> | <span class="var">E</span>(<span class="var">R</span><sub>s</sub>, <span class="var">R</span><sub>q</sub>) − 0.70 |</div>
+
+<p class="flabel">(4.1) معیار کمینه فاصله از نقطه هدف ۰٫۷۰ — از اسلایدهای سند</p>
+
+<p>چرا ۷۰٪ و نه ۵۰٪؟ در ۵۰٪، دانش‌آموز عملاً با شانس سکه پیش می‌رود — اضطراب بالا و بازخورد آموزشی کم (هر دو مسیر درست و غلط به‌یک‌اندازه شانس دارند و «چرا درست شد» روشن نمی‌شود). در ۹۰٪، تمرین تکراری بدون چالش است. ناحیه ۶۵–۷۵ تعادل سند است: به‌قدری موفقیت که انگیزه بماند، به‌قدری شکست که یادگیری رخ دهد. نکته مهم: این ناحیه <strong>قابل تنظیم است و در آزمایش علمی حساسیت‌سنجی می‌شود</strong> — یعنی می‌توانی با داده واقعی بگویی «ناحیه X بهترین رشد را داد» و همان را دفاع کنی؛ این یکی از زیباترین نتایج قابل ارائه به داوری است.</p>
+
+<h3><span class="hn">۴٫۲</span> لایه دوم — امتیاز ارزش آموزشی</h3>
+
+<p>معمولاً چند سؤال به‌طور هم‌زمان داخل ناحیه هدف‌اند؛ در این‌جا سیاست از «سخت کدام» به «مفید کدام» سوییچ می‌کند. هر کاندید یک امتیاز ارزش آموزشی می‌گیرد که جمع وزنی سه مؤلفه است:</p>
+
+<div class="formula"><span class="var">V</span>(<span class="var">q</span>) = <span class="var">w</span><sub>1</sub>·<span class="var">Weakness</span>(<span class="var">cat</span>(<span class="var">q</span>)) + <span class="var">w</span><sub>2</sub>·<span class="var">Importance</span>(<span class="var">topic</span>(<span class="var">q</span>)) + <span class="var">w</span><sub>3</sub>·<span class="var">Recency</span>(<span class="var">q</span>)</div>
+
+<p class="flabel">(4.2) امتیاز ارزش آموزشی — وزن‌ها پیش‌فرض مهندسی و قابل وتو</p>
+
+<ul class="plain">
+  <li><span class="inm">Weakness(cat)</span> — وزن ضعف دسته از نردبان سطح (فصل ۵): دسته‌ای که سطحش پایین آمد یا نرخ موفقیت اخیرش کم است، امتیاز بالا می‌گیرد. این حلقه اتصال D16 به انتخاب سؤال است: سیستم نه فقط «سخت یا آسان» بلکه «کجا ضعف داری» را هدایت می‌کند.</li>
+  <li><span class="inm">Importance(topic)</span> — اهمیت مبحث در فصل (پیش‌نیاز بودن، وزن در امتحان نهایی)؛ یک جدول ساده در محتوا نگه داشته می‌شود و نویسنده محتوا آن را پر می‌کند.</li>
+  <li><span class="inm">Recency(q)</span> — فاصله زمانی از آخرین برخورد با آن مبحث؛ مباحث رهاشده‌شده کم‌کم بالا می‌آیند تا «فراموشی محض» رخ ندهد.</li>
+</ul>
+
+<h3><span class="hn">۴٫۳</span> لایه سوم — محدودیت مواجهه</h3>
+
+<p>آخرین فیلتر حفاظتی است: سؤالی که در <strong>۲۰ پاسخ اخیر</strong> دیده شده از کاندیدها حذف می‌شود (<span class="inm">exposure_window = 20</span> — گپ G8 سند). بدون این فیلتر، سیاست ارزش آموزشی می‌تواند عاشق یک سؤال شود و آن را در هر جلسه تکرار کند؛ نتیجه، «حفظ سؤال» و تورم مصنوعی نمره است. عدد ۲۰ هم خودش دستگیره است: پنجره کوتاه‌تر = تنوع بیشتر ولی مصرف سریع‌تر بانک سؤال؛ با بانک ۱۵۰ سؤالی فعلی، ۲۰ تعادل معقولی است.</p>
+
+<p><strong>رقیب این فصل:</strong> در IRT استاندارد، انتخاب سؤال با «ماکسیمم اطلاعات» انجام می‌شود — سؤالی که واریانس تخمین توان را بیشترین کاهش می‌دهد (تقریباً همان سؤالی که شانس موفقیت رویش نزدیک ۵۰٪ است). این سیاست از نظر آماری بهینه است اما دو ضعف برای محصول ما دارد: ناحیه هدفش به ۵۰٪ میل می‌کند (در مقایسه با ۷۰٪ سند — یعنی تجربه سخت‌تر و پرتنش‌تر) و هیچ جای تعبیه «ضعف دسته» و «اهمیت مبحث» ندارد، در حالی که این دو دقیقاً هوش آموزشی آزمونک‌اند. رویکرد آزمونک، به‌جای بهینگی خالص آماری، بهینگی <strong>آموزشی</strong> را با فیلتر آماریِ ناحیه هدف ترکیب می‌کند.</p>
+
+<div class="knobs">
+  <div class="knobs-title">دستگیره‌های قابل تنظیم این فصل</div>
+  <div class="knob-grid">
+    <div class="knob"><div class="k-name">target_zone</div><div class="k-val">۰٫۶۵ تا ۰٫۷۵ (مرجع ۰٫۷۰)</div><div class="k-eff">کشیدن ناحیه به پایین (۰٫۵۵–۰٫۶۵) = چالش سخت‌تر و فشار بیشتر؛ بالا (۰٫۷۵–۰٫۸۵) = اعتمادساز، مناسب دانش‌آموز ناامید. حساسیت‌سنجی در آزمایش میدانی انجام می‌شود.</div></div>
+    <div class="knob"><div class="k-name">w1 / w2 / w3</div><div class="k-val">وزن‌های ارزش آموزشی</div><div class="k-eff">w1 بالا = سیستم مدافع ضعف‌ها؛ w3 بالا = سیستم یادآور مبحث‌های رهاشده. پیش‌فرض: w1 بزرگ‌ترین. تغییر این سه، شخصیت سیستم را عوض می‌کند.</div></div>
+    <div class="knob"><div class="k-name">exposure_window</div><div class="k-val">۲۰ پاسخ</div><div class="k-eff">با رشد بانک سؤال به ۳۰۰+ می‌توانی ۱۵ کنی (تنوع بیشتر در بانک بزرگ)؛ با بانک کوچک MVP هشتادتایی، ۲۰ سقف امن است.</div></div>
+  </div>
+</div>
+<!-- ====== CHAPTER 5 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۵</span>
+  <div class="ch-title">نردبان سطح دسته‌ای (D16)</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>تا این‌جا سیستم یک عدد سراسری دارد: «این دانش‌آموز مجموعاً چقدر بلد است». اما «مجموعاً» جواب مناسبی برای دو سؤال حیاتی نیست: <strong>«کجای ریاضی‌ام ضعیف است؟»</strong> و <strong>«الان دقیقاً چه بخوانم؟»</strong>. یک دانش‌آموز با توان ۱۲۵۰ می‌تواند در «قاعده زنجیره‌ای» عالی و در «حد از چپ» ضعیف باشد؛ اگر سیستم فقط عدد سراسری را ببیند، برای هر دو مبحث همان سختی را سرو می‌کند و در دسته ضعیف، تجربه ناامیدکننده می‌سازد.</p>
+
+<p>نسخه نخست طراحی، پاسخ مفصل‌تری داشت: «موتور بدفهمی» — هر گزینه غلطِ هر سؤال به یک گره بدفهمی مشخص (مثل «مشتق را تفاضل می‌فهمد نه نرخ لحظه‌ای») مپ می‌شد و با قاعده دو شاهد، بدفهمی تثبیت‌شده اعلام می‌شد. در بازبینی طراحی، پویا این مکانیزم را وتو کرد (D16): نویسندگی مپ بدفهمی برای هر گزینه، بار تولید محتوا را دو تا سه برابر می‌کند و برای تیم فعلی غیرقابل انجام است. تصمیم نهایی: <strong>فرمت حفظ، مکانیزم عوض</strong>. ستون <span class="inm">distractor_map</span>، شیت misconceptions و سه جدول دیتابیس در اسکیما بمانند (اختیاری، پیش‌فرض خالی) برای فعال‌سازی آینده؛ و مکانیزم فعال جایگزین شود با چیزی که پویا طراحی کرد: <strong>نردبان سطح دسته‌ای</strong>.</p>
+
+<h3><span class="hn">۵٫۱</span> مدل داده: سه چیز به‌ازای هر دسته</h3>
+
+<p>هر سؤال دو مشخصه دارد: <strong>دسته</strong> (همان فیلد <span class="inm">topic</span> موجود — مثلاً «قاعده زنجیره‌ای») و <strong>سطح ۱ تا ۳</strong> (همان سه رده سختی موجود ← ۱۱۵۰ / ۱۲۵۰ / ۱۳۵۰). به همین دلیل این مکانیزم «تقریباً مجانی» بود: هیچ ستون جدیدی لازم نشد. برای هر دانش‌آموز، به‌ازای هر (درس، دسته) یک ردیف پروفایل در جدول <span class="inm">ability_state</span> نگه می‌داریم با این حالت:</p>
+
+<div class="formula"><span class="var">State</span>(<span class="var">user</span>, <span class="var">cat</span>) = { <span class="var">L</span> ∈ {1,2,3};&nbsp; <span class="var">s</span><sub>w</sub>;&nbsp; <span class="var">s</span><sub>r</sub>;&nbsp; <span class="var">w</span>;&nbsp; <span class="var">H</span><sub>5</sub> }</div>
+
+<p class="flabel">(5.1) سطح جاری L، استریک غلط s_w، استریک درست s_r، شمارنده ضعف w، بافر پنج پاسخ آخر H_5</p>
+
+<p><span class="inm">L</span> تعیین می‌کند سؤال‌های این دسته از کدام نوار سختی سرو شوند؛ دو استریک «پیاپی بودن» را نگه می‌دارند؛ شمارنده ضعف <span class="inm">w</span> می‌شمارد چند بار دانش‌آموز در کف سطح ۱ سقوط کرده (سیگنال «بدتر از سطح آسان هم»)؛ و بافر <span class="inm">H<sub>5</sub></span> پنج نتیجه آخر همان دسته را برای محاسبه نرخ موفقیت نگه می‌دارد.</p>
+
+<h3><span class="hn">۵٫۲</span> قواعد انتقال — کامل و بدون استثنا</h3>
+
+<table>
+  <thead><tr><th style="width:22%">رویداد</th><th style="width:44%">به‌روزرسانی</th><th>قید</th></tr></thead>
+  <tbody>
+    <tr><td>پاسخ غلط در دسته c</td><td><span class="inm">s<sub>w</sub> += 1</span> ؛ <span class="inm">s<sub>r</sub> = 0</span> ؛ اگر <span class="inm">s<sub>w</sub> ≥ 2</span>: <span class="inm">L = max(1, L−1)</span> و ری‌ست استریک؛ اگر L قبل هم ۱ بود: <span class="inm">w += 1</span></td><td>افت سطح همیشه با ری‌ست استریک همراه است تا حلقه بی‌نهایت افت‌های متوالی نگیرد</td></tr>
+    <tr><td>پاسخ درست در دسته c</td><td><span class="inm">s<sub>r</sub> += 1</span> ؛ <span class="inm">s<sub>w</sub> = 0</span> ؛ اگر <span class="inm">s<sub>r</sub> ≥ 2</span> و هنوز در این جلسه ارتقا نگرفته: <span class="inm">L = min(3, L+1)</span> و ری‌ست استریک</td><td>حداکثر یک ارتقا در هر جلسه برای هر دسته («یواش یواش»)</td></tr>
+    <tr><td>پایان هر پاسخ</td><td>نتیجه به <span class="inm">H<sub>5</sub></span> اضافه می‌شود (پنجره لغزان ۵تایی)</td><td>مبنای محاسبه نرخ موفقیت اخیر</td></tr>
+    <tr><td>بررسی هشدار</td><td>اگر <span class="inm">L = 1</span> و نرخ درست <span class="inm">H<sub>5</sub></span> کمتر از ۳۰٪: بنر «برای دسته X مطالعه کن» در داشبورد و خلاصه جلسه</td><td>هر دو شرط هم‌زمان لازم‌اند</td></tr>
+    <tr><td>بررسی دبیر</td><td>اگر سطح دسته c در ۵ جلسه آخر ۳ بار یا بیشتر تغییر کرده: به صف بازبینی دبیر می‌رود</td><td>هشدار نوسان — جانشین انسانیِ «قابل اعتراض بودن تشخیص»</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۵-۱ — ماشین حالت نردبان. پارامترهای n=۲، m=۲ و آستانه ۳۰٪ پیش‌فرض مهندس‌اند و قابلیت وتو دارند (پویا هر وقت رأی بدهد جایگزین می‌شود).</div>
+
+<p>سه طراحی دقیق در این قواعد ارزش دفاع دارند. <strong>چرا استریک (پیاپی) و نه مجموع؟</strong> دو غلط با وسطش یک درست، الگوی خطای پراکنده است — شاید بی‌حوصلگی، شاید غلط تایپ؛ اما دو غلط پیاپی در یک دسته، الگوی «اینجا چیزی را نمی‌فهمم» است. استریک نویز را فیلتر می‌کند بدون اینکه ریاضی پیچیده شود. <strong>چرا حداکثر یک ارتقا در جلسه؟</strong> چون یک جلسه شانس‌آور (یا جلسه‌ای که بچه از دوستش جواب گرفت) نباید دو سطح بپرد؛ ارتقا باید از جلسه به جلسه «رسوب» کند، مثل یادگیری واقعی. <strong>چرا هشدار مطالعه دو شرط دارد؟</strong> سطح ۱ تنها، برای دانش‌آموزی که تازه سقوط کرده طبیعی است؛ ۳۰٪ ضعیف است ولی اگر کل پنج پاسخ اخیرش در سطح آسان هم کمتر از ۳۰٪ باشد، مشکل دیگر «سختی سؤال» نیست — مشکل «مفهوم خوانده نشده» است و راه‌حل الگوریتم نیست، مطالعه است. صادق‌ترین کاری که سیستم می‌کند همین است که بگوید: «من کاری نمی‌توانم بکنم؛ برو اول بخوان».</p>
+
+<svg class="fig" width="620" height="205" viewBox="0 0 620 205" xmlns="http://www.w3.org/2000/svg">
+  <rect x="235" y="15" width="150" height="46" rx="8" fill="#eef3f7" stroke="#2b4356" stroke-width="1.5"/>
+  <text x="310" y="35" font-size="13" fill="#1e3a5c" text-anchor="middle" font-weight="bold" font-family="Vazirmatn">سطح ۳ — سخت</text>
+  <text x="310" y="52" font-size="11" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">۱۳۵۰</text>
+  <rect x="235" y="79" width="150" height="46" rx="8" fill="#eef3f7" stroke="#2b4356" stroke-width="1.5"/>
+  <text x="310" y="99" font-size="13" fill="#1e3a5c" text-anchor="middle" font-weight="bold" font-family="Vazirmatn">سطح ۲ — متوسط</text>
+  <text x="310" y="116" font-size="11" fill="#5e7180" text-anchor="middle" font-family="Vazirmatn">۱۲۵۰</text>
+  <rect x="235" y="143" width="150" height="46" rx="8" fill="#f7ece9" stroke="#ac5952" stroke-width="1.5"/>
+  <text x="310" y="163" font-size="13" fill="#7c3b34" text-anchor="middle" font-weight="bold" font-family="Vazirmatn">سطح ۱ — آسان</text>
+  <text x="310" y="180" font-size="11" fill="#a06a63" text-anchor="middle" font-family="Vazirmatn">۱۱۵۰ + شمارنده ضعف + هشدار مطالعه</text>
+  <path d="M 400 40 C 445 40, 450 95, 445 100" fill="none" stroke="#2b7cab" stroke-width="2" marker-end="url(#ar)"/>
+  <path d="M 400 104 C 445 104, 450 159, 445 164" fill="none" stroke="#2b7cab" stroke-width="2" marker-end="url(#ar)"/>
+  <path d="M 220 164 C 172 164, 168 109, 175 104" fill="none" stroke="#508e65" stroke-width="2" marker-end="url(#arg)"/>
+  <path d="M 220 100 C 172 100, 168 45, 175 40" fill="none" stroke="#508e65" stroke-width="2" marker-end="url(#arg)"/>
+  <text x="462" y="75" font-size="12" fill="#2b7cab" text-anchor="middle" font-family="Vazirmatn">۲ غلط پیاپی</text>
+  <text x="462" y="92" font-size="12" fill="#2b7cab" text-anchor="middle" font-family="Vazirmatn">← افت</text>
+  <text x="148" y="75" font-size="12" fill="#508e65" text-anchor="middle" font-family="Vazirmatn">۲ درست پیاپی</text>
+  <text x="148" y="92" font-size="12" fill="#508e65" text-anchor="middle" font-family="Vazirmatn">← ارتقا (در جلسه یک‌بار)</text>
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#2b7cab" stroke-width="1.4"/></marker>
+    <marker id="arg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#508e65" stroke-width="1.4"/></marker>
+  </defs>
+</svg>
+<div class="fig-caption">شکل ۵ — نردبان سه‌سطحی هر دسته: سقوط با دو غلط پیاپی، ارتقای محتاطانه با دو درست پیاپی</div>
+
+<h3><span class="hn">۵٫۳</span> خانواده رقیب — BKT و DKT و KST</h3>
+
+<p><strong>BKT (ردیابی دانش بیزی)</strong> — کلاسیک‌ترین مدل «وضعیت یادگیری هر مفهوم» (کوربت و اندرسون، ۱۹۹۴؛ پایه سیستم‌های تیوتر هوشمند از Carnegie Mellon). BKT برای هر مفهوم یک متغیر پنهان <span class="inm">P(L)</span> نگه می‌دارد: «احتمال اینکه دانش‌آموز این مفهوم را واقعاً یاد گرفته باشد». چهار پارامتر دارد: احتمال اولیه <span class="inm">P<sub>0</sub></span>، نرخ یادگیری <span class="inm">T</span>، شانس حدس <span class="inm">g</span> و شانس لغزش <span class="inm">s</span>. با هر مشاهده، قضیه بیزی وضعیت را به‌روز می‌کند — مثلاً برای پاسخ درست:</p>
+
+<div class="formula">P(<span class="var">L</span>|<span class="var">correct</span>) = <span class="frac"><span class="top">P(<span class="var">L</span>)(1−<span class="var">s</span>)</span><span class="bot">P(<span class="var">L</span>)(1−<span class="var">s</span>) + (1−P(<span class="var">L</span>))<span class="var">g</span></span></span>&nbsp;&nbsp;;&nbsp;&nbsp; سپس&nbsp; P* = P(<span class="var">L</span>|<span class="var">correct</span>) + (1−P(<span class="var">L</span>|<span class="var">correct</span>))·<span class="var">T</span></div>
+
+<p class="flabel">(5.2) به‌روزرسانی BKT پس از مشاهده پاسخ درست + قدم یادگیری</p>
+
+<p>BKT از نظر مفهومی خوشگل‌ترین پاسخ به سؤال «نمی‌دانم بچه واقعاً بلده یا حدس زده» است — گره g و s همین‌ها را مدل می‌کنند. اما برای آزمونک دو مانع عملی دارد: نخست، برآورد چهار پارامتر خوب به‌ازای هر مفهوم، به داده پایدارِ هر مفهوم نیاز دارد (ده‌ها پاسخ به‌ازای هر دسته برای هر دانش‌آموز یا برای کل جمعیت) — داده ۴۰ آزمودنیِ ما در ۱۰ هفته به‌سختی این را می‌دهد و بدترین حالت این است که پارامترها با داده کم، برآورد سرگردان شوند. دوم، خروجی BKT «احتمال» است — «۷۰٪ بلده» — که برای دانش‌آموز و دبیر قابل اقدام مستقیم نیست؛ نردبان همین را به «سطح ۲ از ۳، دو درست پیاپی تا ارتقا» ترجمه می‌کند که هر نوجوانی می‌فهمد.</p>
+
+<p><strong>DKT (ردیابی دانش عمیق)</strong> — نسل جدید همین ایده با شبکه بازگشتی (LSTM) است (پیچ و همکاران، ۲۰۱۵): دنباله کل پاسخ‌ها وارد شبکه می‌شود و در هر لحظه برداری از احتمال تسلط همه مفاهیم بیرون می‌دهد. DKT در مقاله اصلی روی داده صدها هزار دانش‌آموز آموزش دید و در مسابقات knowledge tracing رکورد دارد؛ ولی سه ویژگی برای ما نامناسب است: نیاز به داده انبوه، خروجی جعبه‌سیاه غیرقابل توضیح (داور می‌پرسد «چرا سطحش را پایین آوردی؟» و جواب بردار ۱۰۰ بعدی است!) و وابستگی به زیرساخت GPU که بودجه پروژه دانش‌آموزی نیست. در روایت دفاعی، DKT را به‌عنوان «مسیر تحول آینده» نام می‌بریم — نشان می‌دهیم می‌دانیم از کجا می‌توان آمد — نه به‌عنوان گزینه فعلی.</p>
+
+<p><strong>KST (نظریه فضای دانش)</strong> — رویکرد صوری‌تر (دوین‌یون و فالماگن، ۱۹۸۵): مجموعه‌ای از «حالت‌های دانش» تعریف می‌شود (کدام مفاهیم با هم شناخته‌اند) و آزمون تطبیقی، سریع‌ترین مسیر به حالت درست را می‌جوید. ریاضیاتش زیباست ولی طراحیاش برای هر بانک سؤال، تحلیل وابستگی مفاهیم دستی سنگین می‌خواهد؛ همان‌جایی است که بار محتوایی دوباره از آستانه تیم ما رد می‌شود.</p>
+
+<table>
+  <thead><tr><th style="width:18%">معیار</th><th style="width:26%">نردبان (انتخاب ما)</th><th style="width:20%">BKT</th><th style="width:18%">DKT</th><th style="width:18%">KST</th></tr></thead>
+  <tbody>
+    <tr><td>داده لازم برای شروع</td><td>تقریباً صفر — قواعد ثابت</td><td>چهار پارامتر به‌ازای هر مفهوم</td><td>صدها هزار پاسخ</td><td>گراف مفهومی دستی</td></tr>
+    <tr><td>توضیح‌پذیری</td><td>کامل — سه قاعده آشکار</td><td>متوسط — احتمال خروجی</td><td>ضعیف — جعبه‌سیاه</td><td>متوسط</td></tr>
+    <tr><td>بار محتوایی</td><td>صفر اضافه — از topic و سختی موجود</td><td>کالیبراسیون پارامترها</td><td>پایپ‌لاین ML</td><td>تحلیل مفاهیم سنگین</td></tr>
+    <tr><td>خروجی قابل اقدام برای نوجوان</td><td>سطح + پیام مطالعه</td><td>احتمال تسلط</td><td>بردار احتمال‌ها</td><td>حالت دانش</td></tr>
+    <tr><td>شبیه‌سازی خطای ضعف پایدار</td><td>شمارنده ضعف در کف</td><td>فتادگی P(L)</td><td>فتادگی بردار</td><td>محدودیت حالت</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۵-۲ — مقایسه خانواده «تشخیص وضعیت مفهومی». نردبان، BKT را می‌شود در فاز دو با داده انباشته‌شده فعال کرد — snapshot پارامترها برای همین نگه داشته می‌شود.</div>
+
+<div class="knobs">
+  <div class="knobs-title">دستگیره‌های قابل تنظیم این فصل</div>
+  <div class="knob-grid">
+    <div class="knob"><div class="k-name">n (drop streak)</div><div class="k-val">۲ غلط پیاپی</div><div class="k-eff">n=۱ یعنی هر غلط، سطح را می‌اندازد — واکنشی ولی پرنوسان؛ n=۳ محتاطانه ولی کند. ۲ تعادل سند است. اگر داده نشان دهد سطح‌ها پرش‌های ناخواسته دارند، اول n را بالا ببر.</div></div>
+    <div class="knob"><div class="k-name">m (rise streak)</div><div class="k-val">۲ درست پیاپی</div><div class="k-eff">کاهشش (m=۱) حس پیشرفت سریع‌تری می‌دهد ولی سطح‌ها را شکننده می‌کند؛ سقف «یک ارتقا در جلسه» را با m از هم جدا نگه دار.</div></div>
+    <div class="knob"><div class="k-name">study_alert</div><div class="k-val">سطح ۱ + موفقیت &lt;۳۰٪ در ۵ پاسخ</div><div class="k-eff">۳۰٪ = یک از سه. بالا بردنش (مثلاً ۴۰٪) بنرهای بیشتری می‌سازد — خطر «کری هشدار» و بی‌اثر شدن پیام برای دانش‌آموز.</div></div>
+    <div class="knob"><div class="k-name">oscillation_alert</div><div class="k-val">≥۳ تغییر در ۵ جلسه ← صف دبیر</div><div class="k-eff">این شیر اطمینان انسانی است. اگر دبیر صف پرشدگی دید، یعنی یکی از n/m/آستانه‌ها باید سخت‌گیرانه‌تر شود — عیب‌یابی از همین‌جا شروع کن.</div></div>
+  </div>
+</div>
+<!-- ====== CHAPTER 6 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۶</span>
+  <div class="ch-title">SM-2 — مرور فاصله‌دار</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>تمام موتورهای قبل به یک سؤال تازه می‌رسند: <strong>«بعد از چند روز، بچه چه چیزی را یادش می‌رود؟»</strong>. منحنی فراموشی ابینگهاوس (۱۸۸۵) نشان داد حافظه به‌صورت نمایی افت می‌کند — و مهم‌تر، هر «نجات» درست قبل از فراموشی، منحنی را صلب‌تر می‌کند. <strong>مرور فاصله‌دار</strong> یعنی دقیقاً در همین لحظه‌ها تزریق تکرار: نه زودتر (اتلاف وقت روی چیزی که بلدی) و نه دیرتر (باید از صفر یاد بگیری). الگوریتم SM-2 توسط پیوتر وُژنیاک، دانشجوی لهستانی، در ۱۹۸۷ منتشر شد و تا امروز هسته نرم‌افزار SuperMemo و هزاران فرزند آن (از جمله Anki در نسخه‌های کلاسیک) است.</p>
+
+<p>در آزمونک، مرور زیرساخت جدایی نیست — همان نوآوری ۳ سند: <strong>مرور زیرساخت خود آزمون است</strong>. سؤال‌هایی که موعد مرورشان رسیده، در جلسه عادی هم می‌توانند سرو شوند (اولویت در سیاست انتخاب، فصل ۴). این انتخاب تجربی مهمی است: «اپ مرور جدا» در واقعیت کم‌استفاده می‌شود، اما تزریق درون جلسه، مرور را به عادت جلسه تبدیل می‌کند.</p>
+
+<h3><span class="hn">۶٫۱</span> کیفیت هر برخورد: q از سه سیگنال</h3>
+
+<p>SM-2 از هر برخورد یک عدد کیفیت <span class="inm">q</span> در بازه ۰ تا ۵ می‌سازد و همه تصمیم‌های بعدی روی همین عدد سوار است. در نسخه اصلی، خود کاربر q را اعلام می‌کرد («چقدر راحت یادت آمد؟») — اما خوداظهاری بین نوجوان‌ها نویز سنگین دارد. آزمونک q را <strong>مصنوعی</strong> می‌سازد از سه سیگنال عینی که از قبل داریم (تصمیم D10 و D14):</p>
+
+<ul class="plain">
+  <li><strong>درستی</strong> — پایه: پاسخ غلط، سقف q را زیر ۳ می‌برد؛ پاسخ درست، نقطه شروع بالا می‌دهد.</li>
+  <li><strong>اعتماد (دکمه D14)</strong> — «مطمئن بودم» ولی غلط = q پایین و ردپای بدفهمی؛ «حدس می‌زدم» ولی درست = سقف q در ۴ — چون حدسِ درست، حافظه واقعی را قوی‌تر نشان نکند.</li>
+  <li><strong>تأخیر (آستانه‌های D10)</strong> — پاسخ زیر <strong>۱۵ ثانیه</strong> مشکوک به حدس رفلکسی است: سقف q = ۴. پاسخ بالای <strong>۷۰ ثانیه</strong> یعنی سخت به جواب رسیده: <span class="inm">−0.5</span> از q. هر سؤال می‌تواند با <span class="inm">est_time_sec</span> آستانه اختصاصی خودش را override کند (سؤال محاسباتی سنگین حق دارد زمان بیشتری بخواهد).</li>
+</ul>
+
+<h3><span class="hn">۶٫۲</span> استخراج کامل: EF و بازگشت فواصل</h3>
+
+<p>قلب SM-2 دو عدد به‌ازای هر آیتم است: <strong>آسانی نسبی EF</strong> (شروع ۲٫۵) و شماره تکرار <span class="inm">n</span>. آپدیت EF با کیفیت:</p>
+
+<div class="formula">EF' = EF + (0.1 − (5−<span class="var">q</span>) · (0.08 + (5−<span class="var">q</span>) · 0.02))</div>
+
+<p class="flabel">(6.1) قانون آپدیت آسانی نسبی — با کف ۱٫۳</p>
+
+<p>این فرمول را باید یک‌بار باز کنی تا بفهمی چقدر حساب‌شده است. بگذار <span class="inm">d = 5 − q</span> (فاصله از کیفیت کامل):</p>
+
+<div class="formula">EF' = EF + 0.1 − <span class="var">d</span>·0.08 − <span class="var">d</span>²·0.02</div>
+
+<p class="flabel">(6.2) شکل بازشده — جریمه درجه دو برای کیفیت بد</p>
+
+<p>سه خاصیت از همین شکل درمی‌آید. <strong>در q = 5 هیچ تغییری نیست</strong> (<span class="inm">d = 0</span>) — پاسخ کامل، آسانی را دست نمی‌زند. <strong>در q = 4 هم تغییری نیست!</strong> (<span class="inm">0.1 − 1×0.08 − 1×0.02 = 0</span>) — و این دقیقاً همان جایی است که سقف «حدس زدم ولی درست» و «فوق‌سریع» در آزمونک، مهندسی‌شده است: حدسِ درست EF را نه بالا می‌برد و نه پایین — فقط <span class="inm">n</span> بالا می‌رود و فاصله بعدی کوتاه می‌ماند. از q = 3 به پایین جریمه به‌صورت درجه دوم رشد می‌کند (<span class="inm">d = 2 → −0.14</span>؛ <span class="inm">d = 3 → −0.32</span>) — یعنی سیستم روی «نمی‌دانم» بی‌رحم است اما روی «تقریباً بلد بودم» دست‌ودلباز. و <strong>کف ۱٫۳</strong> جلوی مرگ نرم‌شده آیتم را می‌گیرد: بدون کف، دنباله‌ای از پاسخ‌های بد، EF را تا صفر می‌بُرد و آیتم عملاً هر روز برمی‌گشت — تجربه‌ای که کاربر را از سیستم فرار می‌دهد.</p>
+
+<p>فاصله مرور بعدی، بازگشتی ساده است:</p>
+
+<div class="formula">I(1) = 1&nbsp;&nbsp;;&nbsp;&nbsp;I(2) = 6&nbsp;&nbsp;;&nbsp;&nbsp;I(<span class="var">n</span>) = ⌈ I(<span class="var">n</span>−1) × EF ⌉</div>
+
+<p class="flabel">(6.3) فاصله‌ها به روز — سقف I(2)=6 دست‌نخورده از مقاله اصلی</p>
+
+<p>پاسخ‌های موفق، فاصله را هر بار در EF ضرب می‌کنند — رشد نمایی. پاسخ غلط، دنباله را به <span class="inm">n = 1</span> برمی‌گرداند (نه صفر! — چون آشنایی قبلی هنوز ارزش دارد و EF هم حفظ می‌شود؛ این نکته ریز، حس «سقوط از همه‌جا» را از کاربر می‌گیرد).</p>
+
+<h3><span class="hn">۶٫۳</span> مثال عددی کامل</h3>
+
+<div class="example-box">
+  <div class="ex-title">دو سرنوشت از یک مفهوم</div>
+  <p><strong>مسیر الف — سه پاسخ درست با اعتماد بالا و زمان عادی:</strong> هر سه‌بار <span class="inm">q = 5</span>؛ پس EF همان ۲٫۵ می‌ماند. فاصله‌ها: <span class="inm">I(1) = 1</span> روز ← <span class="inm">I(2) = 6</span> روز ← <span class="inm">I(3) = ⌈6×2.5⌉ = 15</span> روز. بعد از سه هفته، این مفهوم فقط سه‌بار دیده شده و بعدی ۱۵ روز بعد است — این «شتاب‌گیری حافظه» است.</p>
+  <p><strong>مسیر ب — همان ولی یکی‌اش حدسِ درست (q سقف ۴) و یکی غلط:</strong> <span class="inm">q = 5 → 4 → 0</span>. اولی EF را ثابت نگه می‌دارد (<span class="inm">2.5</span>) ولی برخورد بعدی غلط است: <span class="inm">q = 0 → d = 5 → EF' = 2.5 + 0.1 − 5×0.08 − 25×0.02 = 2.5 − 0.7 = 1.8</span> و شمارنده به <span class="inm">n = 1</span> برمی‌گردد. فاصله بعدی: یک روز. سیستم دقیقاً همان‌جا و همان‌قدر محکم رفتار می‌کند که باید.</p>
+</div>
+
+<h3><span class="hn">۶٫۴</span> خانواده رقیب — از جعبه لایتنر تا FSRS</h3>
+
+<p><strong>لایتنر (۱۹۷۲)</strong> — ساده‌ترین سیستم فاصله‌دار: پنج جعبه؛ پاسخ درست کارت را یک جعبه می‌برد بالا، پاسخ غلط به جعبه اول برمی‌گرداند؛ فاصله مرور هر جعبه ضریبی از جعبه اول (مثلاً جعبه n = هر n روز). همه چیز فیزیکی و قابل توضیح در ده ثانیه است؛ ضعف بزرگش، یکسان‌بودن ضریب برای همه کارت‌هاست — کارت سخت و کارت آسان در نهایت با همان سرعت جلو می‌روند. آزمونک با SM-2 همین ضعف را می‌بندد: EF هر آیتم شخصی می‌شود.</p>
+
+<p><strong>Pimsleur (۱۹۶۷)</strong> — پدر تجاری این حوزه برای یادگیری زبان: دنباله ثابت expanding rehearsal (۵ ثانیه، ۲۵ ثانیه، ۲ دقیقه، ۱۰ دقیقه، ۱ ساعت، ۵ ساعت، ۱ روز، ۵ روز، ۲۵ روز...). جالب است که Pimsleur از نظر زمانی نزدیک به SM-2 اولیه است (نسبت ~۵ در گام‌های اول)، ولی چون برنامه <strong>ثابت</strong> است، هیچ شخصی‌سازی ندارد — نه EF، نه q، نه بازگشت هوشمند پس از خطا. مقایسه این دو در دفاع، تمایز «برنامه‌بندی» از «تطبیق» را عالی نشان می‌دهد.</p>
+
+<p><strong>FSRS (Free Spaced Repetition Scheduler — یر، ۲۰۲۴)</strong> — نسل جدید و علمی‌ترین رقیب؛ جایگزین رسمی SM-2 در Anki از نسخه ۲۳٫۱۰. مدل سه‌متغیره DSR دارد: سختی <span class="inm">D</span>، ثبات <span class="inm">S</span> (چند روز تا افت به ریسک ۱۰٪) و بازیابی‌پذیری <span class="inm">R</span> که با قدرت لحظه‌ای حافظه است:</p>
+
+<div class="formula">R(<span class="var">t</span>, <span class="var">S</span>) = (1 + <span class="var">FACTOR</span> · <span class="var">t</span>/<span class="var">S</span>)<sup><span class="var">DECAY</span></sup>&nbsp;&nbsp;;&nbsp;&nbsp;<span class="var">FACTOR</span> = 19/81&nbsp;;&nbsp;<span class="var">DECAY</span> = −0.5</div>
+
+<p class="flabel">(6.4) منحنی بازیابی FSRS — در t = S دقیقاً R = 0.9</p>
+
+<p>زیرکشیِ (6.4): با ثابت‌های بالا، <span class="inm">R = (1 + t/9S)<sup>−0.5</sup></span> و در <span class="inm">t = S</span> می‌شود <span class="inm">(1+19/81)<sup>−0.5</sup> = (100/81)<sup>−0.5</sup> = 0.9</span> — یعنی «ثبات» عمداً طوری تعریف شده که افت حافظه به ۹۰٪ باشد. FSRS فاصله بعدی را طوری می‌سازد که R به هدف دلخواه (مثلاً ۹۰٪) برسد، و ۱۷ تا ۲۱ وزن مدل را با بهینه‌سازی روی داده خود هر کاربر تنظیم می‌کند. نتیجه: دقت بالاتر و فاصله‌های بلندتر (تکرار کمتر برای همان ماندگاری). هزینه‌اش: نیاز به داده انباشته برای آموزش وزن‌ها و پیچیدگی محاسبه‌ای چند سطح بالاتر از SM-2. برای آزمونک، SM-2 نقطه شروع درست است — ساده، بدون دیتا کار می‌کند، قابل توضیح — و در سند، ارتقا به مدل‌های R(t,S) به‌عنوان فاز بعد ثبت نشده اما راهش باز است چون q آزمونک همان سیگنال ورودی را می‌سازد.</p>
+
+<p><strong>Half-Life Regression (دوئولینگو — ستلز و میدر، ۲۰۱۶)</strong> — رویکرد داده‌محور مطلق: نیم‌عمر حافظه هر آیتم را رگرسیون خطی روی ویژگی‌ها می‌کشد (<span class="inm">p = 2<sup>−Δ/h</sup></span> و <span class="inm">log h = w·x</span>؛ x ویژگی‌هایی مثل تاریخچه درستی، فاصله، اعتماد). زیبایی‌اش این است که همه‌چیز از داده می‌آید و حتی ویژگی‌های متنی (چند حرفی بودن کلمه و...) را می‌بلعد؛ دوایرش: بدون داده انبوه از میلیون‌ها کاربر، و بی‌توجیه‌پذیری تک‌کاربر. دوئولینگو با صدها میلیون پاسخ این را جواب داد؛ ما با ۱۵۰ سؤال و ۴۰ آزمودنی — نه.</p>
+
+<table>
+  <thead><tr><th style="width:19%">معیار</th><th style="width:24%">SM-2 (انتخاب ما)</th><th style="width:16%">لایتنر</th><th style="width:15%">Pimsleur</th><th style="width:13%">FSRS</th><th style="width:13%">HLR</th></tr></thead>
+  <tbody>
+    <tr><td>شخصی‌سازی</td><td>EF و n به‌ازای هر آیتم</td><td>ندارد</td><td>ندارد</td><td>کامل (D,S,R)</td><td>کامل (h از ویژگی‌ها)</td></tr>
+    <tr><td>داده لازم برای شروع</td><td>صفر</td><td>صفر</td><td>صفر</td><td>آموزش وزن‌ها روی داده</td><td>داده انبوه</td></tr>
+    <tr><td>پیچیدگی پیاده‌سازی</td><td>کم — چند خط</td><td>بسیار کم</td><td>کم</td><td>بالا</td><td>بالا + زیرساخت ML</td></tr>
+    <tr><td>توضیح‌پذیری</td><td>بالا — EF قابل بازگویی</td><td>بسیار بالا</td><td>بالا</td><td>متوسط</td><td>ضعیف</td></tr>
+    <tr><td>مدل‌سازی حدس و تأخیر</td><td>بله — از q (D10/D14)</td><td>خیر</td><td>خیر</td><td>غیرمستقیم</td><td>به‌عنوان ویژگی</td></tr>
+    <tr><td>مناسب بانک ۱۵۰ سؤالی و ۴۰ آزمودنی</td><td><strong>بله</strong></td><td>بله</td><td>بله</td><td>نه هنوز</td><td>نه</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۶-۱ — مقایسه خانواده مرور فاصله‌دار. SM-2 تنها گزینه‌ای است که شخصی‌سازی واقعی را با «صفر داده اولیه» می‌دهد.</div>
+
+<div class="knobs">
+  <div class="knobs-title">دستگیره‌های قابل تنظیم این فصل</div>
+  <div class="knob-grid">
+    <div class="knob"><div class="k-name">t_fast / t_slow</div><div class="k-val">۱۵ ثانیه / ۷۰ ثانیه</div><div class="k-eff">تصمیم D10 پویا. بعد از MVP: دسته‌بندی سؤال‌ها و آستانه اختصاصی هر دسته با کالیبراسیون داده واقعی (سؤال محاسباتی حق زمان بیشتری دارد).</div></div>
+    <div class="knob"><div class="k-name">EF_floor</div><div class="k-val">۱٫۳</div><div class="k-eff">پایین‌تر بردنش = اجازه مرگ آیتم‌های مشکل‌دار (تجربه بد کاربر)؛ بالاتر = آیتم‌های ضعیف سریع‌تر نجات پیدا می‌کنند ولی فاصله‌ها غیرواقعی می‌شوند.</div></div>
+    <div class="knob"><div class="k-name">q mapping</div><div class="k-val">سقف ۴ برای حدس/فوق‌سریع؛ −۰٫۵ تأخیر</div><div class="k-eff">سخت‌گیرتر کردن این نگاشت = مرورهای سخت‌تر و فاصله‌های کوتاه‌تر. نگه‌دارِ این دستگیره، داده توزیع اعتماد (D14) است.</div></div>
+    <div class="knob"><div class="k-name">inject_review</div><div class="k-val">سؤال مرور داخل جلسه عادی</div><div class="k-eff">نوآوری ۳ سند. اگر نرخ تکمیل صف مرور (هدف ≥۶۰٪) پایین آمد، اول اولویت تزریق را بالا ببر، نه نمایش بنر.</div></div>
+  </div>
+</div>
+<!-- ====== CHAPTER 7 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۷</span>
+  <div class="ch-title">پیش‌بینی نمره</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>داشبورد آزمونک به دانش‌آموز یک قول محتاطانه می‌دهد: «اگر روندت همین‌طور بماند، در آزمون جمع‌بندی حدوداً چقدر می‌گیری؟». این نوآوری ۵ سند است و دو قطعه دارد: اول باید «نمره جلسه» را طوری تعریف کنیم که منصفانه باشد (ورودی پیش‌بینی)، بعد روی دنباله نمره‌ها یک رگرسیون وزن‌دار بکشیم که هم عدد بدهد هم میزان اعتمادش را.</p>
+
+<h3><span class="hn">۷٫۱</span> نمره جلسه وزن‌دار با سختی (D13)</h3>
+
+<p>ساده‌ترین تعریف، «تعداد درست ÷ تعداد سؤال» است — و بدترین. جلسه‌ای با ده سؤال آسان و جلسه‌ای با ده سؤال ناحیه سخت، هر دو می‌توانند «۸۰٪» بگیرند در حالی که توان واقعی‌شان فرق زمین تا آسمان دارد؛ رگرسیونی که روی این اعداد سوار شود، به دانش‌آموزی که سؤال‌های سخت‌تر می‌گیرد (چون توانش بالاست!) ظلم می‌کند و روندش را مصنوعاً صاف یا نزولی نشان می‌دهد. راه‌حل مصوب: وزن هر سؤال تابعی صعودی از سختی Elo آن، و نمره جلسه میانگین وزنی درستی‌ها:</p>
+
+<div class="formula">Score = <span class="frac"><span class="top">Σ (<span class="var">weight</span><sub>i</sub> × <span class="var">correct</span><sub>i</sub>)</span><span class="bot">Σ <span class="var">weight</span><sub>i</sub></span></span> × 100&nbsp;&nbsp;;&nbsp;&nbsp;<span class="var">weight</span> = <span class="var">f</span>(<span class="var">R</span><sub>q</sub>)</div>
+
+<p class="flabel">(7.1) نمره وزن‌دار — شکل f در core ساده و صعودی نگه داشته می‌شود (۱ / ۱٫۵ / ۲ برای سه رده)</p>
+
+<div class="example-box">
+  <div class="ex-title">مثال عددی سند — چرا وزن‌دهی منصفانه است</div>
+  <p>جلسه‌ای با ۶ سؤال آسان (وزن ۱)، ۳ متوسط (وزن ۱٫۵) و ۱ سخت (وزن ۲): مجموع وزن‌ها <span class="inm">6×1 + 3×1.5 + 2 = 12.5</span>.</p>
+  <p><strong>حالت الف:</strong> هفت درست از «۴ آسان + ۲ متوسط + ۱ سخت» ← نمره <span class="inm">(4 + 3 + 2)/12.5 × 100 = 72</span>.</p>
+  <p><strong>حالت ب:</strong> همان هفت درست، ولی همه از آسان‌ها ← نمره <span class="inm">7/12.5 × 100 = 56</span>.</p>
+  <p>یک عدد درست‌پاسخِ یکسان (۷) دو نمره کاملاً متفاوت — و دقیقاً منصفانه، چون سختیِ واقعاً پاسخ‌شده دیده می‌شود. این نمره، هم ورودی رگرسیون است هم خط اول نمودار روند (D15).</p>
+</div>
+
+<h3><span class="hn">۷٫۲</span> رگرسیون وزن‌دار نمایی — λ = ۰٫۸۵</h3>
+
+<p>دنباله نمره‌های جلسات اخیر داریم و می‌خواهیم روند و ادامه آن را تخمین بزنیم. چرا «رگرسیون خطی ساده» نه؟ چون جلسه مهر ماه و جلسه امروز از نظر پیش‌بینی وضعیت <strong>امروز</strong> یک‌ارزش‌اند — در حالی که یادگیری، فراموشی و بلوغ، همه در «الان» جمع شده‌اند. آزمونک از میانگین‌گیری وزنی نمایی استفاده می‌کند: وزن جلسه‌ای که t جلسه قبل بوده <span class="inm">w = λ<sup>t</sup></span> با λ = ۰٫۸۵:</p>
+
+<div class="formula"><span class="var">t</span><sub>i</sub> = (age of session i)&nbsp;&nbsp;;&nbsp;&nbsp;<span class="var">w</span><sub>i</sub> = λ<sup>t<sub>i</sub></sup>&nbsp;&nbsp;;&nbsp;&nbsp; minimize Σ <span class="var">w</span><sub>i</sub>·(<span class="var">y</span><sub>i</sub> − <span class="var">a</span> − <span class="var">b</span>·<span class="var">t</span><sub>i</sub>)²</div>
+
+<p class="flabel">(7.2) کمینه‌سازی وزن‌دار خط برازش — WLS با وزن نمایی</p>
+
+<p>جواب این مسئله کمینه‌سازی، فرم بستهٔ رگرسیون خطی است فقط با میانگین‌های وزنی: شیب <span class="inm">b</span> (روند) و عرض <span class="inm">a</span> از میانگین وزنی نقاط و کوواریانس وزنی به‌دست می‌آیند و پیش‌بینی جلسه بعد <span class="inm">ŷ = a + b·t_next</span> است. عدد λ=۰٫۸۵ از پیوست ب سند: جلسه قبلی وزن ۱، دو جلسه قبل ۰٫۸۵، پنج جلسه قبل حدود ۰٫۵۲، ده جلسه قبل ۰٫۲۳ — یعنی ماه اخیر «خودِ دانش‌آموز» است، ماه قبل «پیشینه».</p>
+
+<p>و خروجی فقط یک عدد نیست — <strong>بازه اطمینان</strong> دارد: انحراف معیار باقیمانده‌ها (<span class="inm">σ̂</span> از ریشه میانگین وزنی مربعات خطا) محاسبه می‌شود و نمایش «۷۸ ± ۶» می‌شود. این بازه صادقانه است: دانش‌آموزی که نمره‌هایش پرش دارد، بازه پهن می‌بیند و خودش می‌فهمد تخمین، تخمین است. دو حکم محافظه‌کارانه هم داریم: زیر <strong>۸ جلسه</strong> اصلاً پیش‌بینی نمایش داده نمی‌شود (عدد گمراه‌کننده بدتر از بی‌عددی است — پیوست ب سند) و تابع نمره جلسه «به‌صورت قابل تعویض» طراحی می‌شود تا اگر بعداً تعریف بهتری پیدا شد (مثلاً نسخه پیوسته از R<sub>s</sub>)، دیتای تاریخی با snapshot‌ها بازمحاسبه‌پذیر بماند.</p>
+
+<p><strong>رقیب‌ها:</strong> میانگین ساده آخرین n جلسه — بی‌سوگیری ندارد اما روند را کور است و واکنشش به تغییر یک‌هفته اخیر، مثل واکنشش به یک‌ماه پیش است؛ EMA ساده (میانگین متحرک نمایی بدون روند) — فقط «سطح فعلی» می‌دهد نه شیب، پس جمله «اگر همین‌طور ادامه بدهی» نمی‌شود ساخت؛ و پروجکشن مستقیم از Elo — «توان ۱۲۵۰ یعنی حدود x درصد» — که ساده است ولی جلسه‌های واقعی (خستگی، اشتباه محاسباتی، انتخاب‌های ناحیه هدف) را مدل نمی‌کند و بازه اطمینان ندارد. رگرسیون وزن‌دار، بهترین تعادل «سادگی قابل دفاع / پاسخ به روند» است.</p>
+
+<div class="knobs">
+  <div class="knobs-title">دستگیره‌های قابل تنظیم این فصل</div>
+  <div class="knob-grid">
+    <div class="knob"><div class="k-name">lambda</div><div class="k-val">۰٫۸۵</div><div class="k-eff">پایین‌تر (۰٫۷۵) = حافظه کوتاه‌تر، واکنش سریع‌تر به «الان»؛ بالاتر (۰٫۹۲) = صبورتر و کم‌نوسان‌تر. با نوسان واقعی نوجوان‌ها، ۰٫۸۵ نقطه متعادل سند است.</div></div>
+    <div class="knob"><div class="k-name">min_sessions</div><div class="k-val">۸ جلسه</div><div class="k-eff">کاهشش = پیش‌بینی زودتر اما ناپایدارتر؛ این عدد دفاع روانی هم دارد: «پیش از شناخت کافی، حرف نمی‌زنیم».</div></div>
+    <div class="knob"><div class="k-name">weight_fn</div><div class="k-val">۱ / ۱٫۵ / ۲ (سه رده)</div><div class="k-eff">با نمونه‌های واقعی آزمایش میدانی می‌توانی پیوسته‌اش کنی (مثلاً exp((R_q−1150)/400))؛ چون params_snapshot همه وزن‌های تاریخی را دارد، بازمحاسبه روند امن است.</div></div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 8 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۸</span>
+  <div class="ch-title">چارچوب اجرا و قواعد پشتیبان</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>الگوریتم‌ها موتور هستند، اما یک شاسی هم لازم است تا موتور روی داده واقعی منصفانه و تکرارپذیر کار کند. این فصل پنج قاعده شاسی‌ای است که همه فصل‌های قبلی به آن تکیه می‌کنند — الگوریتم نیستند، ولی اگر یکی‌شان برداشته شود، داده آزمایش علمی بی‌اعتبار می‌شود.</p>
+
+<p><strong>۱) تعریف جلسه و فاصله دو ساعت (D12).</strong> جلسه دقیقاً ۱۰ سؤال است (جلسه جایابی مستثنی است) و دو جلسه‌ای که به‌هم نزدیک‌تر از ۲ ساعت باشند، در قواعد «پیاپی» و «دو شاهد» دو جلسه مستقل حساب نمی‌شوند. بدون این قاعده، دانش‌آموزی که پشت‌سرهم پنج جلسه می‌دهد هم استریک‌های نردبان را می‌شکند هم نمره‌های پیش‌بینی را؛ فاصله ۲ ساعته، «خنک‌شدن» را تضمین می‌کند که هر جلسه یک نمونه مستقل از وضعیت پایدار دانش‌آموز باشد — پیش‌نیاز هر آماری که روی جلسه‌ها حساب می‌کنیم.</p>
+
+<p><strong>۲) دکمه اعتماد (D14) — جریان سیگنال.</strong> بعد از انتخاب گزینه و قبل از نمایش بازخورد، دو دکمه بزرگ «مطمئن بودم / حدس می‌زدم». مکان انتخاب دقیق و مهم است: بعد از گزینه، چون دانش‌آموز حالا تصمیمش را گرفته و می‌تواند صادقانه بگوید چقدر رویش استوار بود؛ قبل از بازخورد، چون بعد از دیدن جواب، همه «مطمئن بودم» می‌زنند. این سیگنال وارد نمره جلسه نمی‌شود (تا نمره خالص بماند)؛ فقط به دو جا می‌رود: به q در SM-2 (فصل ۶) و به ردپای «مطمئن اما غلط» — قوی‌ترین الگوی پیش‌سرنخ بدفهمی برای روز فعال‌سازی موتور لایه ۲. هزینه‌اش فقط یک لمس در هر سؤال است که تست دود موبایل باید تحمل‌پذیری‌اش را تأیید کند.</p>
+
+<p><strong>۳) تراکنش اتمیک پاسخ (G5).</strong> یک پاسخ، پنج نوشتن هم‌زمان می‌خواهد: رکورد attempts، آپدیت توان سراسری در ability_state، آپدیت ردیف دسته (سطح/استریک/شمارنده ضعف — D16)، آپدیت review_schedule و snapshot پارامترها. همه در یک تراکنش دیتابیس: اگر هر بخش خطا دهد، کل تراکنش rollback می‌شود. چرا این‌قدر سخت‌گیری؟ چون داده آزمایش مقدس است — یک توان آپدیت‌شده ولی استریک نآپدیت‌شده، یعنی نردبان با حافظه مغشوش کار می‌کند و هیچ راه برگشتی هم نیست؛ در تست یکپارچگی گام ۲، خرابی عمدی وسط تراکنش شبیه‌سازی و rollback تأیید می‌شود.</p>
+
+<p><strong>۴) snapshot پارامترها (G7).</strong> هر رکورد attempt یک فیلد JSONB دارد که K<sub>s</sub> و K<sub>q</sub> لحظه‌ای، ناحیه هدف، نسخه الگوریتم و نسخه محتوا را ثبت می‌کند. چون همه پارامترهای این کتابچه «قابل وتو» و در طول عمر محصول ممکن است تغییر کنند، بدون snapshot هیچ تحلیلی نمی‌توانست بگوید «این افت سطح با قواعد قدیم بود یا جدید». با snapshot، تحلیل‌گر هر پاسخ را با پارامترهای لحظه پاسخ بازمحاسبه می‌کند — تکرارپذیری که داور جشنواره با آن «علمی بودن» را می‌سنجد.</p>
+
+<p><strong>۵) تصادفی‌سازی بلوکه‌شده (آزمایش میدانی).</strong> ۴۰ آزمودنی بر اساس نمره پیش‌آزمون مرتب می‌شوند، به بلوک‌های دوتایی هم‌تراز شکسته می‌شوند و در هر بلوک، قرعه (الگوریتم تخصیص در core و تست‌شده) یکی را گروه آزمایش (آزمونک کامل) و یکی را گروه کنترل (جلسه ثابت بدون تطبیق و بدون مرور) می‌کند. چرا بلوکه‌شده و نه قرعه ساده؟ چون با n کوچک (۲۰+۲۰)، قرعه ساده می‌تواند تصادفاً همه قوی‌ها را در یک گروه بریزد و اندازه اثر را بسوزاند؛ بلوکه‌سازی بر متغیر مهم (پیش‌آزمون) این ریسک را عملاً صفر می‌کند — و مقایسه پیش/پس‌آزمون با t مستقل و Cohen's d (ضمیمه د) معنادار می‌ماند.</p>
+
+<div class="flow-note">
+  <p><strong>جمع‌بندی فصل:</strong> جلسه = واحد اندازه‌گیری؛ فاصله ۲ ساعت = استقلال نمونه‌ها؛ دکمه اعتماد = سیگنال حافظه‌متا؛ تراکنش اتمیک = صحت داده؛ snapshot = تکرارپذیری؛ بلوکه‌سازی = اعتبار مقایسه علمی. این پنج‌تا هیچ‌کدام روی نمودار معماری نمی‌آیند، ولی بدونشان شش موتور، ماشین حافظه‌ناآگاه و بی‌اعتبار می‌شوند.</p>
+</div>
+<!-- ====== CHAPTER 9 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۹</span>
+  <div class="ch-title">جمع‌بندی تصمیم‌ها — چرا این‌ها؟</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>این فصل جدول دفاع نهایی است: برای هر لنگر الگوریتمی، گزینه برنده، گزینه‌های شاخصِ بازنده و دلیل مهندسی انتخاب. الگوی مشترک همه انتخاب‌ها یک چیز است: <strong>بهترین ابزار برای مقیاس فعلی داده و تیم، نه بهترین ابزار دنیا</strong>. هر جا که داده بزرگ شد، مسیر ارتقا باز است — و چون snapshot پارامترها داریم، ارتقا داده تاریخی را هم بی‌اعتبار نمی‌کند.</p>
+
+<table>
+  <thead><tr><th style="width:20%">لنگر</th><th style="width:24%">انتخاب آزمونک</th><th style="width:26%">جایگزین‌های سنجیده‌شده</th><th>دلیل مهندسی انتخاب</th></tr></thead>
+  <tbody>
+    <tr><td>سنجش توان</td><td>Elo دوطرفه با برنامه K</td><td>IRT 3PL، Glicko-2، TrueSkill</td><td>آپدیت لحظه‌ای با یک جمع/تفریق؛ صفر داده اولیه؛ توضیح‌پذیری کامل برای داور؛ حدس را با سیگنال انسانی (D14) جبران می‌کنیم نه پارامتر c</td></tr>
+    <tr><td>شروع سرد</td><td>جلسه جایابی ۴ سؤالی پراکنده، K=۳۲</td><td>خوداظهاری؛ پیش‌فرض ثابت ۱۲۰۰؛ نمره پیش‌آزمون</td><td>خودِ موتور باید سطح را پیدا کند؛ پیش‌آزمون فقط برای بلوکه‌سازی تا استقلال منابع حفظ شود</td></tr>
+    <tr><td>انتخاب سؤال</td><td>ناحیه هدف ۶۵–۷۵٪ + ارزش آموزشی + مواجهه ۲۰</td><td>Maximum Information (IRT)</td><td>ناحیه ۷۰٪ به‌جای ۵۰٪ = تجربه آموزشی‌تر؛ جای تعبیه ضعف دسته و اهمیت مبحث؛ جلوگیری از حفظ سؤال</td></tr>
+    <tr><td>تشخیص وضعیت مفهومی</td><td>نردبان سطح دسته‌ای (D16)</td><td>BKT، DKT، KST، مپ بدفهمی کامل</td><td>صفر بار محتوایی اضافه؛ سه قاعده کاملاً قابل توضیح؛ قواعد ثابت به داده کم‌حجم نیاز ندارند؛ مسیر فعال‌سازی BKT در آینده باز (فرمت حفظ شده)</td></tr>
+    <tr><td>مرور فاصله‌دار</td><td>SM-2 با q مصنوعی سه‌سیگنالی</td><td>لایتنر، Pimsleur، FSRS، HLR</td><td>شخصی‌سازی واقعی (EF) با صفر دیتای اولیه؛ حدس/تأخیر داخل q (D10/D14)؛ ساده و تست‌طلایی‌پذیر؛ ارتقا به مدل R(t,S) در آینده ممکن</td></tr>
+    <tr><td>پیش‌بینی</td><td>رگرسیون WLS وزن نمایی λ=۰٫۸۵ + بازه اطمینان</td><td>میانگین ساده؛ EMA بدون روند؛ پروجکشن Elo</td><td>روند را مدل می‌کند نه فقط سطح؛ وزن نمایی = بهینگی با حافظه نوجوان؛ زیر ۸ جلسه سکوت — صداقت علمی</td></tr>
+    <tr><td>نمره جلسه</td><td>وزن‌دار با سختی (D13)</td><td>درصد خام؛ R_s نگاشت‌شده</td><td>منصفانه بین جلسه سخت و آسان؛ ورودی پایدار برای رگرسیون؛ مثال ۷۲/۵۶ قابل ارائه به داور</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۹-۱ — نقشه انتخاب‌ها. هر تصمیم در سند برنامه (D1–D16) ثبت شده و قابل وتو است.</div>
+
+<p>و در نهایت، نقشه دستگیره‌های کل سیستم در یک نگاه — این جدول پاسخ سؤال «اگر بخواهم یک چیز را تنظیم کنم، کجای این سیستم را بچرخانم؟» است. ترتیب ردیف‌ها از «امن‌ترین تغییر» تا «جراحی» است: همیشه از بالای جدول شروع کن، زیرا بالایی‌ها اثر موضعی دارند و پایینی‌ها رفتار کل سیستم را می‌سازند.</p>
+
+<table>
+  <thead><tr><th style="width:26%">دستگیره</th><th style="width:20%">پیش‌فرض</th><th>جهت‌گیری اثر</th></tr></thead>
+  <tbody>
+    <tr><td>مپ q (سقف حدس/فوق‌سریع، −۰٫۵ تأخیر)</td><td>D10/D14</td><td>موضعی‌ترین دستگیره — فقط فاصله‌های مرور عوض می‌شوند</td></tr>
+    <tr><td>ناحیه هدف انتخاب</td><td>۰٫۶۵–۰٫۷۵</td><td>احساس چالش جلسه‌ها؛ حساسیت‌سنجی در آزمایش</td></tr>
+    <tr><td>n و m نردبان</td><td>۲ / ۲</td><td>سرعت و پایداری تغییر سطح هر دسته</td></tr>
+    <tr><td>λ رگرسیون پیش‌بینی</td><td>۰٫۸۵</td><td>حافظه روند داشبورد</td></tr>
+    <tr><td>exposure_window</td><td>۲۰</td><td>تنوع سؤال در برابر مصرف بانک</td></tr>
+    <tr><td>وزن‌های ارزش آموزشی w1/w2/w3</td><td>پیش‌فرض مهندس</td><td>شخصیت هدایت‌گر سیستم (ضعف/اهمیت/recency)</td></tr>
+    <tr><td>برنامه K</td><td>۳۲→۲۴→۱۶؛ ۸→۴</td><td>سرعت همگرایی توان و سختی — تغییرش داده تاریخی را بازمقایسه‌ناپذیر می‌کند (snapshot جبران می‌کند)</td></tr>
+    <tr><td>کف EF و I(1), I(2)</td><td>۱٫۳؛ ۱ و ۶</td><td>جراحی — مقیاس کل مرور جابه‌جا می‌شود</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۹-۲ — نقشه تنظیم: از امن به جراحی. هر تغییر مهم، در سند برنامه ثبت تصمیم می‌شود (پیوست ب، قاعده ۶).</div>
+
+<!-- ====== APPENDIX A ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه الف</span>
+  <div class="ch-title">جدول کامل پارامترها</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>همه ثابت‌های الگوریتمی در یک جدول — مقدار اولیه، منبع تصمیم و اثر تغییر. همه این‌ها در <span class="inm">params_snapshot</span> هر پاسخ ثبت می‌شوند و همه (به‌جز مقیاس Elo که زیرساخت اعداد است) «قابل وتو» هستند.</p>
+
+<table>
+  <thead><tr><th style="width:27%">پارامتر</th><th style="width:21%">مقدار اولیه</th><th style="width:18%">منبع</th><th>اثر تغییر</th></tr></thead>
+  <tbody>
+    <tr><td>K دانش‌آموز (شروع)</td><td>۳۲</td><td>سند — پیوست ب</td><td>بالا = همگرایی سریع‌تر و نوسان بیشتر</td></tr>
+    <tr><td>K دانش‌آموز (مرحله ۲/۳)</td><td>۲۴ پس از ۵۰؛ ۱۶ پس از ۱۵۰</td><td>سند</td><td>آستانه‌ها = زمان ورود به فاز پایداری</td></tr>
+    <tr><td>K سؤال</td><td>۸ ← ۴ پس از ۴۰ پاسخ</td><td>سند</td><td>بالا = جذب سریع‌تر رأی جامعه بر سختی</td></tr>
+    <tr><td>ناحیه هدف انتخاب</td><td>۰٫۶۵ – ۰٫۷۵ (مرجع ۰٫۷۰)</td><td>سند</td><td>چالش/اعتماد جلسه‌ها؛ حساسیت‌سنجی در آزمایش</td></tr>
+    <tr><td>پنجره مواجهه</td><td>۲۰ پاسخ</td><td>G8</td><td>تنوع در برابر مصرف بانک سؤال</td></tr>
+    <tr><td>طول جایابی / K جایابی</td><td>۴ سؤال (۳–۵) / ۳۲ ثابت</td><td>D1</td><td>دقت تخمین اولیه در برابر تجربه ورود</td></tr>
+    <tr><td>سؤال تکمیلی جایابی</td><td>۲ (روی پراکندگی بالا)</td><td>D1</td><td>سقف حفاظتی حلقه شناخت</td></tr>
+    <tr><td>n افت نردبان / m ارتقا</td><td>۲ / ۲</td><td>D16</td><td>پایداری سطح‌ها؛ n=۱ پرنوسان، m=۱ شکننده</td></tr>
+    <tr><td>سقف/کف نردبان</td><td>سطح ۱ تا ۳ ← ۱۱۵۰/۱۲۵۰/۱۳۵۰</td><td>سند + D16</td><td>نوار سختی انتخاب سؤال هر دسته</td></tr>
+    <tr><td>حد ارتقا در جلسه</td><td>یک بار برای هر دسته</td><td>D16</td><td>جلوی پرش کاذب در جلسه شانس‌آور</td></tr>
+    <tr><td>هشدار مطالعه</td><td>سطح ۱ + موفقیت &lt;۳۰٪ در ۵ پاسخ</td><td>D16</td><td>حساسیت بنر — بالا = کری هشدار</td></tr>
+    <tr><td>هشدار نوسان دبیر</td><td>≥۳ تغییر در ۵ جلسه</td><td>گام ۴٫۴</td><td>پرشدگی صف بازبینی دبیر</td></tr>
+    <tr><td>t_fast / t_slow</td><td>۱۵ ثانیه / ۷۰ ثانیه</td><td>D10</td><td>کیفیت q؛ کالیبراسیون per-category پس از MVP</td></tr>
+    <tr><td>کف EF</td><td>۱٫۳</td><td>سند</td><td>نجات‌پذیری آیتم‌های ضعیف</td></tr>
+    <tr><td>I(1), I(2)</td><td>۱ روز، ۶ روز</td><td>SM-2 اصلی</td><td>مقیاس کل زنجیره مرور</td></tr>
+    <tr><td>فاصله حداقلی جلسات</td><td>۱۲۰ دقیقه</td><td>D12</td><td>استقلال نمونه‌های جلسه</td></tr>
+    <tr><td>طول جلسه</td><td>۱۰ سؤال</td><td>سند + D12</td><td>خستگی/تعهد — جایابی مستثنی</td></tr>
+    <tr><td>وزن نمره جلسه (سه رده)</td><td>۱ / ۱٫۵ / ۲</td><td>D13</td><td>عدالت نمره در برابر سختی؛ قابل پیوسته‌شدن</td></tr>
+    <tr><td>λ روند پیش‌بینی</td><td>۰٫۸۵</td><td>سند — پیوست ب</td><td>حافظه روند داشبورد</td></tr>
+    <tr><td>حداقل جلسه برای پیش‌بینی</td><td>۸</td><td>سند</td><td>زمان سکوت پیش‌بینی</td></tr>
+    <tr><td>مقیاس Elo</td><td>۴۰۰ (توان ۱۱۰۰–۱۴۰۰)</td><td>سند</td><td>جراحی — همه ثابت‌ها جابه‌جا می‌شوند</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول الف-۱ — پارامترهای الگوریتمی. نسخه‌دار با نسخه الگوریتم در snapshot.</div>
+
+<!-- ====== APPENDIX B ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه ب</span>
+  <div class="ch-title">ده پرسش محتمل داوری و پاسخ کوتاه</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p><strong>۱) چرا Elo و نه IRT که استاندارد علمی است؟</strong> IRT برای بازبرآورد دوره‌ای روی داده انبوه طراحی شده؛ ما به آپدیت لحظه‌ای در هر پاسخ، کارکرد با بانک کوچک و توضیح‌پذیری دوعددی نیاز داریم. ساختاری، Elo زیرمجموعه IRT دوپارامتری با شیب ثابت است — یعنی مسیر ارتقا به IRT هم بعداً باز است.</p>
+<p><strong>۲) شانس حدس در چهارگزینه‌ای را چطور مدل می‌کنید؟</strong> مدل‌سازی آماریِ c را با سیگنال انسانی جبران می‌کنیم: دکمه اعتماد (D14). «حدس می‌زدم» درست سقف q در ۴ می‌گیرد و در Elo، حدس درستِ فراوان، توان را با نرخ بالاترِ انتظار طبیعی تعدیل می‌کند.</p>
+<p><strong>۳) چرا ناحیه هدف ۷۰٪ است نه ۵۰٪؟</strong> ۵۰٪ نقطه بهینه «اطلاعات آماری» است، اما تجربه آموزشی پرفشار و کم‌بازخوردی می‌سازد؛ ۶۵–۷۵ تعادل انگیزه/چالش سند است و در آزمایش میدانی حساسیت‌سنجی می‌شود — یعنی پاسخ ما داده‌محور است، لجبازانه نیست.</p>
+<p><strong>۴) اگر دانش‌آموز غلط‌هایش تصادفی باشد چه؟</strong> استریک «پیاپی» به‌طور طراحی برای همین است: الگوی پراکنده، سطح را نمی‌اندازد؛ الگوی متمرکز می‌اندازد. و هشدار نوسان، موارد عجیب را به دبیر انسانی می‌برد — الگوریتم جای انسان را نمی‌گیرد.</p>
+<p><strong>۵) چرا SM-2 قدیمی و نه FSRS که دقیق‌تر است؟</strong> FSRS برای آموزش وزن‌ها به داده انبوه نیاز دارد و خروجی‌اش برای نوجوان قابل بازگویی نیست؛ SM-2 صفر داده اولیه می‌خواهد، EF آن یک جمله توضیح دارد و q ما سه سیگنال عینی دارد. دقیق‌تر بودن FSRS در مقیاس ما هنوز پا روی پاکت داده نمی‌کند.</p>
+<p><strong>۶) مرور چطور اپ رهاشده نمی‌شود؟</strong> چون صف مرور جداگانه نیست — تزریق در جلسه عادی است (نوآوری ۳ سند) و نرخ تکمیلش (هدف ≥۶۰٪) شاخص فرعی آزمایش است.</p>
+<p><strong>۷) اعتماد خوداظهاری نوجوان قابل اعتماد است؟</strong> سیگنالش در قضاوت‌های نسبی سنجیده می‌شود نه مطلق: جفت «مطمئن اما غلط» ارزشمند است حتی اگر مطلق‌ها نویز داشته باشند؛ و چون یکنواخت روی همه سؤال‌ها جمع می‌شود (ب۱)، سوگیری گزارش بین دانش‌آموزان مقایسه‌پذیر می‌ماند.</p>
+<p><strong>۸) پیش‌بینی چرا زیر ۸ جلسه نمی‌دهید؟</strong> چون رگرسیون روی ۳ جلسه، عدد قشنگِ دروغ تولید می‌کند — ریسک «پیام اشتباه به نوجوان» از منفعت محدودش بیشتر است؛ سکوت، تصمیم طراحی است نه نقص.</p>
+<p><strong>۹) داده آزمایش چطور از خرابی محفوظ است؟</strong> تراکنش اتمیک (G5) + snapshot پارامترها (G7) + هیچ پاک‌سازی دستی (پیوست ب سند). هر پاسخ، با پارامترهای لحظه‌اش بازتولیدپذیر است.</p>
+<p><strong>۱۰) اثرگذاری را چطور اثبات می‌کنید؟</strong> پیش‌آزمون/پس‌آزمون موازی، بلوکه‌سازی بر پیش‌آزمون، گروه کنترل ۲۰ نفره، t مستقل و Cohen's d — اسکریپت تحلیل متن‌باز در مخزن تا داور خودش اجرا کند.</p>
+
+<!-- ====== APPENDIX C ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه ج</span>
+  <div class="ch-title">واژه‌نامه اصطلاحات</div>
+  <div class="ch-divider"></div>
+</div>
+
+<table>
+  <thead><tr><th style="width:30%">اصطلاح (انگلیسی)</th><th>معادل و توضیح فارسی</th></tr></thead>
+  <tbody>
+    <tr><td><span class="inm">Ability (θ / R_s)</span></td><td>توان — تخمین عددی سطح دانش‌آموز روی مقیاس Elo</td></tr>
+    <tr><td><span class="inm">Difficulty (b / R_q)</span></td><td>سختی — ریتینگ سؤال؛ با رأی جامعه آزمونک به مقدار واقعی میل می‌کند</td></tr>
+    <tr><td><span class="inm">Expected score (E)</span></td><td>انتظار — شانس درستی پیش از پاسخ، از فرمول لجستیک</td></tr>
+    <tr><td><span class="inm">K-factor</span></td><td>ضریب گام — حداکثر سرعت حرکت ریتینگ در هر پاسخ</td></tr>
+    <tr><td><span class="inm">Cold start</span></td><td>شروع سرد — نبود داده برای تخمین اولیه؛ راه‌حل ما: جایابی</td></tr>
+    <tr><td><span class="inm">Item Response Theory (IRT)</span></td><td>نظریه پاسخ به سؤال — خانواده مدل‌های 1/2/3PL با تمایز و حدس</td></tr>
+    <tr><td><span class="inm">Rating deviation (RD)</span></td><td>انحراف ریتینگ — عدم‌قطعیت تخمین در Glicko-2</td></tr>
+    <tr><td><span class="inm">Knowledge tracing (BKT/DKT)</span></td><td>ردیابی دانش — برآورد احتمال تسلط مفهومی (بیزی / عصبی)</td></tr>
+    <tr><td><span class="inm">Knowledge Space Theory (KST)</span></td><td>نظریه فضای دانش — حالت‌های مجاز دانش و آزمون تطبیقی صوری</td></tr>
+    <tr><td><span class="inm">Spaced repetition</span></td><td>مرور فاصله‌دار — تکرار در لحظه‌های قبل از فراموشی</td></tr>
+    <tr><td><span class="inm">Easiness factor (EF)</span></td><td>آسانی نسبی — ضریب رشد فاصله مرور هر آیتم در SM-2</td></tr>
+    <tr><td><span class="inm">Interval I(n)</span></td><td>فاصله مرور n-اُم — به روز؛ رشد نمایی با EF</td></tr>
+    <tr><td><span class="inm">Retrievability (R)</span></td><td>بازیابی‌پذیری — احتمال یادآوری الان در مدل‌های R(t,S) مثل FSRS</td></tr>
+    <tr><td><span class="inm">Stability (S)</span></td><td>ثبات — چند روز طول می‌کشد تا R به ۹۰٪ برسد</td></tr>
+    <tr><td><span class="inm">Half-life (h)</span></td><td>نیم‌عمر — زمان تا افت احتمال یادآوری به ۵۰٪ (HLR دوئولینگو)</td></tr>
+    <tr><td><span class="inm">Exposure window</span></td><td>پنجره مواجهه — ممنوعیت تکرار سؤال دیده‌شده در ۲۰ پاسخ اخیر</td></tr>
+    <tr><td><span class="inm">Target zone</span></td><td>ناحیه هدف — بازه شانس موفقیت مجاز برای سؤال بعدی (۶۵–۷۵٪)</td></tr>
+    <tr><td><span class="inm">Weighted session score</span></td><td>نمره جلسه وزن‌دار — میانگین درستی‌ها با وزن سختی (D13)</td></tr>
+    <tr><td><span class="inm">Exponentially weighted regression</span></td><td>رگرسیون وزن نمایی — وزن جلسات با λ<sup>t</sup>، این‌جا λ=۰٫۸۵</td></tr>
+    <tr><td><span class="inm">Confidence interval</span></td><td>بازه اطمینان — ± انحراف معیار باقیمانده دور پیش‌بینی</td></tr>
+    <tr><td><span class="inm">Atomic transaction</span></td><td>تراکنش اتمیک — همه‌چیز یا هیچ‌چیز در نوشتن یک پاسخ</td></tr>
+    <tr><td><span class="inm">Params snapshot</span></td><td>گزارش پارامترها — JSONB هر پاسخ برای بازمحاسبه تکرارپذیر</td></tr>
+    <tr><td><span class="inm">Blocked randomization</span></td><td>تصادفی‌سازی بلوکه‌شده — تقسیم هم‌تراز بر پیش‌آزمون</td></tr>
+    <tr><td><span class="inm">Cohen's d</span></td><td>اندازه اثر — اختلاف میانگین‌ها به مقیاس انحراف معیار مشترک</td></tr>
+  </tbody>
+</table>
+
+<!-- ====== APPENDIX D ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه د</span>
+  <div class="ch-title">مراجع علمی</div>
+  <div class="ch-divider"></div>
+</div>
+
+<ul class="plain" style="font-size:13.5px; line-height:2;">
+  <li>Elo, A. E. (1978). <em>The Rating of Chessplayers, Past and Present</em>. Arco. — مرجع اصلی موتور Elo و مقیاس ۴۰۰.</li>
+  <li>Bradley, R. A., &amp; Terry, M. E. (1952). Rank analysis of incomplete block designs. <em>Biometrika, 39</em>(3/4), 324–345. — مدل زیربنایی فرمول انتظار.</li>
+  <li>Woźniak, P. A. (1990). <em>Optimization of Repetitions in Spaced Repetition Practice</em>. University of Technology in Poznan. — مقاله اصلی SM-2، فرمول EF و I(n).</li>
+  <li>Ebbinghaus, H. (1885). <em>Über das Gedächtnis</em>. — منحنی فراموشی و توجیه تزریق مرور.</li>
+  <li>Leitner, S. (1972). <em>So lernt man lernen</em>. — سیستم جعبه‌ها.</li>
+  <li>Pimsleur, P. (1967). A memory schedule. <em>Modern Language Journal, 51</em>(2), 73–75. — دنباله ثابت expanding rehearsal.</li>
+  <li>Rasch, G. (1960). <em>Probabilistic Models for Some Intelligence and Attainment Tests</em>. — ریشه 1PL.</li>
+  <li>Lord, F. M. (1980). <em>Applications of Item Response Theory to Practical Testing Problems</em>. Routledge. — IRT دو و سه‌پارامتری.</li>
+  <li>Glickman, M. E. (1999). Parameter estimation in large dynamic paired comparison experiments. <em>Applied Statistics, 48</em>(3), 377–394. — Glicko؛ و (2012) مثال عددی Glicko-2.</li>
+  <li>Herbrich, R., Minka, T., &amp; Graepel, T. (2006). TrueSkill: A Bayesian skill rating system. <em>NIPS 19</em>. — ریتینگ گاوسی و گراف فاکتور.</li>
+  <li>Corbett, A. T., &amp; Anderson, J. R. (1994). Knowledge tracing: Modeling the acquisition of procedural knowledge. <em>UMUAI, 4</em>, 253–278. — چهار پارامتر BKT.</li>
+  <li>Piech, C., et al. (2015). Deep knowledge tracing. <em>NeurIPS 28</em>. — DKT و LSTM.</li>
+  <li>Doignon, J.-P., &amp; Falmagne, J.-C. (1985). Spaces for the assessment of knowledge. <em>International Journal of Man-Machine Studies, 23</em>, 175–196. — KST.</li>
+  <li>Settles, B., &amp; Meeder, B. (2016). A trainable spaced repetition model for language learning (HLR). <em>ACL 2016</em>, 1848–1858. — نیم‌عمر رگرسیون دوئولینگو.</li>
+  <li>Ye, J. (2024). <em>FSRS: A modern spaced repetition algorithm</em>. open-spaced-repetition (srs-maker). — مدل DSR و ثابت‌های DECAY/FACTOR.</li>
+</ul>
+
+</div><!-- /main-content -->
+
+<!-- ================= ENDING ================= -->
+<div class="ending">
+  <div class="end-grid"></div>
+  <div class="end-line"></div>
+  <div class="end-wrap">
+    <div class="end-big">الگوریتم‌ها مالکیت می‌خواهند،<br>نه حفظ کردن.</div>
+    <div class="end-text">این کتابچه طوری نوشته شده که هر فصل را بتوانی مستقل باز کنی: فرمول، مثال عددی، رقیب، و دستگیره‌های تنظیم. هر تغییر مهمی که در پارامترها دادی، یک خط در جدول تصمیم‌های سند برنامه (D-جدید) ثبت می‌شود و snapshot پارامترها تضمین می‌کند داده‌های قبلی بازمقایسه‌پذیر بمانند. سند زنده است — مثل خود پروژه.</div>
+  </div>
+  <div class="end-meta">آزمونک · کتابچه الگوریتم‌ها · نسخه ۱٫۰ · مهر ۱۴۰۵</div>
+</div>
+
+</body>
+</html>

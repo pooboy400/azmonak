@@ -1,0 +1,172 @@
+<!-- ====== CHAPTER 9 ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">فصل ۹</span>
+  <div class="ch-title">جمع‌بندی تصمیم‌ها — چرا این‌ها؟</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>این فصل جدول دفاع نهایی است: برای هر لنگر الگوریتمی، گزینه برنده، گزینه‌های شاخصِ بازنده و دلیل مهندسی انتخاب. الگوی مشترک همه انتخاب‌ها یک چیز است: <strong>بهترین ابزار برای مقیاس فعلی داده و تیم، نه بهترین ابزار دنیا</strong>. هر جا که داده بزرگ شد، مسیر ارتقا باز است — و چون snapshot پارامترها داریم، ارتقا داده تاریخی را هم بی‌اعتبار نمی‌کند.</p>
+
+<table>
+  <thead><tr><th style="width:20%">لنگر</th><th style="width:24%">انتخاب آزمونک</th><th style="width:26%">جایگزین‌های سنجیده‌شده</th><th>دلیل مهندسی انتخاب</th></tr></thead>
+  <tbody>
+    <tr><td>سنجش توان</td><td>Elo دوطرفه با برنامه K</td><td>IRT 3PL، Glicko-2، TrueSkill</td><td>آپدیت لحظه‌ای با یک جمع/تفریق؛ صفر داده اولیه؛ توضیح‌پذیری کامل برای داور؛ حدس را با سیگنال انسانی (D14) جبران می‌کنیم نه پارامتر c</td></tr>
+    <tr><td>شروع سرد</td><td>جلسه جایابی ۴ سؤالی پراکنده، K=۳۲</td><td>خوداظهاری؛ پیش‌فرض ثابت ۱۲۰۰؛ نمره پیش‌آزمون</td><td>خودِ موتور باید سطح را پیدا کند؛ پیش‌آزمون فقط برای بلوکه‌سازی تا استقلال منابع حفظ شود</td></tr>
+    <tr><td>انتخاب سؤال</td><td>ناحیه هدف ۶۵–۷۵٪ + ارزش آموزشی + مواجهه ۲۰</td><td>Maximum Information (IRT)</td><td>ناحیه ۷۰٪ به‌جای ۵۰٪ = تجربه آموزشی‌تر؛ جای تعبیه ضعف دسته و اهمیت مبحث؛ جلوگیری از حفظ سؤال</td></tr>
+    <tr><td>تشخیص وضعیت مفهومی</td><td>نردبان سطح دسته‌ای (D16)</td><td>BKT، DKT، KST، مپ بدفهمی کامل</td><td>صفر بار محتوایی اضافه؛ سه قاعده کاملاً قابل توضیح؛ قواعد ثابت به داده کم‌حجم نیاز ندارند؛ مسیر فعال‌سازی BKT در آینده باز (فرمت حفظ شده)</td></tr>
+    <tr><td>مرور فاصله‌دار</td><td>SM-2 با q مصنوعی سه‌سیگنالی</td><td>لایتنر، Pimsleur، FSRS، HLR</td><td>شخصی‌سازی واقعی (EF) با صفر دیتای اولیه؛ حدس/تأخیر داخل q (D10/D14)؛ ساده و تست‌طلایی‌پذیر؛ ارتقا به مدل R(t,S) در آینده ممکن</td></tr>
+    <tr><td>پیش‌بینی</td><td>رگرسیون WLS وزن نمایی λ=۰٫۸۵ + بازه اطمینان</td><td>میانگین ساده؛ EMA بدون روند؛ پروجکشن Elo</td><td>روند را مدل می‌کند نه فقط سطح؛ وزن نمایی = بهینگی با حافظه نوجوان؛ زیر ۸ جلسه سکوت — صداقت علمی</td></tr>
+    <tr><td>نمره جلسه</td><td>وزن‌دار با سختی (D13)</td><td>درصد خام؛ R_s نگاشت‌شده</td><td>منصفانه بین جلسه سخت و آسان؛ ورودی پایدار برای رگرسیون؛ مثال ۷۲/۵۶ قابل ارائه به داور</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۹-۱ — نقشه انتخاب‌ها. هر تصمیم در سند برنامه (D1–D16) ثبت شده و قابل وتو است.</div>
+
+<p>و در نهایت، نقشه دستگیره‌های کل سیستم در یک نگاه — این جدول پاسخ سؤال «اگر بخواهم یک چیز را تنظیم کنم، کجای این سیستم را بچرخانم؟» است. ترتیب ردیف‌ها از «امن‌ترین تغییر» تا «جراحی» است: همیشه از بالای جدول شروع کن، زیرا بالایی‌ها اثر موضعی دارند و پایینی‌ها رفتار کل سیستم را می‌سازند.</p>
+
+<table>
+  <thead><tr><th style="width:26%">دستگیره</th><th style="width:20%">پیش‌فرض</th><th>جهت‌گیری اثر</th></tr></thead>
+  <tbody>
+    <tr><td>مپ q (سقف حدس/فوق‌سریع، −۰٫۵ تأخیر)</td><td>D10/D14</td><td>موضعی‌ترین دستگیره — فقط فاصله‌های مرور عوض می‌شوند</td></tr>
+    <tr><td>ناحیه هدف انتخاب</td><td>۰٫۶۵–۰٫۷۵</td><td>احساس چالش جلسه‌ها؛ حساسیت‌سنجی در آزمایش</td></tr>
+    <tr><td>n و m نردبان</td><td>۲ / ۲</td><td>سرعت و پایداری تغییر سطح هر دسته</td></tr>
+    <tr><td>λ رگرسیون پیش‌بینی</td><td>۰٫۸۵</td><td>حافظه روند داشبورد</td></tr>
+    <tr><td>exposure_window</td><td>۲۰</td><td>تنوع سؤال در برابر مصرف بانک</td></tr>
+    <tr><td>وزن‌های ارزش آموزشی w1/w2/w3</td><td>پیش‌فرض مهندس</td><td>شخصیت هدایت‌گر سیستم (ضعف/اهمیت/recency)</td></tr>
+    <tr><td>برنامه K</td><td>۳۲→۲۴→۱۶؛ ۸→۴</td><td>سرعت همگرایی توان و سختی — تغییرش داده تاریخی را بازمقایسه‌ناپذیر می‌کند (snapshot جبران می‌کند)</td></tr>
+    <tr><td>کف EF و I(1), I(2)</td><td>۱٫۳؛ ۱ و ۶</td><td>جراحی — مقیاس کل مرور جابه‌جا می‌شود</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول ۹-۲ — نقشه تنظیم: از امن به جراحی. هر تغییر مهم، در سند برنامه ثبت تصمیم می‌شود (پیوست ب، قاعده ۶).</div>
+
+<!-- ====== APPENDIX A ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه الف</span>
+  <div class="ch-title">جدول کامل پارامترها</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p>همه ثابت‌های الگوریتمی در یک جدول — مقدار اولیه، منبع تصمیم و اثر تغییر. همه این‌ها در <span class="inm">params_snapshot</span> هر پاسخ ثبت می‌شوند و همه (به‌جز مقیاس Elo که زیرساخت اعداد است) «قابل وتو» هستند.</p>
+
+<table>
+  <thead><tr><th style="width:27%">پارامتر</th><th style="width:21%">مقدار اولیه</th><th style="width:18%">منبع</th><th>اثر تغییر</th></tr></thead>
+  <tbody>
+    <tr><td>K دانش‌آموز (شروع)</td><td>۳۲</td><td>سند — پیوست ب</td><td>بالا = همگرایی سریع‌تر و نوسان بیشتر</td></tr>
+    <tr><td>K دانش‌آموز (مرحله ۲/۳)</td><td>۲۴ پس از ۵۰؛ ۱۶ پس از ۱۵۰</td><td>سند</td><td>آستانه‌ها = زمان ورود به فاز پایداری</td></tr>
+    <tr><td>K سؤال</td><td>۸ ← ۴ پس از ۴۰ پاسخ</td><td>سند</td><td>بالا = جذب سریع‌تر رأی جامعه بر سختی</td></tr>
+    <tr><td>ناحیه هدف انتخاب</td><td>۰٫۶۵ – ۰٫۷۵ (مرجع ۰٫۷۰)</td><td>سند</td><td>چالش/اعتماد جلسه‌ها؛ حساسیت‌سنجی در آزمایش</td></tr>
+    <tr><td>پنجره مواجهه</td><td>۲۰ پاسخ</td><td>G8</td><td>تنوع در برابر مصرف بانک سؤال</td></tr>
+    <tr><td>طول جایابی / K جایابی</td><td>۴ سؤال (۳–۵) / ۳۲ ثابت</td><td>D1</td><td>دقت تخمین اولیه در برابر تجربه ورود</td></tr>
+    <tr><td>سؤال تکمیلی جایابی</td><td>۲ (روی پراکندگی بالا)</td><td>D1</td><td>سقف حفاظتی حلقه شناخت</td></tr>
+    <tr><td>n افت نردبان / m ارتقا</td><td>۲ / ۲</td><td>D16</td><td>پایداری سطح‌ها؛ n=۱ پرنوسان، m=۱ شکننده</td></tr>
+    <tr><td>سقف/کف نردبان</td><td>سطح ۱ تا ۳ ← ۱۱۵۰/۱۲۵۰/۱۳۵۰</td><td>سند + D16</td><td>نوار سختی انتخاب سؤال هر دسته</td></tr>
+    <tr><td>حد ارتقا در جلسه</td><td>یک بار برای هر دسته</td><td>D16</td><td>جلوی پرش کاذب در جلسه شانس‌آور</td></tr>
+    <tr><td>هشدار مطالعه</td><td>سطح ۱ + موفقیت &lt;۳۰٪ در ۵ پاسخ</td><td>D16</td><td>حساسیت بنر — بالا = کری هشدار</td></tr>
+    <tr><td>هشدار نوسان دبیر</td><td>≥۳ تغییر در ۵ جلسه</td><td>گام ۴٫۴</td><td>پرشدگی صف بازبینی دبیر</td></tr>
+    <tr><td>t_fast / t_slow</td><td>۱۵ ثانیه / ۷۰ ثانیه</td><td>D10</td><td>کیفیت q؛ کالیبراسیون per-category پس از MVP</td></tr>
+    <tr><td>کف EF</td><td>۱٫۳</td><td>سند</td><td>نجات‌پذیری آیتم‌های ضعیف</td></tr>
+    <tr><td>I(1), I(2)</td><td>۱ روز، ۶ روز</td><td>SM-2 اصلی</td><td>مقیاس کل زنجیره مرور</td></tr>
+    <tr><td>فاصله حداقلی جلسات</td><td>۱۲۰ دقیقه</td><td>D12</td><td>استقلال نمونه‌های جلسه</td></tr>
+    <tr><td>طول جلسه</td><td>۱۰ سؤال</td><td>سند + D12</td><td>خستگی/تعهد — جایابی مستثنی</td></tr>
+    <tr><td>وزن نمره جلسه (سه رده)</td><td>۱ / ۱٫۵ / ۲</td><td>D13</td><td>عدالت نمره در برابر سختی؛ قابل پیوسته‌شدن</td></tr>
+    <tr><td>λ روند پیش‌بینی</td><td>۰٫۸۵</td><td>سند — پیوست ب</td><td>حافظه روند داشبورد</td></tr>
+    <tr><td>حداقل جلسه برای پیش‌بینی</td><td>۸</td><td>سند</td><td>زمان سکوت پیش‌بینی</td></tr>
+    <tr><td>مقیاس Elo</td><td>۴۰۰ (توان ۱۱۰۰–۱۴۰۰)</td><td>سند</td><td>جراحی — همه ثابت‌ها جابه‌جا می‌شوند</td></tr>
+  </tbody>
+</table>
+<div class="tbl-caption">جدول الف-۱ — پارامترهای الگوریتمی. نسخه‌دار با نسخه الگوریتم در snapshot.</div>
+
+<!-- ====== APPENDIX B ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه ب</span>
+  <div class="ch-title">ده پرسش محتمل داوری و پاسخ کوتاه</div>
+  <div class="ch-divider"></div>
+</div>
+
+<p><strong>۱) چرا Elo و نه IRT که استاندارد علمی است؟</strong> IRT برای بازبرآورد دوره‌ای روی داده انبوه طراحی شده؛ ما به آپدیت لحظه‌ای در هر پاسخ، کارکرد با بانک کوچک و توضیح‌پذیری دوعددی نیاز داریم. ساختاری، Elo زیرمجموعه IRT دوپارامتری با شیب ثابت است — یعنی مسیر ارتقا به IRT هم بعداً باز است.</p>
+<p><strong>۲) شانس حدس در چهارگزینه‌ای را چطور مدل می‌کنید؟</strong> مدل‌سازی آماریِ c را با سیگنال انسانی جبران می‌کنیم: دکمه اعتماد (D14). «حدس می‌زدم» درست سقف q در ۴ می‌گیرد و در Elo، حدس درستِ فراوان، توان را با نرخ بالاترِ انتظار طبیعی تعدیل می‌کند.</p>
+<p><strong>۳) چرا ناحیه هدف ۷۰٪ است نه ۵۰٪؟</strong> ۵۰٪ نقطه بهینه «اطلاعات آماری» است، اما تجربه آموزشی پرفشار و کم‌بازخوردی می‌سازد؛ ۶۵–۷۵ تعادل انگیزه/چالش سند است و در آزمایش میدانی حساسیت‌سنجی می‌شود — یعنی پاسخ ما داده‌محور است، لجبازانه نیست.</p>
+<p><strong>۴) اگر دانش‌آموز غلط‌هایش تصادفی باشد چه؟</strong> استریک «پیاپی» به‌طور طراحی برای همین است: الگوی پراکنده، سطح را نمی‌اندازد؛ الگوی متمرکز می‌اندازد. و هشدار نوسان، موارد عجیب را به دبیر انسانی می‌برد — الگوریتم جای انسان را نمی‌گیرد.</p>
+<p><strong>۵) چرا SM-2 قدیمی و نه FSRS که دقیق‌تر است؟</strong> FSRS برای آموزش وزن‌ها به داده انبوه نیاز دارد و خروجی‌اش برای نوجوان قابل بازگویی نیست؛ SM-2 صفر داده اولیه می‌خواهد، EF آن یک جمله توضیح دارد و q ما سه سیگنال عینی دارد. دقیق‌تر بودن FSRS در مقیاس ما هنوز پا روی پاکت داده نمی‌کند.</p>
+<p><strong>۶) مرور چطور اپ رهاشده نمی‌شود؟</strong> چون صف مرور جداگانه نیست — تزریق در جلسه عادی است (نوآوری ۳ سند) و نرخ تکمیلش (هدف ≥۶۰٪) شاخص فرعی آزمایش است.</p>
+<p><strong>۷) اعتماد خوداظهاری نوجوان قابل اعتماد است؟</strong> سیگنالش در قضاوت‌های نسبی سنجیده می‌شود نه مطلق: جفت «مطمئن اما غلط» ارزشمند است حتی اگر مطلق‌ها نویز داشته باشند؛ و چون یکنواخت روی همه سؤال‌ها جمع می‌شود (ب۱)، سوگیری گزارش بین دانش‌آموزان مقایسه‌پذیر می‌ماند.</p>
+<p><strong>۸) پیش‌بینی چرا زیر ۸ جلسه نمی‌دهید؟</strong> چون رگرسیون روی ۳ جلسه، عدد قشنگِ دروغ تولید می‌کند — ریسک «پیام اشتباه به نوجوان» از منفعت محدودش بیشتر است؛ سکوت، تصمیم طراحی است نه نقص.</p>
+<p><strong>۹) داده آزمایش چطور از خرابی محفوظ است؟</strong> تراکنش اتمیک (G5) + snapshot پارامترها (G7) + هیچ پاک‌سازی دستی (پیوست ب سند). هر پاسخ، با پارامترهای لحظه‌اش بازتولیدپذیر است.</p>
+<p><strong>۱۰) اثرگذاری را چطور اثبات می‌کنید؟</strong> پیش‌آزمون/پس‌آزمون موازی، بلوکه‌سازی بر پیش‌آزمون، گروه کنترل ۲۰ نفره، t مستقل و Cohen's d — اسکریپت تحلیل متن‌باز در مخزن تا داور خودش اجرا کند.</p>
+
+<!-- ====== APPENDIX C ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه ج</span>
+  <div class="ch-title">واژه‌نامه اصطلاحات</div>
+  <div class="ch-divider"></div>
+</div>
+
+<table>
+  <thead><tr><th style="width:30%">اصطلاح (انگلیسی)</th><th>معادل و توضیح فارسی</th></tr></thead>
+  <tbody>
+    <tr><td><span class="inm">Ability (θ / R_s)</span></td><td>توان — تخمین عددی سطح دانش‌آموز روی مقیاس Elo</td></tr>
+    <tr><td><span class="inm">Difficulty (b / R_q)</span></td><td>سختی — ریتینگ سؤال؛ با رأی جامعه آزمونک به مقدار واقعی میل می‌کند</td></tr>
+    <tr><td><span class="inm">Expected score (E)</span></td><td>انتظار — شانس درستی پیش از پاسخ، از فرمول لجستیک</td></tr>
+    <tr><td><span class="inm">K-factor</span></td><td>ضریب گام — حداکثر سرعت حرکت ریتینگ در هر پاسخ</td></tr>
+    <tr><td><span class="inm">Cold start</span></td><td>شروع سرد — نبود داده برای تخمین اولیه؛ راه‌حل ما: جایابی</td></tr>
+    <tr><td><span class="inm">Item Response Theory (IRT)</span></td><td>نظریه پاسخ به سؤال — خانواده مدل‌های 1/2/3PL با تمایز و حدس</td></tr>
+    <tr><td><span class="inm">Rating deviation (RD)</span></td><td>انحراف ریتینگ — عدم‌قطعیت تخمین در Glicko-2</td></tr>
+    <tr><td><span class="inm">Knowledge tracing (BKT/DKT)</span></td><td>ردیابی دانش — برآورد احتمال تسلط مفهومی (بیزی / عصبی)</td></tr>
+    <tr><td><span class="inm">Knowledge Space Theory (KST)</span></td><td>نظریه فضای دانش — حالت‌های مجاز دانش و آزمون تطبیقی صوری</td></tr>
+    <tr><td><span class="inm">Spaced repetition</span></td><td>مرور فاصله‌دار — تکرار در لحظه‌های قبل از فراموشی</td></tr>
+    <tr><td><span class="inm">Easiness factor (EF)</span></td><td>آسانی نسبی — ضریب رشد فاصله مرور هر آیتم در SM-2</td></tr>
+    <tr><td><span class="inm">Interval I(n)</span></td><td>فاصله مرور n-اُم — به روز؛ رشد نمایی با EF</td></tr>
+    <tr><td><span class="inm">Retrievability (R)</span></td><td>بازیابی‌پذیری — احتمال یادآوری الان در مدل‌های R(t,S) مثل FSRS</td></tr>
+    <tr><td><span class="inm">Stability (S)</span></td><td>ثبات — چند روز طول می‌کشد تا R به ۹۰٪ برسد</td></tr>
+    <tr><td><span class="inm">Half-life (h)</span></td><td>نیم‌عمر — زمان تا افت احتمال یادآوری به ۵۰٪ (HLR دوئولینگو)</td></tr>
+    <tr><td><span class="inm">Exposure window</span></td><td>پنجره مواجهه — ممنوعیت تکرار سؤال دیده‌شده در ۲۰ پاسخ اخیر</td></tr>
+    <tr><td><span class="inm">Target zone</span></td><td>ناحیه هدف — بازه شانس موفقیت مجاز برای سؤال بعدی (۶۵–۷۵٪)</td></tr>
+    <tr><td><span class="inm">Weighted session score</span></td><td>نمره جلسه وزن‌دار — میانگین درستی‌ها با وزن سختی (D13)</td></tr>
+    <tr><td><span class="inm">Exponentially weighted regression</span></td><td>رگرسیون وزن نمایی — وزن جلسات با λ<sup>t</sup>، این‌جا λ=۰٫۸۵</td></tr>
+    <tr><td><span class="inm">Confidence interval</span></td><td>بازه اطمینان — ± انحراف معیار باقیمانده دور پیش‌بینی</td></tr>
+    <tr><td><span class="inm">Atomic transaction</span></td><td>تراکنش اتمیک — همه‌چیز یا هیچ‌چیز در نوشتن یک پاسخ</td></tr>
+    <tr><td><span class="inm">Params snapshot</span></td><td>گزارش پارامترها — JSONB هر پاسخ برای بازمحاسبه تکرارپذیر</td></tr>
+    <tr><td><span class="inm">Blocked randomization</span></td><td>تصادفی‌سازی بلوکه‌شده — تقسیم هم‌تراز بر پیش‌آزمون</td></tr>
+    <tr><td><span class="inm">Cohen's d</span></td><td>اندازه اثر — اختلاف میانگین‌ها به مقیاس انحراف معیار مشترک</td></tr>
+  </tbody>
+</table>
+
+<!-- ====== APPENDIX D ====== -->
+<div class="chapter-header">
+  <span class="ch-tag">ضمیمه د</span>
+  <div class="ch-title">مراجع علمی</div>
+  <div class="ch-divider"></div>
+</div>
+
+<ul class="plain" style="font-size:13.5px; line-height:2;">
+  <li>Elo, A. E. (1978). <em>The Rating of Chessplayers, Past and Present</em>. Arco. — مرجع اصلی موتور Elo و مقیاس ۴۰۰.</li>
+  <li>Bradley, R. A., &amp; Terry, M. E. (1952). Rank analysis of incomplete block designs. <em>Biometrika, 39</em>(3/4), 324–345. — مدل زیربنایی فرمول انتظار.</li>
+  <li>Woźniak, P. A. (1990). <em>Optimization of Repetitions in Spaced Repetition Practice</em>. University of Technology in Poznan. — مقاله اصلی SM-2، فرمول EF و I(n).</li>
+  <li>Ebbinghaus, H. (1885). <em>Über das Gedächtnis</em>. — منحنی فراموشی و توجیه تزریق مرور.</li>
+  <li>Leitner, S. (1972). <em>So lernt man lernen</em>. — سیستم جعبه‌ها.</li>
+  <li>Pimsleur, P. (1967). A memory schedule. <em>Modern Language Journal, 51</em>(2), 73–75. — دنباله ثابت expanding rehearsal.</li>
+  <li>Rasch, G. (1960). <em>Probabilistic Models for Some Intelligence and Attainment Tests</em>. — ریشه 1PL.</li>
+  <li>Lord, F. M. (1980). <em>Applications of Item Response Theory to Practical Testing Problems</em>. Routledge. — IRT دو و سه‌پارامتری.</li>
+  <li>Glickman, M. E. (1999). Parameter estimation in large dynamic paired comparison experiments. <em>Applied Statistics, 48</em>(3), 377–394. — Glicko؛ و (2012) مثال عددی Glicko-2.</li>
+  <li>Herbrich, R., Minka, T., &amp; Graepel, T. (2006). TrueSkill: A Bayesian skill rating system. <em>NIPS 19</em>. — ریتینگ گاوسی و گراف فاکتور.</li>
+  <li>Corbett, A. T., &amp; Anderson, J. R. (1994). Knowledge tracing: Modeling the acquisition of procedural knowledge. <em>UMUAI, 4</em>, 253–278. — چهار پارامتر BKT.</li>
+  <li>Piech, C., et al. (2015). Deep knowledge tracing. <em>NeurIPS 28</em>. — DKT و LSTM.</li>
+  <li>Doignon, J.-P., &amp; Falmagne, J.-C. (1985). Spaces for the assessment of knowledge. <em>International Journal of Man-Machine Studies, 23</em>, 175–196. — KST.</li>
+  <li>Settles, B., &amp; Meeder, B. (2016). A trainable spaced repetition model for language learning (HLR). <em>ACL 2016</em>, 1848–1858. — نیم‌عمر رگرسیون دوئولینگو.</li>
+  <li>Ye, J. (2024). <em>FSRS: A modern spaced repetition algorithm</em>. open-spaced-repetition (srs-maker). — مدل DSR و ثابت‌های DECAY/FACTOR.</li>
+</ul>
+
+</div><!-- /main-content -->
+
+<!-- ================= ENDING ================= -->
+<div class="ending">
+  <div class="end-grid"></div>
+  <div class="end-line"></div>
+  <div class="end-wrap">
+    <div class="end-big">الگوریتم‌ها مالکیت می‌خواهند،<br>نه حفظ کردن.</div>
+    <div class="end-text">این کتابچه طوری نوشته شده که هر فصل را بتوانی مستقل باز کنی: فرمول، مثال عددی، رقیب، و دستگیره‌های تنظیم. هر تغییر مهمی که در پارامترها دادی، یک خط در جدول تصمیم‌های سند برنامه (D-جدید) ثبت می‌شود و snapshot پارامترها تضمین می‌کند داده‌های قبلی بازمقایسه‌پذیر بمانند. سند زنده است — مثل خود پروژه.</div>
+  </div>
+  <div class="end-meta">آزمونک · کتابچه الگوریتم‌ها · نسخه ۱٫۰ · مهر ۱۴۰۵</div>
+</div>
+
+</body>
+</html>

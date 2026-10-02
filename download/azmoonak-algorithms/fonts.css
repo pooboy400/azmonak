@@ -1,0 +1,5 @@
+/* Vazirmatn Persian font family — local TTF files (weights 300/400/500/700) */
+@font-face { font-family: 'Vazirmatn'; src: url('fonts/Vazirmatn-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Vazirmatn'; src: url('fonts/Vazirmatn-Light.ttf') format('truetype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Vazirmatn'; src: url('fonts/Vazirmatn-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Vazirmatn'; src: url('fonts/Vazirmatn-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
