@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 120">
-  <!-- آزمونک — لاک‌آپ افقی: مارک + وردمارک وزیرمتن Bold («ک» فیروزه‌ای) -->
-  <rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/>
-  <circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/>
-  <circle cx="59" cy="62" r="8" fill="#FFFFFF"/>
-  <path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="330" y="76" text-anchor="end" font-family="Vazirmatn, 'Noto Sans SC', sans-serif" font-weight="700" font-size="52" fill="#102A33">آزمون<tspan fill="#0E7490">ک</tspan></text>
+<svg width="100%" viewBox="0 0 680 300" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>لوگوی آزمونک</title>
+<desc>لوگوی سایت آزمونک: نشان مربع گرد بنفش با تیک سفید و نقطه کهربایی، کنار نوشته آزمونک و AZMONAK</desc>
+<rect x="170" y="90" width="120" height="120" rx="30" fill="#4F46E5"/>
+<path d="M203 152 L231 180 L262 128" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="270" cy="112" r="9" fill="#F59E0B"/>
+<text x="320" y="160" font-size="62" font-weight="500" fill="#0B0B0B" font-family="Vazirmatn, Tahoma, sans-serif">آزمونک</text>
+<text x="322" y="196" font-size="20" font-weight="500" letter-spacing="7" fill="#4F46E5" font-family="Vazirmatn, Tahoma, sans-serif">AZMONAK</text>
 </svg>

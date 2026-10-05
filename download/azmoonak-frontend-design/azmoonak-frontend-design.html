@@ -8,19 +8,19 @@
 @page { size: 720px 1020px; margin: 0; }
 
 :root{
-  --c-bg:#F7FAFB;        /* XL */
-  --c-section:#EFF5F7;   /* XL */
-  --c-card:#E9F1F4;      /* L  */
-  --c-stripe:#F1F6F8;    /* L  */
-  --c-header:#164E63;    /* M  */
+  --c-bg:#F8F9FD;        /* XL */
+  --c-section:#F1F3FA;   /* XL */
+  --c-card:#EDEFF9;      /* L  */
+  --c-stripe:#F3F4FB;    /* L  */
+  --c-header:#1E1B4B;    /* M  */
   --c-border:#C9DDE2;    /* S  */
-  --c-accent:#0E7490;    /* XS */
-  --c-accent2:#6D28D9;   /* XS — فقط R_s / بنفش */
-  --c-text:#102A33;
-  --c-muted:#56727D;
+  --c-accent:#4F46E5;    /* XS */
+  --c-accent2:#0E7490;   /* XS — فقط R_s / فیروزه‌ای (میراث کتاب الگوریتم‌ها) */
+  --c-text:#191B3A;
+  --c-muted:#5E617F;
   /* پالت محصول (فقط داخل سواچ‌ها و ماکاپ‌ها) */
-  --p-primary:#0E7490; --p-soft:#E0F2F7; --p-success:#059669; --p-warn:#B45309;
-  --p-danger:#BE123C; --p-violet:#6D28D9; --p-gold:#D97706;
+  --p-primary:#4F46E5; --p-soft:#E0E7FF; --p-success:#059669; --p-warn:#B45309;
+  --p-danger:#BE123C; --p-violet:#0E7490; --p-gold:#D97706;
 }
 
 html,body{
@@ -29,7 +29,7 @@ html,body{
   font-size:15px;line-height:1.95;
 }
 @media screen{
-  html{height:auto;display:flex;justify-content:center;background:#DCE6EA;}
+  html{height:auto;display:flex;justify-content:center;background:#E4E6F2;}
   body{transform-origin:top center;margin:20px auto;box-shadow:0 0 40px rgba(16,42,51,.18);}
 }
 p,td,li{overflow-wrap:break-word;word-break:break-word;}
@@ -44,14 +44,14 @@ p{margin:0 0 12px;text-align:justify;}
 .cv-l1{position:absolute;inset:0;overflow:hidden;z-index:1;}
 .cv-grid{
   position:absolute;inset:0;
-  background-image:linear-gradient(rgba(14,116,144,.05) .5px,transparent .5px),
-                   linear-gradient(90deg,rgba(14,116,144,.05) .5px,transparent .5px);
+  background-image:linear-gradient(rgba(79,70,229,.05) .5px,transparent .5px),
+                   linear-gradient(90deg,rgba(79,70,229,.05) .5px,transparent .5px);
   background-size:50px 50px;
 }
 .cv-arc{
   position:absolute;left:-40%;bottom:-42%;width:130%;height:80%;
   border-radius:50% 50% 0 0 / 55% 55% 0 0;
-  background:rgba(14,116,144,.045);
+  background:rgba(79,70,229,.045);
 }
 .cv-l2{position:absolute;inset:0;z-index:2;}
 .cv-anchor{position:absolute;right:86px;top:102px;bottom:160px;width:6px;background:var(--c-accent);border-radius:3px;}
@@ -124,7 +124,7 @@ figure.fig figcaption{font-size:11.5px;color:var(--c-muted);margin-top:8px;text-
 .mb-bar{background:var(--c-section);padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--c-border);}
 .mb-dot{width:9px;height:9px;border-radius:50%;background:var(--c-border);}
 .mb-url{flex:1;background:#fff;border:1px solid var(--c-border);border-radius:999px;font-size:9.5px;color:var(--c-muted);padding:2px 12px;text-align:right;direction:ltr;}
-.mb-body{padding:14px 18px 16px;background:#F7FAFB;}
+.mb-body{padding:14px 18px 16px;background:#F8F9FD;}
 
 /* قاب گوشی */
 .mock-phone{width:248px;flex:0 0 248px;background:#fff;border:2px solid var(--c-border);border-radius:22px;overflow:hidden;}
@@ -189,13 +189,13 @@ ol.cl li b{color:var(--c-accent);}
 
 /* انتخابگر لیدربرد */
 .lb-seg{display:flex;gap:4px;margin-bottom:7px;}
-.lb-seg span{flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;font-weight:700;}
-.lb-seg .on{background:#0E7490;color:#fff;border-color:#0E7490;}
-.lb-lbl{font-size:7.5px;color:#56727D;margin:0 0 3px;}
+.lb-seg span{flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:7px;padding:4px 0;font-weight:700;}
+.lb-seg .on{background:#4F46E5;color:#fff;border-color:#4F46E5;}
+.lb-lbl{font-size:7.5px;color:#5E617F;margin:0 0 3px;}
 .lb-chips{display:flex;gap:3px;flex-wrap:nowrap;margin-bottom:7px;}
-.lb-chip{display:inline-flex;align-items:center;gap:2px;font-size:8px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:999px;padding:3px 6px;white-space:nowrap;}
+.lb-chip{display:inline-flex;align-items:center;gap:2px;font-size:8px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:999px;padding:3px 6px;white-space:nowrap;}
 .lb-chip .ic{font-size:9px;}
-.lb-chip.on{background:#E0F2F7;border-color:#0E7490;color:#0E7490;font-weight:700;}
+.lb-chip.on{background:#E0E7FF;border-color:#4F46E5;color:#4F46E5;font-weight:700;}
 
 /* ---------- پایان ---------- */
 .ending{
@@ -252,11 +252,9 @@ ol.cl li b{color:var(--c-accent);}
 <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
 <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
 <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
-<symbol id="i-logo" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/><circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#FFFFFF"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-<symbol id="i-logo-b" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/><path d="M24 52 C36 45 52 47 60 55 C68 47 84 45 96 52 L96 78 C84 71 68 73 60 81 C52 73 36 71 24 78 Z" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round"/><path d="M34 40 L58 33 L88 17" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M77 11 L89 16 L84 28" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-<symbol id="i-logo-c" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#E0F2F7"/><circle cx="60" cy="54" r="29" fill="#0E7490"/><path d="M68 80 L79 97 L50 84 Z" fill="#0E7490"/><path d="M46 54 L56 64 L76 42" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 24 l2.8 7 L37 34 l-7.2 3 L27 44 l-2.8-7 L17 34 l7.2-3 Z" fill="#F59E0B"/><circle cx="93" cy="27" r="4" fill="#F59E0B"/></symbol>
-<symbol id="i-logo-mono" viewBox="0 0 120 120"><circle cx="59" cy="62" r="26" fill="none" stroke="#0E7490" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#0E7490"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#0E7490" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-<symbol id="i-logo-flat" viewBox="0 0 120 120"><circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#FFFFFF"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-logo" viewBox="0 0 120 120"><rect width="120" height="120" rx="30" fill="#4F46E5"/><path d="M33 62 L61 90 L92 38" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="100" cy="22" r="9" fill="#F59E0B"/></symbol>
+<symbol id="i-logo-mono" viewBox="0 0 120 120"><rect x="8" y="8" width="104" height="104" rx="26" fill="none" stroke="currentColor" stroke-width="9"/><path d="M33 62 L61 90 L92 38" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="100" cy="22" r="9" fill="currentColor"/></symbol>
+<symbol id="i-logo-white" viewBox="0 0 120 120"><rect x="8" y="8" width="104" height="104" rx="26" fill="none" stroke="#FFFFFF" stroke-width="9"/><path d="M33 62 L61 90 L92 38" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="100" cy="22" r="9" fill="#FFFFFF"/></symbol>
 </svg>
 
 <!-- ================= جلد ================= -->
@@ -268,17 +266,17 @@ ol.cl li b{color:var(--c-accent);}
   <div class="cv-l2">
     <div class="cv-anchor"></div>
     <svg class="cv-deco" width="128" height="128" viewBox="0 0 150 150" fill="none">
-      <circle cx="60" cy="60" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.16"/>
-      <circle cx="72" cy="66" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.26"/>
-      <circle cx="84" cy="72" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.4"/>
-      <circle cx="126" cy="34" r="5" fill="#0E7490" opacity="0.45"/>
-      <circle cx="116" cy="46" r="2.5" fill="#0E7490" opacity="0.25"/>
+      <circle cx="60" cy="60" r="44" stroke="#4F46E5" stroke-width="0.7" opacity="0.16"/>
+      <circle cx="72" cy="66" r="44" stroke="#4F46E5" stroke-width="0.7" opacity="0.26"/>
+      <circle cx="84" cy="72" r="44" stroke="#4F46E5" stroke-width="0.7" opacity="0.4"/>
+      <circle cx="126" cy="34" r="5" fill="#4F46E5" opacity="0.45"/>
+      <circle cx="116" cy="46" r="2.5" fill="#4F46E5" opacity="0.25"/>
     </svg>
   </div>
   <div class="cv-l3">
-    <div class="cv-kicker">سند طراحی فرانت — نسخه ۲٫۰ لایت</div>
+    <div class="cv-kicker">سند طراحی فرانت — نسخه ۲٫۱ لایت</div>
     <div class="cv-hero">آزمونک<small>طراحی رابط کاربری و تجربه کاربری وب‌اپ</small></div>
-    <div class="cv-summary">این سند تصویریِ کاملِ جهت‌گیری طراحی فرانت آزمونک است: لوگوی اختصاصی با سه کانسپت رقیب، پالت لایت و روشن، تایپوگرافی وزیرمتن، سیستم آیکون lucide، و ماکاپ واقعی هر صفحه — از لندینگ و لیدربردِ درس‌محور (تک‌درس × رشته × پایه) و کامیونیتی تا ورود، پروفایل و فرم آزمون. هر تصمیم با دلیلش نوشته شده و هر پیش‌فرضِ قابل‌وتو جدا نشان داده شده تا پیش از شروع کد، همه‌چیز روی کاغذ تأیید شود.</div>
+    <div class="cv-summary">این سند تصویریِ کاملِ جهت‌گیری طراحی فرانت آزمونک است: لوگوی نهایی و برش‌های رسمی‌اش، پالت لایت بر پایه‌ی بنفش لوگو، تایپوگرافی وزیرمتن، سیستم آیکون lucide، و ماکاپ واقعی هر صفحه — از لندینگ و لیدربردِ درس‌محور (تک‌درس × رشته × پایه) و کامیونیتی تا ورود، پروفایل و فرم آزمون. هر تصمیم با دلیلش نوشته شده و هر پیش‌فرضِ قابل‌وتو جدا نشان داده شده تا پیش از شروع کد، همه‌چیز روی کاغذ تأیید شود.</div>
     <div class="cv-meta">
       پدیدآور: <b>پویا</b> — جشنواره نوجوان خوارزمی<br>
       سند مکمل: برنامه توسعه v1.3 (D1–D16) و کتاب سه‌لایه الگوریتم‌ها
@@ -294,7 +292,7 @@ ol.cl li b{color:var(--c-accent);}
   <div class="toc-sub">۱۴ فصل — از لوگو و شالوده تا ماکاپ تک‌تک صفحات و نقشه راه ساخت</div>
 
   <div class="toc-item"><span class="no">۱</span><span class="t">شالوده‌ی طراحی</span><span class="d">قطب‌نما، سبک «تختِ صمیمی»، سه قید سخت</span></div>
-  <div class="toc-item"><span class="no">۲</span><span class="t">لوگو و هویت بصری</span><span class="d">سه کانسپت، لاک‌آپ، قواعد کاربرد — جدید</span></div>
+  <div class="toc-item"><span class="no">۲</span><span class="t">لوگو و هویت بصری</span><span class="d">لوگوی نهایی، برش‌های رسمی، قواعد کاربرد — به‌روزشده در ۲٫۱</span></div>
   <div class="toc-item"><span class="no">۳</span><span class="t">سیستم رنگ</span><span class="d">سواچ توکن‌ها، قاعده‌ی رنگ معنایی</span></div>
   <div class="toc-item"><span class="no">۴</span><span class="t">تایپوگرافی</span><span class="d">وزیرمتن، مقیاس نمونه‌دار، اعداد فارسی</span></div>
   <div class="toc-item"><span class="no">۵</span><span class="t">سیستم آیکون‌ها</span><span class="d">lucide-react، نقشه‌ی آیکون‌های محصول — جدید</span></div>
@@ -333,7 +331,7 @@ ol.cl li b{color:var(--c-accent);}
 ۱) تم لایت و روشن در کل رابط؛ ۲) بودجه حجم صفحه آزمون زیر ۲۰۰KB با Lighthouse بالای ۹۰ روی شبیه‌سازی 3G (تسک 3.7 سند توسعه)؛ ۳) RTL کامل با فونت وزیرمتن سابست‌شده و اعداد فارسی (D4 و D5). هر پیشنهاد طراحی‌ای که با این سه‌تا بجنگد، حذف است — حتی اگر زیباتر باشد.</div>
 
 <h3 class="sub">اصل آخر: رنگ فقط وقتی معنا دارد</h3>
-<p>در صفحه‌ی ساکن، کاربر باید فقط سرمه‌ای متن و سفید بوم و کمی فیروزه‌ایِ برند را ببیند. رنگ‌های سبز، طلایی، سرخ و بنفش «جایزه‌ی اتفاق» هستند: سبز فقط وقتی جواب درست ثبت شد، سرخ فقط وقتی اشتباه مشخص شد، طلایی فقط وقتی سطح یا لیگ عوض شد. این خودسازی، دقت معنایی رابط را بالا می‌برد و باعث می‌شود سیگنال‌های مهم الگوریتم — از ارتقای نردبان D16 تا هشدار مطالعه — در میان رنگ‌های تزئینی گم نشوند. همان قاعده‌ای که کتاب الگوریتم‌ها هم با آن ساخته شد و به داور جشنواره ثابت می‌کند تصمیم‌های طراحی، سیستم‌مند و قابل‌دفاع‌اند.</p>
+<p>در صفحه‌ی ساکن، کاربر باید فقط سرمه‌ای متن و سفید بوم و کمی بنفشِ برند را ببیند. رنگ‌های سبز، طلایی، سرخ و فیروزه‌ای «جایزه‌ی اتفاق» هستند: سبز فقط وقتی جواب درست ثبت شد، سرخ فقط وقتی اشتباه مشخص شد، طلایی فقط وقتی سطح یا لیگ عوض شد. این خودسازی، دقت معنایی رابط را بالا می‌برد و باعث می‌شود سیگنال‌های مهم الگوریتم — از ارتقای نردبان D16 تا هشدار مطالعه — در میان رنگ‌های تزئینی گم نشوند. همان قاعده‌ای که کتاب الگوریتم‌ها هم با آن ساخته شد و به داور جشنواره ثابت می‌کند تصمیم‌های طراحی، سیستم‌مند و قابل‌دفاع‌اند.</p>
 
 <!-- فصل ۲ — لوگو و هویت بصری -->
 <div class="chapter-header">
@@ -342,34 +340,42 @@ ol.cl li b{color:var(--c-accent);}
   <div class="sec-divider"></div>
 </div>
 
-<p class="lead">لوگوی آزمونک باید در یک نگاه سه چیز را بگوید: <b>هدف‌مندی</b> (آزمونِ معیاردار)، <b>تأیید</b> (جواب درست و پیشرفت) و <b>صمیمیت</b> (پسوند «ک»ِ دوستانه). سه کانسپت زیر با همین سه محور طراحی شده‌اند و همه از پالت محصول می‌خورند — هیچ رنگی بیرون از توکن‌های فصل ۳ وارد لوگو نمی‌شود تا هویت، همان زبان رنگ رابط را ادامه دهد. برش‌های رسمی (فاوآیکون، PWA، لاک‌آپ) هم از قبل ساخته شده‌اند و در گام F1 فقط به <code>public/</code> کپی می‌شوند.</p>
+<p class="lead">لوگو، امضای بصری محصول است — و از این نسخه قطعی است: <b>کاشی گرد بنفش با تیک سفید و نقطه‌ی کهربایی</b>، کنار وردمارک «آزمونک» به وزیرمتن و امضای لاتین «AZMONAK». این ترکیب دقیقاً همان جمله‌ی «موتور جدی، روحیه‌ی بازیگوش» فصل ۱ است: کاشیِ یکدست جدیت یک اپ آموزشی واقعی را می‌گوید، تیک معنای «جواب درست» و پیشرفت را می‌رساند و نقطه‌ی کوچک کهربایی مثل یک امضای بازیگوش، لحظه‌ی «آفرین!» را به لوگو می‌آورد. فایل‌های master (SVG برداری + PNG) تحویل گرفته شده، برش‌های production در همین فصل ساخته شده‌اند و در گام F1 مستقیم به <code>public/</code> کپی می‌شوند.</p>
 
 <figure class="fig">
 <div class="fig-row">
   <div class="logo-cell">
-    <div class="best">پیشنهاد اصلی</div>
     <svg width="96" height="96"><use href="#i-logo"/></svg>
-    <div class="nm">کانسپت A — «تیکِ هدف»</div>
-    <div class="rs">حلقه‌ی هدف + تیک طلایی که از آن می‌گذرد: هر جلسه یک شلیک به هدف است و تیک یعنی زدی. در ۱۶ پیکسلیِ فاوآیکون هم خوانا می‌ماند و داستانش با معیار نمره‌ی محصول یکی است.</div>
-    <span class="tag">یادماندنی</span><span class="tag">خوانا در سایز کوچک</span><span class="tag">هم‌معنای نمره</span>
+    <div class="nm">مارک — کاشی آزمونک</div>
+    <div class="rs">کاشی گرد (شعاع ۳۰ درصد) بنفش برند با تیک سفید ۱۳ پیکسلی و نقطه‌ی کهربایی r=۹ در گوشه‌ی بالا-راست. برای فاوآیکون، آواتار گروه تلگرام و هدر موبایل؛ در ۱۶ پیکسل هم تیک کامل خوانا می‌ماند.</div>
+    <span class="tag">خوانا در ۱۶px</span><span class="tag">تک‌لایه SVG</span><span class="tag">بدون گرادیان</span>
   </div>
   <div class="logo-cell">
-    <svg width="96" height="96"><use href="#i-logo-b"/></svg>
-    <div class="nm">کانسپت B — «کتابِ صعودی»</div>
-    <div class="rs">کتاب باز دانش + خط صعودی رو به بالا: روایت «هر سؤال، یک قدم بهتر شدن». روایتش قوی است اما جزئیاتش در سایز کوچک کم‌رنگ می‌شود و برای فاوآیکون سنگین است.</div>
-    <span class="tag">روایت پیشرفت</span><span class="tag">جزئیات بیشتر</span>
+    <div style="display:flex;align-items:center;gap:12px;min-height:96px;justify-content:center;">
+      <svg width="56" height="56"><use href="#i-logo"/></svg>
+      <span style="font-size:32px;font-weight:700;color:#0B0B0B;line-height:1;">آزمونک</span>
+    </div>
+    <div style="font-size:11px;letter-spacing:5px;color:#4F46E5;font-weight:500;margin-top:6px;">AZMONAK</div>
+    <div class="nm">لاک‌آپ افقی — هدر دسکتاپ و تصویر OG</div>
+    <div class="rs">وردمارک وزیرمتن سرمه‌ایِ ساده بدون حرف رنگی، دقیقاً مطابق فایل master؛ امضای لاتین با حروف‌فاصله‌ی باز به بنفش برند.</div>
+    <span class="tag">مطابق فایل رسمی</span><span class="tag">دوزبانه</span>
   </div>
   <div class="logo-cell">
-    <svg width="96" height="96"><use href="#i-logo-c"/></svg>
-    <div class="nm">کانسپت C — «حباب آزمونک»</div>
-    <div class="rs">حباب گفت‌وگو با تیک: صمیمیت و اشاره به کامیونیتی و اشتراک پیشرفت. دوستانه‌ترین گزینه اما دورتر از جدیتِ موتور تطبیقی و قواعد رنگ (کاشی ملایم).</div>
-    <span class="tag">دوستانه</span><span class="tag">اشاره به کامیونیتی</span>
+    <div style="display:flex;flex-direction:column;gap:7px;min-height:96px;justify-content:center;width:100%;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="width:22px;height:22px;border-radius:7px;background:#4F46E5;display:inline-block;flex:none;"></span><span style="font-size:10.5px;color:#191B3A;">بدنه‌ی کاشی — <b>#4F46E5</b></span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="width:22px;height:22px;border-radius:7px;background:#FFFFFF;border:1px solid #C9DDE2;display:inline-block;flex:none;"></span><span style="font-size:10.5px;color:#191B3A;">تیک تأیید — <b>#FFFFFF</b></span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="width:22px;height:22px;border-radius:50%;background:#F59E0B;display:inline-block;flex:none;"></span><span style="font-size:10.5px;color:#191B3A;">نقطه‌ی انرژی — <b>#F59E0B</b></span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="width:22px;height:22px;border-radius:7px;background:#0B0B0B;display:inline-block;flex:none;"></span><span style="font-size:10.5px;color:#191B3A;">وردمارک — <b>#0B0B0B</b></span></div>
+    </div>
+    <div class="nm">کد رنگ‌های رسمی لوگو</div>
+    <div class="rs">هر چهار مقدار از فایل master استخراج شده؛ بنفش بدنه همان توکن <code>--primary</code> فصل ۳ است.</div>
+    <span class="tag">هم‌خانواده با پالت</span>
   </div>
 </div>
-<figcaption>شکل ۲-۱: سه کانسپت لوگو — هر سه با همان پالت محصول؛ کانسپت A با نشان طلایی «پیشنهاد اصلی» و دلیلش در کارت بعدی.</figcaption>
+<figcaption>شکل ۲-۱: لوگوی نهایی آزمونک (تحویل‌شده از سمت پویا) — مارک تنها، لاک‌آپ افقی دوزبانه و کد رنگ‌های رسمی استخراج‌شده از فایل master.</figcaption>
 </figure>
 
-<div class="callout"><span class="h">توصیه مهندس (قابل وتو در DT12)</span><br>کانسپت A «تیکِ هدف» — اول چون در کوچک‌ترین سایز (فاوآیکون ۱۶ پیکسل) هنوز یک معنای کامل دارد: هدف + تیک. دوم چون داستانش با محصول یکی است: نمره‌ی جلسه همان «زدنِ هدف» است. سوم چون هندسه‌اش (دو دایره + یک خط شکسته) سبک‌ترین شکل قابل‌بازتولید SVG است و در اسپرایت آیکون‌ها بدون فونت و تصویر جا می‌شود. اگر رأی پویا B یا C باشد فقط این فصل و فایل‌های svg عوض می‌شود؛ هیچ تصمیم دیگری وابسته نیست.</div>
+<div class="callout"><span class="h">تصمیم قطعی — DT12 بسته شد (نسخه ۲٫۱)</span><br>لوگوی رسمی توسط پویا انتخاب شد و فایل‌های master (SVG برداری + PNG) تحویل گرفته شده‌اند. سه دلیل سازگاری این لوگو با سیستم طراحی: اول، تیکِ ساده در کوچک‌ترین سایز (فاوآیکون ۱۶ پیکسل) کامل خواناست. دوم، تک‌لایه و بدون گرادیان است — همان زبان «تختِ صمیمی» و امن برای بودجه‌ی حجم ۲۰۰ کیلوبایتی. سوم، رنگ بدنه‌اش همان <code>--primary</code> جدید پالت فصل ۳ است؛ برند و رابط یک خانواده‌اند. در مقابل، فیروزه‌ایِ نسل قبل به رنگ دومِ داده‌ها (خط R_s) منتقل شد تا با بنفش برند قاطی نشود.</div>
 
 <h3 class="sub">برش‌های لازم و قواعد کاربرد</h3>
 <figure class="fig">
@@ -377,30 +383,31 @@ ol.cl li b{color:var(--c-accent);}
   <div style="flex:1 1 250px;min-width:250px;max-width:100%;background:#fff;border:1px solid #C9DDE2;border-radius:14px;padding:16px;">
     <div style="display:flex;align-items:center;gap:10px;">
       <svg width="52" height="52"><use href="#i-logo"/></svg>
-      <span style="font-size:34px;font-weight:700;color:#102A33;line-height:1;">آزمون<span style="color:#0E7490;">ک</span></span>
+      <span style="font-size:34px;font-weight:700;color:#0B0B0B;line-height:1;">آزمونک</span>
     </div>
-    <div style="font-size:10px;color:#56727D;margin-top:10px;line-height:1.8;">لاک‌آپ افقی برای هدر دسکتاپ و صفحه ورود: مارک ۵۲ پیکسلی + وردمارک وزیرمتن Bold که فقط «ک» آخر فیروزه‌ای است — اشاره به صمیمیتِ اسم.</div>
+    <div style="font-size:11px;letter-spacing:5px;color:#4F46E5;font-weight:500;margin-top:4px;">AZMONAK</div>
+    <div style="font-size:10px;color:#5E617F;margin-top:10px;line-height:1.8;">لاک‌آپ افقی برای هدر دسکتاپ و صفحه ورود: مارک ۵۲ پیکسلی + وردمارک وزیرمتن سرمه‌ای — بازسازی دقیق فایل master، بدون هیچ تغییر رنگ در وردمارک.</div>
     <div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap;">
-      <div style="background:#0F172A;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:8px;"><svg width="30" height="30"><use href="#i-logo"/></svg><span style="font-size:16px;font-weight:700;color:#fff;">آزمونک</span></div>
-      <div style="border:1px dashed #C9DDE2;border-radius:12px;padding:10px;"><svg width="34" height="34"><use href="#i-logo-mono"/></svg></div>
+      <div style="background:#0F172A;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:8px;"><svg width="30" height="30" style="color:#fff;"><use href="#i-logo-white"/></svg><span style="font-size:16px;font-weight:700;color:#fff;">آزمونک</span></div>
+      <div style="border:1px dashed #C9DDE2;border-radius:12px;padding:10px;color:#191B3A;"><svg width="34" height="34"><use href="#i-logo-mono"/></svg></div>
       <div style="display:flex;align-items:flex-end;gap:6px;">
         <svg width="16" height="16"><use href="#i-logo"/></svg>
         <svg width="24" height="24"><use href="#i-logo"/></svg>
         <svg width="32" height="32"><use href="#i-logo"/></svg>
       </div>
     </div>
-    <div style="font-size:9.5px;color:#56727D;margin-top:8px;">از راست: ترکیب فوتر تیره (وردمارک سفید)، نسخه تک‌رنگ چاپ، و زنجیره‌ی فاوآیکون ۱۶ / ۲۴ / ۳۲ پیکسل.</div>
+    <div style="font-size:9.5px;color:#5E617F;margin-top:8px;">از راست: ترکیب فوتر تیره (مارک سفید)، نسخه تک‌رنگ چاپ (currentColor)، و زنجیره‌ی فاوآیکون ۱۶ / ۲۴ / ۳۲ پیکسل.</div>
   </div>
   <div style="flex:1 1 250px;min-width:250px;max-width:100%;">
     <ul class="cl" style="margin-top:0;">
-      <li><b>چهار برش رسمی:</b> <code>logo-mark.svg</code> (کاشی فیروزه‌ای)، <code>logo-mark-mono.svg</code> (تک‌رنگ)، <code>logo-mark-white.svg</code> (سفید برای فوتر) و <code>logo-lockup.svg</code> (مارک+وردمارک) به‌علاوه <code>favicon.svg</code> و آیکون PWA در ۱۹۲/۵۱۲ پیکسل — همه در گام F1 به <code>public/</code> می‌روند.</li>
+      <li><b>چهار برش رسمی:</b> <code>logo-lockup.svg</code> (master لاک‌آپ)، <code>logo-mark.svg</code> (کاشی بنفش)، <code>logo-mark-mono.svg</code> (تک‌رنگ با currentColor) و <code>logo-mark-white.svg</code> (سفید فوتر) به‌علاوه <code>favicon.svg</code> و آیکون PWA در ۱۹۲/۵۱۲ پیکسل — همه در گام F1 به <code>public/</code> می‌روند.</li>
       <li><b>مساحت امن:</b> حداقل ۱۰٪ عرض لوگو دور آن فضای خالی بماند؛ لوگو روی عکس و بافت شلوغ نمی‌نشیند.</li>
-      <li><b>ممنوعیت‌ها:</b> گرادیان و سایه (سبک تخت!)، کشیدگی و تغییر تناسبات، چرخاندن، رنگ بیرون از پالت، و جداکردن تیک طلایی به‌عنوان آیکون مستقل.</li>
-      <li><b>حداقل سایز:</b> مارک ۲۴ پیکسل، لاک‌آپ ۱۲۰ پیکسل عرض؛ زیر این سایزها نسخه ساده‌شده (فقط حلقه و تیک) می‌آید.</li>
+      <li><b>ممنوعیت‌ها:</b> گرادیان و سایه (سبک تخت!)، کشیدگی و تغییر تناسبات، چرخاندن، رنگ بیرون از پالت، و جداکردن تیک یا نقطه‌ی کهربایی به‌عنوان آیکون مستقل.</li>
+      <li><b>حداقل سایز:</b> مارک ۲۴ پیکسل، لاک‌آپ ۱۲۰ پیکسل عرض؛ زیر این سایزها فقط «مارک» می‌آید، نه لاک‌آپ.</li>
     </ul>
   </div>
 </div>
-<figcaption>شکل ۲-۲: برش‌های کانسپت A — لاک‌آپ، فوتر تیره، تک‌رنگ چاپی و زنجیره‌ی فاوآیکون، همراه قواعد کاربرد.</figcaption>
+<figcaption>شکل ۲-۲: برش‌های رسمی لوگوی نهایی — لاک‌آپ، فوتر تیره با نسخه‌ی سفید، تک‌رنگ چاپی و زنجیره‌ی فاوآیکون، همراه قواعد کاربرد.</figcaption>
 </figure>
 
 <p>جای لوگو در محصول شش‌جاست و برای هرکدام برش مشخصی بسته شده: هدر دسکتاپ (لاک‌آپ ۲۶ پیکسلی)، هدر موبایل و صفحه ورود (مارک تنها)، فوتر تیره (نسخه سفید)، فاوآیکون مرورگر، آیکون PWA نصب‌شده، و تصویر اشتراک‌گذاری (OG) که وقتی کاربر رتبه‌اش را در تلگرام می‌فرستد، لوگو را کنار کارت رتبه نشان می‌دهد. همین حلقه‌ی آخر — لوگو روی کارت اشتراک رتبه — پیوند لوگو با لیدربرد درس‌محور فصل ۸ است: هویت برند دقیقاً جایی می‌نشیند که نوجوان‌ها می‌بینند؛ داخل پیام‌رسان، نه فقط داخل سایت.</p>
@@ -412,16 +419,16 @@ ol.cl li b{color:var(--c-accent);}
   <div class="sec-divider"></div>
 </div>
 
-<p class="lead">رنگ آزمونک یک خانواده است: فیروزه‌ایِ برند (که هویت سند اصلی و کتاب الگوریتم‌ها را ادامه می‌دهد) روی بوم روشن آبی‌خاکستری. همه‌ی سطوح بزرگ کم‌اشباع‌اند و فقط نقاط کوچک تعاملی اشباع بالا می‌گیرند — دقیقاً مطابق قانون «مساحت بزرگ، اشباع کم» در سیستم پالت آبشاری. سواچ‌های زیر مقادیر واقعی توکن‌ها هستند و در ماکاپ‌های همین سند همان مقادیر استفاده شده‌اند.</p>
+<p class="lead">رنگ آزمونک یک خانواده است و حالا سرِ خانواده رنگ لوگوست: بنفش برند (<code>#4F46E5</code>) روی بوم روشن آبی‌خاکستری؛ فیروزه‌ایِ نسل قبل به «رنگ دوم داده‌ها» مهاجرت کرده تا میراث بصری کتاب الگوریتم‌ها فقط در نمودارها زنده بماند. همه‌ی سطوح بزرگ کم‌اشباع‌اند و فقط نقاط کوچک تعاملی اشباع بالا می‌گیرند — دقیقاً مطابق قانون «مساحت بزرگ، اشباع کم» در سیستم پالت آبشاری. سواچ‌های زیر مقادیر واقعی توکن‌ها هستند و در ماکاپ‌های همین سند همان مقادیر استفاده شده‌اند.</p>
 
 <div class="sw-grid">
-  <div class="sw"><div class="chip" style="background:#F7FAFB;border-bottom:1px solid #C9DDE2;"></div><div class="lbl"><b>بوم اصلی — bg-0</b><span>#F7FAFB</span></div></div>
+  <div class="sw"><div class="chip" style="background:#F8F9FD;border-bottom:1px solid #C9DDE2;"></div><div class="lbl"><b>بوم اصلی — bg-0</b><span>#F8F9FD</span></div></div>
   <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #C9DDE2;"></div><div class="lbl"><b>سطح و کارت — bg-1</b><span>#FFFFFF</span></div></div>
-  <div class="sw"><div class="chip" style="background:#E0F2F7;"></div><div class="lbl"><b>ملایم برند — primary-soft</b><span>#E0F2F7</span></div></div>
-  <div class="sw"><div class="chip" style="background:#0E7490;"></div><div class="lbl"><b>برند / CTA — primary</b><span>#0E7490</span></div></div>
+  <div class="sw"><div class="chip" style="background:#E0E7FF;"></div><div class="lbl"><b>ملایم برند — primary-soft</b><span>#E0E7FF</span></div></div>
+  <div class="sw"><div class="chip" style="background:#4F46E5;"></div><div class="lbl"><b>برند / CTA — primary</b><span>#4F46E5</span></div></div>
 </div>
 <div class="sw-grid">
-  <div class="sw"><div class="chip" style="background:#102A33;"></div><div class="lbl"><b>متن اصلی — text-1</b><span>#102A33</span></div></div>
+  <div class="sw"><div class="chip" style="background:#191B3A;"></div><div class="lbl"><b>متن اصلی — text-1</b><span>#191B3A</span></div></div>
   <div class="sw"><div class="chip" style="background:#5B6B85;"></div><div class="lbl"><b>متن ثانویه — text-2</b><span>#5B6B85</span></div></div>
   <div class="sw"><div class="chip" style="background:#0F172A;"></div><div class="lbl"><b>فوتر تیره — footer</b><span>#0F172A</span></div></div>
   <div class="sw"><div class="chip" style="background:#E2E8F0;"></div><div class="lbl"><b>حاشیه — line</b><span>#E2E8F0</span></div></div>
@@ -430,23 +437,23 @@ ol.cl li b{color:var(--c-accent);}
   <div class="sw"><div class="chip" style="background:#059669;"></div><div class="lbl"><b>موفقیت — success</b><span>#059669</span></div></div>
   <div class="sw"><div class="chip" style="background:#B45309;"></div><div class="lbl"><b>هشدار مطالعه — warning</b><span>#B45309</span></div></div>
   <div class="sw"><div class="chip" style="background:#BE123C;"></div><div class="lbl"><b>خطا / افت — danger</b><span>#BE123C</span></div></div>
-  <div class="sw"><div class="chip" style="background:#6D28D9;"></div><div class="lbl"><b>توان R_s — violet</b><span>#6D28D9</span></div></div>
+  <div class="sw"><div class="chip" style="background:#0E7490;"></div><div class="lbl"><b>سری دوم نمودار — data-2</b><span>#0E7490</span></div></div>
 </div>
 
 <h3 class="sub">کنتراست و دسترسی‌پذیری رنگ</h3>
-<p>فیروزه‌ای برند عمداً نسخه‌ی تیره‌شده‌ی آن (<code>#0E7490</code>) روی پس‌زمینه‌های روشن استفاده می‌شود تا نسبت کنتراست متن سفید روی دکمه‌ها به بالای حد AA برسد؛ نسخه‌ی روشن‌تر فیروزه‌ای فقط برای پس‌زمینه‌های ملایم (<code>#E0F2F7</code>) و هایلایت‌هاست، نه متن. متن اصلی روی بوم کنتراست نزدیک به AAA می‌گیرد که برای سؤال‌های بلند آزمون حیاتی است. رنگ‌های معنایی هم همگی نسخه‌های ۶۰۰–۷۰۰ تیره‌ی پالت‌های استاندارد انتخاب شده‌اند تا هم روی سفید خوانا باشند و هم در حالت تک‌رنگ (برای کاربران کوررنگ) از طریق نماد و موقعیت قابل‌تشخیص بمانند — یعنی هیچ اطلاعات مهمی فقط با رنگ منتقل نمی‌شود.</p>
+<p>بنفش برند (<code>#4F46E5</code>) روی سفید کنتراست ۶٫۳ به ۱ می‌گیرد — بالای حد AA برای متن معمولی و امن برای متن سفید روی دکمه‌ها؛ نسخه‌ی ملایم آن (<code>#E0E7FF</code>) فقط برای پس‌زمینه‌های هاور و چیپ‌های انتخاب‌شده است، نه متن. متن اصلی روی بوم کنتراست نزدیک به AAA می‌گیرد که برای سؤال‌های بلند آزمون حیاتی است. رنگ‌های معنایی هم همگی نسخه‌های ۶۰۰–۷۰۰ تیره‌ی پالت‌های استاندارد انتخاب شده‌اند تا هم روی سفید خوانا باشند و هم در حالت تک‌رنگ (برای کاربران کوررنگ) از طریق نماد و موقعیت قابل‌تشخیص بمانند — یعنی هیچ اطلاعات مهمی فقط با رنگ منتقل نمی‌شود.</p>
 
 <table class="keep">
 <thead><tr><th style="width:24%">توکن</th><th style="width:16%">مقدار</th><th>قاعده استفاده</th></tr></thead>
 <tbody>
-<tr><td><code>--bg-0</code></td><td>#F7FAFB</td><td>بوم همه‌ی صفحه‌ها؛ هیچ بخشی وسط بوم یک‌رنگ عریضِ اشباع نمی‌گیرد</td></tr>
+<tr><td><code>--bg-0</code></td><td>#F8F9FD</td><td>بوم همه‌ی صفحه‌ها؛ هیچ بخشی وسط بوم یک‌رنگ عریضِ اشباع نمی‌گیرد</td></tr>
 <tr><td><code>--bg-1</code></td><td>#FFFFFF</td><td>کارت‌ها، سطوح برجسته، گزینه‌های سؤال</td></tr>
-<tr><td><code>--primary</code></td><td>#0E7490</td><td>فقط عناصر تعاملی: دکمه اصلی، لینک، حالت انتخاب، خط نمودار نمره</td></tr>
-<tr><td><code>--primary-soft</code></td><td>#E0F2F7</td><td>هاور، چیپ انتخاب‌شده، پس‌زمینه اطلاع‌رسانی ملایم</td></tr>
+<tr><td><code>--primary</code></td><td>#4F46E5</td><td>فقط عناصر تعاملی: دکمه اصلی، لینک، حالت انتخاب، خط نمودار نمره</td></tr>
+<tr><td><code>--primary-soft</code></td><td>#E0E7FF</td><td>هاور، چیپ انتخاب‌شده، پس‌زمینه اطلاع‌رسانی ملایم</td></tr>
 <tr><td><code>--success</code></td><td>#059669</td><td>پاسخ درست، ارتقای سطح، تیک مرور</td></tr>
 <tr><td><code>--warning</code></td><td>#B45309</td><td>بنر «برای دسته X مطالعه کن» و هشدار نوسان دبیر</td></tr>
 <tr><td><code>--danger</code></td><td>#BE123C</td><td>پاسخ غلط، افت سطح، خطا</td></tr>
-<tr><td><code>--violet</code></td><td>#6D28D9</td><td>خط توان R_s در نمودار دولایه (D15) — تنها رنگ خارج از خانواده، مجاز به‌عنوان سری دوم نمودار</td></tr>
+<tr><td><code>--data-2</code></td><td>#0E7490</td><td>خط توان R_s در نمودار دولایه (D15) — فیروزه‌ایِ میراث کتاب الگوریتم‌ها؛ فقط سری دوم نمودار، هرگز برای دکمه و لینک</td></tr>
 </tbody>
 </table>
 
@@ -466,7 +473,7 @@ ol.cl li b{color:var(--c-accent);}
   <div class="spec-row"><span class="meta"><b>متن سؤال</b> · Medium 500<br>۱۷–۱۸px — بزرگ‌ترین متن اپ</span><span style="font-size:17.5px;font-weight:500;">خروجی این قطعه کد چیست؟</span></div>
   <div class="spec-row"><span class="meta"><b>گزینه‌ها و بدنه</b> · Regular 400<br>۱۶px — کف دسترسی‌پذیری</span><span style="font-size:16px;">الف) اجرا با خطا متوقف می‌شود</span></div>
   <div class="spec-row"><span class="meta"><b>متن ثانویه</b> · Regular 400<br>۱۳–۱۴px</span><span style="font-size:13.5px;color:#5B6B85;">مرور بعدی این مفهوم: ۹ روز دیگر</span></div>
-  <div class="spec-row" style="border-bottom:none;"><span class="meta"><b>اعداد داشبورد</b> · Bold 700<br>۲۸–۳۶px</span><span style="font-size:32px;font-weight:700;color:#0E7490;">۸۸٪</span></div>
+  <div class="spec-row" style="border-bottom:none;"><span class="meta"><b>اعداد داشبورد</b> · Bold 700<br>۲۸–۳۶px</span><span style="font-size:32px;font-weight:700;color:#4F46E5;">۸۸٪</span></div>
 </div>
 
 <h3 class="sub">قواعد قطعی</h3>
@@ -549,9 +556,9 @@ ol.cl li b{color:var(--c-accent);}
 
 <figure class="fig">
 <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-  <span style="display:inline-flex;align-items:center;gap:6px;background:#0E7490;color:#fff;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-send"/></svg>اشتراک در تلگرام</span>
+  <span style="display:inline-flex;align-items:center;gap:6px;background:#4F46E5;color:#fff;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-send"/></svg>اشتراک در تلگرام</span>
   <span style="display:inline-flex;align-items:center;gap:6px;background:#059669;color:#fff;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-msg"/></svg>اشتراک در واتساپ</span>
-  <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#102A33;border:1px solid #C9DDE2;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-share"/></svg>کپی لینک رتبه</span>
+  <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#191B3A;border:1px solid #C9DDE2;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-share"/></svg>کپی لینک رتبه</span>
 </div>
 <figcaption>شکل ۵-۲: دکمه‌های اشتراک share-first — در کد نهایی آیکون تلگرام/واتساپ، SVG دستی استروک‌۲ می‌شود (DT11).</figcaption>
 </figure>
@@ -572,10 +579,10 @@ ol.cl li b{color:var(--c-accent);}
     <div style="border:1px solid #C9DDE2;border-radius:14px;overflow:hidden;background:#fff;">
       <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #C9DDE2;">
         <svg width="26" height="26"><use href="#i-logo"/></svg>
-        <span style="font-size:13px;font-weight:700;color:#102A33;">آزمونک</span>
+        <span style="font-size:13px;font-weight:700;color:#191B3A;">آزمونک</span>
         <span style="font-size:11px;color:#5B6B85;margin-right:auto;margin-left:8px;">لیدربرد</span>
         <span style="font-size:11px;color:#5B6B85;margin-left:8px;">پیشرفت بقیه</span>
-        <span style="background:#E0F2F7;color:#0E7490;font-size:11px;border-radius:999px;padding:3px 12px;font-weight:700;">ورود</span>
+        <span style="background:#E0E7FF;color:#4F46E5;font-size:11px;border-radius:999px;padding:3px 12px;font-weight:700;">ورود</span>
       </div>
       <div style="padding:14px 16px;font-size:10.5px;color:#5B6B85;line-height:1.8;">هدر دسکتاپ: لوگو + سه لینک + دکمه‌ی ورود در چیپ ملایم برند. پس از لاگین، همان دکمه به آواتار و لقب کاربر تبدیل می‌شود و منوی پروفایل باز می‌کند. هدر با اسکرول می‌چسبد و سایه‌ی یک‌پیکسلی ملایم می‌گیرد تا عمق بدون سنگینی حفظ شود.</div>
     </div>
@@ -587,9 +594,9 @@ ol.cl li b{color:var(--c-accent);}
       <div style="display:flex;justify-content:space-around;align-items:flex-end;background:#fff;border:1px solid #C9DDE2;border-bottom:none;border-radius:16px 16px 0 0;padding:8px 6px 4px;margin-top:12px;">
         <div style="text-align:center;font-size:8px;color:#5B6B85;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-home"/></svg>خانه</div>
         <div style="text-align:center;font-size:8px;color:#5B6B85;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-trophy"/></svg>لیدربرد</div>
-        <div style="width:40px;height:40px;border-radius:50%;background:#0E7490;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;margin-top:-16px;font-weight:700;">+</div>
+        <div style="width:40px;height:40px;border-radius:50%;background:#4F46E5;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;margin-top:-16px;font-weight:700;">+</div>
         <div style="text-align:center;font-size:8px;color:#5B6B85;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-users"/></svg>کامیونیتی</div>
-        <div style="text-align:center;font-size:8px;color:#0E7490;font-weight:700;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-user"/></svg>من</div>
+        <div style="text-align:center;font-size:8px;color:#4F46E5;font-weight:700;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-user"/></svg>من</div>
       </div>
     </div>
   </div>
@@ -602,7 +609,7 @@ ol.cl li b{color:var(--c-accent);}
   <li><b>لودینگ:</b> اسکلت خاکستریِ جای محتوا (Skeleton) — نه اسپینر؛ چون سرعت احساسی را حفظ می‌کند و پرش صفحه را نمی‌سازد.</li>
   <li><b>خالی:</b> برای داشبورد جلسه‌ی اول «هنوز جلسه‌ای ندادی»، برای کامیونیتی «اولین نفر باش» — هر حالت خالی یک CTA دارد تا بن‌بست بصری نشود.</li>
   <li><b>خطا:</b> پیام فارسی ساده با دکمه‌ی «تلاش دوباره»؛ هیچ متن خطای فنی خام به کاربر نمی‌رسد.</li>
-  <li><b>فوکوس و لمس:</b> حلقه‌ی فوکوس فیروزه‌ای ۳ پیکسلی برای ناوبری کیبورد، و حداقل هدف لمسی ۴۴×۴۴ پیکسل (استاندارد آموزشی دیتابیس اسکیل) روی همه‌ی دکمه‌ها.</li>
+  <li><b>فوکوس و لمس:</b> حلقه‌ی فوکوس بنفش ۳ پیکسلی برای ناوبری کیبورد، و حداقل هدف لمسی ۴۴×۴۴ پیکسل (استاندارد آموزشی دیتابیس اسکیل) روی همه‌ی دکمه‌ها.</li>
 </ul>
 
 <!-- فصل ۷ — لندینگ -->
@@ -619,54 +626,54 @@ ol.cl li b{color:var(--c-accent);}
   <div class="mb-bar"><span class="mb-dot"></span><span class="mb-dot"></span><span class="mb-dot"></span><span class="mb-url">azmoonak.ir</span></div>
   <div class="mb-body" style="padding:0;">
     <!-- hero -->
-    <div style="padding:26px 22px 20px;display:flex;gap:14px;align-items:center;background:linear-gradient(180deg,#F0F7F9,#F7FAFB);">
+    <div style="padding:26px 22px 20px;display:flex;gap:14px;align-items:center;background:linear-gradient(180deg,#F1F3FC,#F8F9FD);">
       <div style="flex:1;">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px;"><svg width="24" height="24"><use href="#i-logo"/></svg><span style="font-size:11px;font-weight:700;color:#102A33;">آزمونک</span></div>
-        <div style="font-size:19px;font-weight:700;color:#102A33;line-height:1.5;">هر سؤال، یک قدم بهتر شدن</div>
-        <div style="font-size:10.5px;color:#56727D;line-height:1.9;margin:6px 0 10px;">آزمونک سطحت را می‌سنجد، دلیل غلط‌هایت را می‌فهمد و می‌گوید فردا دقیقاً چه چیزی مرور کنی. بدون امتحان‌های خسته‌کننده، فقط ده سؤال در روز.</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px;"><svg width="24" height="24"><use href="#i-logo"/></svg><span style="font-size:11px;font-weight:700;color:#191B3A;">آزمونک</span></div>
+        <div style="font-size:19px;font-weight:700;color:#191B3A;line-height:1.5;">هر سؤال، یک قدم بهتر شدن</div>
+        <div style="font-size:10.5px;color:#5E617F;line-height:1.9;margin:6px 0 10px;">آزمونک سطحت را می‌سنجد، دلیل غلط‌هایت را می‌فهمد و می‌گوید فردا دقیقاً چه چیزی مرور کنی. بدون امتحان‌های خسته‌کننده، فقط ده سؤال در روز.</div>
         <div style="display:flex;gap:6px;">
-          <span style="background:#0E7490;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:7px 14px;">شروع رایگان</span>
-          <span style="border:1px solid #0E7490;color:#0E7490;font-size:10px;border-radius:9px;padding:7px 12px;">چطور کار می‌کند؟</span>
+          <span style="background:#4F46E5;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:7px 14px;">شروع رایگان</span>
+          <span style="border:1px solid #4F46E5;color:#4F46E5;font-size:10px;border-radius:9px;padding:7px 12px;">چطور کار می‌کند؟</span>
         </div>
       </div>
       <div style="width:118px;flex:0 0 118px;">
         <div style="border:2px solid #C9DDE2;border-radius:14px;background:#fff;padding:8px 7px;">
           <div style="font-size:8px;color:#5B6B85;margin-bottom:5px;">سؤال ۳ از ۱۰</div>
-          <div style="height:4px;background:#C9DDE2;border-radius:3px;margin-bottom:8px;"><div style="width:30%;height:4px;background:#0E7490;border-radius:3px;"></div></div>
-          <div style="font-size:8.5px;color:#102A33;line-height:1.6;margin-bottom:7px;">حاصل ۲ + ۲ × ۳ چیست؟</div>
-          <div style="border:1px solid #C9DDE2;border-radius:6px;font-size:8px;padding:4px 6px;margin-bottom:4px;color:#102A33;">۸</div>
-          <div style="border:1.5px solid #0E7490;background:#E0F2F7;border-radius:6px;font-size:8px;padding:4px 6px;color:#0E7490;font-weight:700;">۱۲ ✓</div>
+          <div style="height:4px;background:#C9DDE2;border-radius:3px;margin-bottom:8px;"><div style="width:30%;height:4px;background:#4F46E5;border-radius:3px;"></div></div>
+          <div style="font-size:8.5px;color:#191B3A;line-height:1.6;margin-bottom:7px;">حاصل ۲ + ۲ × ۳ چیست؟</div>
+          <div style="border:1px solid #C9DDE2;border-radius:6px;font-size:8px;padding:4px 6px;margin-bottom:4px;color:#191B3A;">۸</div>
+          <div style="border:1.5px solid #4F46E5;background:#E0E7FF;border-radius:6px;font-size:8px;padding:4px 6px;color:#4F46E5;font-weight:700;">۱۲ ✓</div>
         </div>
       </div>
     </div>
     <!-- سه قدم -->
     <div style="display:flex;gap:8px;padding:14px 18px 4px;">
       <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:12px;padding:10px;">
-        <div style="width:22px;height:22px;border-radius:50%;background:#0E7490;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۱</div>
+        <div style="width:22px;height:22px;border-radius:50%;background:#4F46E5;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۱</div>
         <div style="font-size:10px;font-weight:700;">آزمون بده</div>
-        <div style="font-size:8.5px;color:#56727D;line-height:1.7;">ده سؤال که سطح واقعی‌ات را می‌سنجد</div>
+        <div style="font-size:8.5px;color:#5E617F;line-height:1.7;">ده سؤال که سطح واقعی‌ات را می‌سنجد</div>
       </div>
       <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:12px;padding:10px;">
-        <div style="width:22px;height:22px;border-radius:50%;background:#0E7490;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۲</div>
+        <div style="width:22px;height:22px;border-radius:50%;background:#4F46E5;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۲</div>
         <div style="font-size:10px;font-weight:700;">بفهم چرا غلط زدی</div>
-        <div style="font-size:8.5px;color:#56727D;line-height:1.7;">بازخورد یک‌خطی برای هر سؤال</div>
+        <div style="font-size:8.5px;color:#5E617F;line-height:1.7;">بازخورد یک‌خطی برای هر سؤال</div>
       </div>
       <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:12px;padding:10px;">
-        <div style="width:22px;height:22px;border-radius:50%;background:#0E7490;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۳</div>
+        <div style="width:22px;height:22px;border-radius:50%;background:#4F46E5;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۳</div>
         <div style="font-size:10px;font-weight:700;">مرور کن</div>
-        <div style="font-size:8.5px;color:#56727D;line-height:1.7;">فردا چه مرور کنی — با علم فاصله‌دار</div>
+        <div style="font-size:8.5px;color:#5E617F;line-height:1.7;">فردا چه مرور کنی — با علم فاصله‌دار</div>
       </div>
     </div>
     <!-- اثبات اجتماعی -->
     <div style="display:flex;gap:8px;padding:10px 18px;">
-      <div style="flex:1;background:#E9F1F4;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#0E7490;">۱۲۰</div><div style="font-size:8px;color:#56727D;">دانش‌آموز فعال</div></div>
-      <div style="flex:1;background:#E9F1F4;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#0E7490;">۱۵۰</div><div style="font-size:8px;color:#56727D;">سؤال بازبینی‌شده</div></div>
-      <div style="flex:1;background:#E9F1F4;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#0E7490;">٪۹۸</div><div style="font-size:8px;color:#56727D;">معلم‌ها تأیید کردند</div></div>
+      <div style="flex:1;background:#EDEFF9;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#4F46E5;">۱۲۰</div><div style="font-size:8px;color:#5E617F;">دانش‌آموز فعال</div></div>
+      <div style="flex:1;background:#EDEFF9;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#4F46E5;">۱۵۰</div><div style="font-size:8px;color:#5E617F;">سؤال بازبینی‌شده</div></div>
+      <div style="flex:1;background:#EDEFF9;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#4F46E5;">٪۹۸</div><div style="font-size:8px;color:#5E617F;">معلم‌ها تأیید کردند</div></div>
     </div>
     <!-- CTA + تیزر لیدربرد -->
     <div style="margin:10px 18px 14px;background:#0F172A;border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px;">
       <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#fff;">جای تو در لیگ ریاضی یازدهم تجربی خالیه</div><div style="font-size:8.5px;color:#94A3C4;margin-top:3px;">رتبه‌ات را همین هفته بساز — در کلی و تک‌تک دروس</div></div>
-      <span style="background:#0E7490;color:#fff;font-size:9.5px;font-weight:700;border-radius:8px;padding:6px 12px;">شروع کن</span>
+      <span style="background:#4F46E5;color:#fff;font-size:9.5px;font-weight:700;border-radius:8px;padding:6px 12px;">شروع کن</span>
     </div>
     <!-- فوتر تیره -->
     <div style="background:#0F172A;padding:12px 18px 14px;display:flex;gap:14px;">
@@ -707,40 +714,40 @@ ol.cl li b{color:var(--c-accent);}
     <div class="lb-lbl">پایه</div>
     <div class="lb-chips"><span class="lb-chip">دهم</span><span class="lb-chip on">یازدهم</span><span class="lb-chip">دوازدهم</span></div>
     <div style="display:flex;gap:4px;margin-bottom:9px;">
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">این هفته</span>
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">ماه</span>
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">کل</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#4F46E5;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">این هفته</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:7px;padding:4px 0;">ماه</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:7px;padding:4px 0;">کل</span>
     </div>
     <div style="display:flex;gap:5px;align-items:flex-end;margin-bottom:10px;">
-      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
-        <div style="font-size:8.5px;color:#102A33;">سارا</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۴</div>
-        <div style="background:#D0E7EE;border-radius:6px 6px 0 0;height:14px;margin-top:4px;"></div>
+      <div style="flex:1;background:#EDEFF9;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#191B3A;">سارا</div><div style="font-size:13px;font-weight:700;color:#4F46E5;">٪۹۴</div>
+        <div style="background:#D6DCF9;border-radius:6px 6px 0 0;height:14px;margin-top:4px;"></div>
       </div>
-      <div style="flex:1;background:#E0F2F7;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+      <div style="flex:1;background:#E0E7FF;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
         <div style="font-size:11px;">🥇</div>
-        <div style="font-size:8.5px;color:#102A33;">آرش</div><div style="font-size:14px;font-weight:700;color:#0E7490;">٪۹۸</div>
-        <div style="background:#C0DEE7;border-radius:6px 6px 0 0;height:22px;margin-top:4px;"></div>
+        <div style="font-size:8.5px;color:#191B3A;">آرش</div><div style="font-size:14px;font-weight:700;color:#4F46E5;">٪۹۸</div>
+        <div style="background:#C7D2FE;border-radius:6px 6px 0 0;height:22px;margin-top:4px;"></div>
       </div>
-      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
-        <div style="font-size:8.5px;color:#102A33;">محمد</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۱</div>
-        <div style="background:#D8E9EE;border-radius:6px 6px 0 0;height:10px;margin-top:4px;"></div>
+      <div style="flex:1;background:#EDEFF9;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#191B3A;">محمد</div><div style="font-size:13px;font-weight:700;color:#4F46E5;">٪۹۱</div>
+        <div style="background:#DCE1FA;border-radius:6px 6px 0 0;height:10px;margin-top:4px;"></div>
       </div>
     </div>
     <div class="m-card" style="padding:7px 9px;">
-      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;border-bottom:1px solid #E2E8F0;"><span style="width:16px;color:#56727D;">۴</span><span style="flex:1;">نگار</span><span style="color:#059669;font-size:8px;">▲۲</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۸</span></div>
-      <div style="display:flex;font-size:8.5px;background:#E0F2F7;border-radius:7px;padding:5px 4px;margin:3px 0;font-weight:700;color:#0E7490;"><span style="width:16px;">۵</span><span style="flex:1;">تو (شما)</span><span style="color:#059669;font-size:8px;">▲۱</span><span style="width:34px;text-align:left;">٪۸۶</span></div>
-      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;"><span style="width:16px;color:#56727D;">۶</span><span style="flex:1;">علی</span><span style="color:#BE123C;font-size:8px;">▼۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۵</span></div>
+      <div style="display:flex;font-size:8.5px;color:#191B3A;padding:5px 0;border-bottom:1px solid #E2E8F0;"><span style="width:16px;color:#5E617F;">۴</span><span style="flex:1;">نگار</span><span style="color:#059669;font-size:8px;">▲۲</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۸</span></div>
+      <div style="display:flex;font-size:8.5px;background:#E0E7FF;border-radius:7px;padding:5px 4px;margin:3px 0;font-weight:700;color:#4F46E5;"><span style="width:16px;">۵</span><span style="flex:1;">تو (شما)</span><span style="color:#059669;font-size:8px;">▲۱</span><span style="width:34px;text-align:left;">٪۸۶</span></div>
+      <div style="display:flex;font-size:8.5px;color:#191B3A;padding:5px 0;"><span style="width:16px;color:#5E617F;">۶</span><span style="flex:1;">علی</span><span style="color:#BE123C;font-size:8px;">▼۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۵</span></div>
     </div>
     <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:8px 10px;">
-      <div style="font-size:8.5px;font-weight:700;color:#102A33;margin-bottom:5px;">لیگ‌ها</div>
+      <div style="font-size:8.5px;font-weight:700;color:#191B3A;margin-bottom:5px;">لیگ‌ها</div>
       <div style="display:flex;gap:4px;align-items:center;">
-        <span style="font-size:8px;background:#E9F1F4;border-radius:999px;padding:2px 8px;color:#56727D;">برنز</span>
-        <span style="font-size:8px;color:#56727D;">←</span>
-        <span style="font-size:8px;background:#E9F1F4;border-radius:999px;padding:2px 8px;color:#56727D;">نقره</span>
-        <span style="font-size:8px;color:#56727D;">←</span>
-        <span style="font-size:8px;background:#0E7490;border-radius:999px;padding:2px 8px;color:#fff;font-weight:700;">طلا</span>
-        <span style="font-size:8px;color:#56727D;">←</span>
-        <span style="font-size:8px;background:#E9F1F4;border-radius:999px;padding:2px 8px;color:#56727D;">الماس</span>
+        <span style="font-size:8px;background:#EDEFF9;border-radius:999px;padding:2px 8px;color:#5E617F;">برنز</span>
+        <span style="font-size:8px;color:#5E617F;">←</span>
+        <span style="font-size:8px;background:#EDEFF9;border-radius:999px;padding:2px 8px;color:#5E617F;">نقره</span>
+        <span style="font-size:8px;color:#5E617F;">←</span>
+        <span style="font-size:8px;background:#4F46E5;border-radius:999px;padding:2px 8px;color:#fff;font-weight:700;">طلا</span>
+        <span style="font-size:8px;color:#5E617F;">←</span>
+        <span style="font-size:8px;background:#EDEFF9;border-radius:999px;padding:2px 8px;color:#5E617F;">الماس</span>
       </div>
     </div>
   </div>
@@ -760,34 +767,34 @@ ol.cl li b{color:var(--c-accent);}
       <span class="lb-chip"><svg class="ic"><use href="#i-scroll"/></svg>عربی</span>
     </div>
     <div style="display:flex;gap:4px;margin-bottom:9px;">
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">این هفته</span>
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">ماه</span>
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">کل</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#4F46E5;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">این هفته</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:7px;padding:4px 0;">ماه</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:7px;padding:4px 0;">کل</span>
     </div>
     <div style="display:flex;gap:5px;align-items:flex-end;margin-bottom:10px;">
-      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
-        <div style="font-size:8.5px;color:#102A33;">محمد</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۴</div>
-        <div style="background:#D0E7EE;border-radius:6px 6px 0 0;height:14px;margin-top:4px;"></div>
+      <div style="flex:1;background:#EDEFF9;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#191B3A;">محمد</div><div style="font-size:13px;font-weight:700;color:#4F46E5;">٪۹۴</div>
+        <div style="background:#D6DCF9;border-radius:6px 6px 0 0;height:14px;margin-top:4px;"></div>
       </div>
-      <div style="flex:1;background:#E0F2F7;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+      <div style="flex:1;background:#E0E7FF;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
         <div style="font-size:11px;">🥇</div>
-        <div style="font-size:8.5px;color:#102A33;">نگار</div><div style="font-size:14px;font-weight:700;color:#0E7490;">٪۹۶</div>
-        <div style="background:#C0DEE7;border-radius:6px 6px 0 0;height:22px;margin-top:4px;"></div>
+        <div style="font-size:8.5px;color:#191B3A;">نگار</div><div style="font-size:14px;font-weight:700;color:#4F46E5;">٪۹۶</div>
+        <div style="background:#C7D2FE;border-radius:6px 6px 0 0;height:22px;margin-top:4px;"></div>
       </div>
-      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
-        <div style="font-size:8.5px;color:#102A33;">سارا</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۲</div>
-        <div style="background:#D8E9EE;border-radius:6px 6px 0 0;height:10px;margin-top:4px;"></div>
+      <div style="flex:1;background:#EDEFF9;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#191B3A;">سارا</div><div style="font-size:13px;font-weight:700;color:#4F46E5;">٪۹۲</div>
+        <div style="background:#DCE1FA;border-radius:6px 6px 0 0;height:10px;margin-top:4px;"></div>
       </div>
     </div>
     <div class="m-card" style="padding:7px 9px;">
-      <div style="display:flex;font-size:8.5px;background:#E0F2F7;border-radius:7px;padding:5px 4px;margin-bottom:3px;font-weight:700;color:#0E7490;"><span style="width:16px;">۴</span><span style="flex:1;">تو (شما)</span><span style="color:#059669;font-size:8px;">▲۳</span><span style="width:34px;text-align:left;">٪۸۹</span></div>
-      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;border-top:1px solid #E2E8F0;"><span style="width:16px;color:#56727D;">۵</span><span style="flex:1;">آرش</span><span style="color:#BE123C;font-size:8px;">▼۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۸</span></div>
-      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;"><span style="width:16px;color:#56727D;">۶</span><span style="flex:1;">احسان</span><span style="color:#059669;font-size:8px;">▲۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۷</span></div>
+      <div style="display:flex;font-size:8.5px;background:#E0E7FF;border-radius:7px;padding:5px 4px;margin-bottom:3px;font-weight:700;color:#4F46E5;"><span style="width:16px;">۴</span><span style="flex:1;">تو (شما)</span><span style="color:#059669;font-size:8px;">▲۳</span><span style="width:34px;text-align:left;">٪۸۹</span></div>
+      <div style="display:flex;font-size:8.5px;color:#191B3A;padding:5px 0;border-top:1px solid #E2E8F0;"><span style="width:16px;color:#5E617F;">۵</span><span style="flex:1;">آرش</span><span style="color:#BE123C;font-size:8px;">▼۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۸</span></div>
+      <div style="display:flex;font-size:8.5px;color:#191B3A;padding:5px 0;"><span style="width:16px;color:#5E617F;">۶</span><span style="flex:1;">احسان</span><span style="color:#059669;font-size:8px;">▲۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۷</span></div>
     </div>
     <div class="m-card" style="display:flex;align-items:center;gap:5px;padding:7px 9px;">
       <svg class="ic" style="font-size:13px;color:#D97706;"><use href="#i-medal"/></svg>
-      <div style="flex:1;font-size:8px;line-height:1.7;color:#102A33;"><b>رتبه‌های من:</b> کلی ۸ از ۴۲ · بهترین درس: ریاضی ۴ از ۳۸</div>
-      <span style="font-size:8px;color:#0E7490;font-weight:700;white-space:nowrap;">اشتراک ↗</span>
+      <div style="flex:1;font-size:8px;line-height:1.7;color:#191B3A;"><b>رتبه‌های من:</b> کلی ۸ از ۴۲ · بهترین درس: ریاضی ۴ از ۳۸</div>
+      <span style="font-size:8px;color:#4F46E5;font-weight:700;white-space:nowrap;">اشتراک ↗</span>
     </div>
   </div>
 </div>
@@ -827,7 +834,7 @@ ol.cl li b{color:var(--c-accent);}
 
 <figure class="fig">
 <div class="fig-row" style="align-items:flex-start;">
-<div style="flex:1;min-width:250px;max-width:100%;font-size:13px;color:#102A33;line-height:1.95;">
+<div style="flex:1;min-width:250px;max-width:100%;font-size:13px;color:#191B3A;line-height:1.95;">
   <p><b>سه تبِ دید:</b> «دوستان» (پیش‌فرض)، «کلاس ما» برای چالش‌های گروهی مدرسه، و «عمومی» برای کسانی که پروفایل‌شان را عمومی گذاشته‌اند. پیش‌فرض «فقط دوستان» بودنِ اشتراک پیشرفت، ورود بچه‌ها به رقابت را امن می‌کند (DT4).</p>
   <p><b>چالش گروهی:</b> نوار پیشرفت جمعی «این هفته ۵۰ جلسه بریزید» حس همکاری می‌سازد — نه فقط رقابت تک‌نفره. کلاس‌ها می‌توانند چالش بسازند و پیشرفت همه به یک هدف مشترک اضافه شود.</p>
   <p><b>تشویق سبک (DT5):</b> دکمه‌ی 👏 روی هر کارت — بدون کامنت آزاد در MVP؛ مدیریت گفت‌وگوی بازِ نوجوانان بار انحراف اصلی است و در فاز بعد باز می‌شود.</p>
@@ -838,41 +845,41 @@ ol.cl li b{color:var(--c-accent);}
   <div class="mp-head"><svg class="ic" style="font-size:12px;"><use href="#i-users"/></svg>پیشرفت بقیه</div>
   <div class="mp-body">
     <div style="display:flex;gap:4px;margin-bottom:9px;">
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">دوستان</span>
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">کلاس ما</span>
-      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">عمومی</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#4F46E5;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">دوستان</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:7px;padding:4px 0;">کلاس ما</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#5E617F;border-radius:7px;padding:4px 0;">عمومی</span>
     </div>
     <div class="m-card">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
-        <span style="width:20px;height:20px;border-radius:50%;background:#E0F2F7;display:flex;align-items:center;justify-content:center;font-size:10px;">🎯</span>
-        <span style="font-size:9px;font-weight:700;color:#102A33;">آرش</span>
-        <span style="font-size:8px;color:#56727D;">جلسه ۱۲ را تمام کرد</span>
+        <span style="width:20px;height:20px;border-radius:50%;background:#E0E7FF;display:flex;align-items:center;justify-content:center;font-size:10px;">🎯</span>
+        <span style="font-size:9px;font-weight:700;color:#191B3A;">آرش</span>
+        <span style="font-size:8px;color:#5E617F;">جلسه ۱۲ را تمام کرد</span>
         <span style="margin-right:auto;font-size:8px;color:#059669;">٪۸۸ ▲</span>
       </div>
       <div style="display:flex;align-items:flex-end;gap:2px;height:26px;margin:6px 0;">
-        <span style="flex:1;height:30%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
-        <span style="flex:1;height:45%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
-        <span style="flex:1;height:55%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
-        <span style="flex:1;height:70%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
-        <span style="flex:1;height:88%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:30%;background:#C7D2FE;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:45%;background:#C7D2FE;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:55%;background:#A5B4FC;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:70%;background:#A5B4FC;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:88%;background:#4F46E5;border-radius:3px 3px 0 0;"></span>
       </div>
       <div style="display:flex;gap:5px;">
-        <span style="flex:1;text-align:center;font-size:8.5px;border:1px solid #C9DDE2;border-radius:7px;padding:4px 0;color:#56727D;">👏 ۷ تبریک</span>
-        <span style="flex:1;text-align:center;font-size:8.5px;background:#E0F2F7;color:#0E7490;border-radius:7px;padding:4px 0;font-weight:700;">اشتراک ↗</span>
+        <span style="flex:1;text-align:center;font-size:8.5px;border:1px solid #C9DDE2;border-radius:7px;padding:4px 0;color:#5E617F;">👏 ۷ تبریک</span>
+        <span style="flex:1;text-align:center;font-size:8.5px;background:#E0E7FF;color:#4F46E5;border-radius:7px;padding:4px 0;font-weight:700;">اشتراک ↗</span>
       </div>
     </div>
-    <div class="m-card" style="border-right:3px solid #0E7490;">
-      <div style="font-size:9px;font-weight:700;color:#102A33;">🤝 چالش کلاس ۱۰۲</div>
-      <div style="font-size:8px;color:#56727D;margin:3px 0 5px;">«این هفته ۵۰ جلسه بریزید»</div>
+    <div class="m-card" style="border-right:3px solid #4F46E5;">
+      <div style="font-size:9px;font-weight:700;color:#191B3A;">🤝 چالش کلاس ۱۰۲</div>
+      <div style="font-size:8px;color:#5E617F;margin:3px 0 5px;">«این هفته ۵۰ جلسه بریزید»</div>
       <div style="height:7px;background:#E2E8F0;border-radius:4px;overflow:hidden;"><div style="width:68%;height:7px;background:#059669;border-radius:4px;"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:8px;color:#56727D;margin-top:3px;"><span>۳۴ از ۵۰ جلسه</span><span>۶ نفر</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:8px;color:#5E617F;margin-top:3px;"><span>۳۴ از ۵۰ جلسه</span><span>۶ نفر</span></div>
     </div>
     <div class="m-card" style="background:#fff;">
-      <div style="font-size:9px;font-weight:700;color:#102A33;margin-bottom:4px;">⚔️ تو vs سارا — «توالی‌ها»</div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:8px;color:#56727D;">
-        <span style="flex:1;text-align:center;"><b style="font-size:11px;color:#0E7490;">٪۷۲</b><br>تو</span>
+      <div style="font-size:9px;font-weight:700;color:#191B3A;margin-bottom:4px;">⚔️ تو vs سارا — «توالی‌ها»</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:8px;color:#5E617F;">
+        <span style="flex:1;text-align:center;"><b style="font-size:11px;color:#4F46E5;">٪۷۲</b><br>تو</span>
         <span style="font-size:8px;">VS</span>
-        <span style="flex:1;text-align:center;"><b style="font-size:11px;color:#6D28D9;">٪۶۵</b><br>سارا</span>
+        <span style="flex:1;text-align:center;"><b style="font-size:11px;color:#0E7490;">٪۶۵</b><br>سارا</span>
       </div>
       <div class="m-btn ghost" style="margin-top:6px;font-size:8.5px;padding:5px 4px;">جلسه‌ی رقابتی بزنید</div>
     </div>
@@ -899,28 +906,28 @@ ol.cl li b{color:var(--c-accent);}
     <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
     <div class="mp-body" style="padding-top:16px;">
       <div style="text-align:center;margin-bottom:10px;">        <svg width="40" height="40" style="display:block;margin:0 auto 6px;"><use href="#i-logo"/></svg>
-        <div style="font-size:11px;font-weight:700;color:#102A33;">به آزمونک خوش آمدی</div>
-        <div style="font-size:8px;color:#56727D;">با شماره موبایلت وارد شو</div>
+        <div style="font-size:11px;font-weight:700;color:#191B3A;">به آزمونک خوش آمدی</div>
+        <div style="font-size:8px;color:#5E617F;">با شماره موبایلت وارد شو</div>
       </div>
-      <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:8px 10px;font-size:9.5px;color:#102A33;text-align:right;direction:ltr;margin-bottom:7px;">۰۹۱۲ ۳۴۵ ۶۷۸۹</div>
+      <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:8px 10px;font-size:9.5px;color:#191B3A;text-align:right;direction:ltr;margin-bottom:7px;">۰۹۱۲ ۳۴۵ ۶۷۸۹</div>
       <div style="display:flex;gap:4px;justify-content:center;margin-bottom:9px;">
-        <span style="width:24px;height:28px;border:1.5px solid #0E7490;border-radius:7px;background:#E0F2F7;"></span>
-        <span style="width:24px;height:28px;border:1.5px solid #0E7490;border-radius:7px;background:#E0F2F7;"></span>
+        <span style="width:24px;height:28px;border:1.5px solid #4F46E5;border-radius:7px;background:#E0E7FF;"></span>
+        <span style="width:24px;height:28px;border:1.5px solid #4F46E5;border-radius:7px;background:#E0E7FF;"></span>
         <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
         <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
         <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
         <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
       </div>
       <div style="display:flex;gap:5px;margin-bottom:9px;">
-        <div style="flex:1;border:1.5px solid #0E7490;background:#E0F2F7;border-radius:10px;padding:8px 4px;text-align:center;">
-          <div style="font-size:12px;">🎒</div><div style="font-size:8.5px;font-weight:700;color:#0E7490;">دانش‌آموز</div>
+        <div style="flex:1;border:1.5px solid #4F46E5;background:#E0E7FF;border-radius:10px;padding:8px 4px;text-align:center;">
+          <div style="font-size:12px;">🎒</div><div style="font-size:8.5px;font-weight:700;color:#4F46E5;">دانش‌آموز</div>
         </div>
         <div style="flex:1;border:1px solid #C9DDE2;border-radius:10px;padding:8px 4px;text-align:center;">
-          <div style="font-size:12px;">🧑‍🏫</div><div style="font-size:8.5px;color:#56727D;">دبیر</div>
+          <div style="font-size:12px;">🧑‍🏫</div><div style="font-size:8.5px;color:#5E617F;">دبیر</div>
         </div>
       </div>
       <div class="m-btn">ورود</div>
-      <div style="text-align:center;font-size:8px;color:#56727D;margin-top:7px;line-height:1.7;">کد تأیید پیامکی ۵ دقیقه اعتبار دارد<br>با ورودت، قوانین سایت را می‌پذیری</div>
+      <div style="text-align:center;font-size:8px;color:#5E617F;margin-top:7px;line-height:1.7;">کد تأیید پیامکی ۵ دقیقه اعتبار دارد<br>با ورودت، قوانین سایت را می‌پذیری</div>
     </div>
   </div>
   <!-- پروفایل -->
@@ -929,39 +936,39 @@ ol.cl li b{color:var(--c-accent);}
     <div class="mp-head"><svg class="ic" style="font-size:12px;"><use href="#i-user"/></svg>پروفایل تو</div>
     <div class="mp-body">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="width:34px;height:34px;border-radius:50%;background:#E0F2F7;display:flex;align-items:center;justify-content:center;font-size:16px;">🦊</span>
-        <div><div style="font-size:10px;font-weight:700;color:#102A33;">روباه حسابگر</div><div style="font-size:8px;color:#56727D;">لیگ طلا · استریک ۴ روز 🔥</div></div>
-        <span style="margin-right:auto;background:#E0F2F7;color:#0E7490;font-size:8px;border-radius:999px;padding:3px 8px;">ویرایش</span>
+        <span style="width:34px;height:34px;border-radius:50%;background:#E0E7FF;display:flex;align-items:center;justify-content:center;font-size:16px;">🦊</span>
+        <div><div style="font-size:10px;font-weight:700;color:#191B3A;">روباه حسابگر</div><div style="font-size:8px;color:#5E617F;">لیگ طلا · استریک ۴ روز 🔥</div></div>
+        <span style="margin-right:auto;background:#E0E7FF;color:#4F46E5;font-size:8px;border-radius:999px;padding:3px 8px;">ویرایش</span>
       </div>
       <div style="display:flex;gap:5px;margin-bottom:8px;">
-        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#0E7490;">۲۸</div><div style="font-size:8px;color:#56727D;">جلسه</div></div>
-        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#0E7490;">٪۸۴</div><div style="font-size:8px;color:#56727D;">میانگین</div></div>
-        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#B45309;">۳</div><div style="font-size:8px;color:#56727D;">مرور امروز</div></div>
+        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#4F46E5;">۲۸</div><div style="font-size:8px;color:#5E617F;">جلسه</div></div>
+        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#4F46E5;">٪۸۴</div><div style="font-size:8px;color:#5E617F;">میانگین</div></div>
+        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#B45309;">۳</div><div style="font-size:8px;color:#5E617F;">مرور امروز</div></div>
       </div>
       <div class="m-card" style="display:flex;align-items:center;gap:5px;padding:6px 9px;">
         <svg class="ic" style="font-size:12px;color:#D97706;"><use href="#i-medal"/></svg>
-        <span style="font-size:8px;color:#102A33;"><b>رتبه‌های من:</b> کلی ۸ از ۴۲ · بهترین درس: ریاضی ۴ از ۳۸</span>
-        <span style="margin-right:auto;font-size:8px;color:#0E7490;font-weight:700;white-space:nowrap;">اشتراک ↗</span>
+        <span style="font-size:8px;color:#191B3A;"><b>رتبه‌های من:</b> کلی ۸ از ۴۲ · بهترین درس: ریاضی ۴ از ۳۸</span>
+        <span style="margin-right:auto;font-size:8px;color:#4F46E5;font-weight:700;white-space:nowrap;">اشتراک ↗</span>
       </div>
       <div class="m-card">
         <div style="font-size:8.5px;font-weight:700;margin-bottom:3px;">روند ۱۰ جلسه اخیر</div>
         <div style="display:flex;align-items:flex-end;gap:2px;height:30px;">
-          <span style="flex:1;height:35%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
-          <span style="flex:1;height:42%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
-          <span style="flex:1;height:50%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
-          <span style="flex:1;height:62%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
-          <span style="flex:1;height:58%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
-          <span style="flex:1;height:70%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
-          <span style="flex:1;height:76%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
-          <span style="flex:1;height:88%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:35%;background:#C7D2FE;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:42%;background:#C7D2FE;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:50%;background:#A5B4FC;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:62%;background:#A5B4FC;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:58%;background:#A5B4FC;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:70%;background:#4F46E5;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:76%;background:#4F46E5;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:88%;background:#4F46E5;border-radius:3px 3px 0 0;"></span>
         </div>
-        <div style="font-size:8px;color:#56727D;margin-top:3px;">▮ نمره جلسه (فیروزه‌ای) · ▮ توان R_s (بنفش، D15)</div>
+        <div style="font-size:8px;color:#5E617F;margin-top:3px;">▮ نمره جلسه (بنفش) · ▮ توان R_s (فیروزه‌ای، D15)</div>
       </div>
       <div class="m-card">
         <div style="font-size:8.5px;font-weight:700;margin-bottom:5px;">سطح دسته‌ها (نردبان D16)</div>
-        <div style="font-size:8px;color:#102A33;padding:3px 0;">توالی‌ها <span class="m-chip" style="background:#D9F2EA;color:#059669;">سطح ۳</span></div>
-        <div style="font-size:8px;color:#102A33;padding:3px 0;">قاعده زنجیره‌ای <span class="m-chip" style="background:#FDEEDC;color:#B45309;">سطح ۲</span></div>
-        <div style="font-size:8px;color:#102A33;padding:3px 0;">کاربرد مشتق <span class="m-chip" style="background:#FBE4E9;color:#BE123C;">سطح ۱ · مطالعه کن</span></div>
+        <div style="font-size:8px;color:#191B3A;padding:3px 0;">توالی‌ها <span class="m-chip" style="background:#D9F2EA;color:#059669;">سطح ۳</span></div>
+        <div style="font-size:8px;color:#191B3A;padding:3px 0;">قاعده زنجیره‌ای <span class="m-chip" style="background:#FDEEDC;color:#B45309;">سطح ۲</span></div>
+        <div style="font-size:8px;color:#191B3A;padding:3px 0;">کاربرد مشتق <span class="m-chip" style="background:#FBE4E9;color:#BE123C;">سطح ۱ · مطالعه کن</span></div>
       </div>
       <div class="m-btn">جلسه جدید</div>
     </div>
@@ -978,18 +985,18 @@ ol.cl li b{color:var(--c-accent);}
     <div class="mp-status"><span>۹:۴۱</span><span>جلسه آزمون</span><span>✕</span></div>
     <div class="mp-body">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
-        <span style="font-size:9px;color:#0E7490;font-weight:700;">۳/۱۰</span>
+        <span style="font-size:9px;color:#4F46E5;font-weight:700;">۳/۱۰</span>
         <div class="m-progress" style="flex:1;margin:0;"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="m-card">
-        <div style="font-size:9.5px;font-weight:700;color:#102A33;line-height:1.8;margin-bottom:7px;">اگر تابع f با قاعده زنجیره‌ای مشتق شود، خروجی کدام است؟</div>
+        <div style="font-size:9.5px;font-weight:700;color:#191B3A;line-height:1.8;margin-bottom:7px;">اگر تابع f با قاعده زنجیره‌ای مشتق شود، خروجی کدام است؟</div>
         <div class="m-option">الف) فقط مشتق تابع بیرونی</div>
         <div class="m-option">ب) حاصل‌ضرب دو مشتق</div>
         <div class="m-option sel">ج) مشتق بیرونی × مشتق درونی ✓</div>
         <div class="m-option">د) هیچ‌کدام</div>
       </div>
-      <div style="background:#E9F1F4;border-radius:10px;padding:9px 10px;">
-        <div style="font-size:9px;font-weight:700;color:#0E7490;text-align:center;margin-bottom:6px;">چقدر مطمئن بودی؟</div>
+      <div style="background:#EDEFF9;border-radius:10px;padding:9px 10px;">
+        <div style="font-size:9px;font-weight:700;color:#4F46E5;text-align:center;margin-bottom:6px;">چقدر مطمئن بودی؟</div>
         <div class="m-trust">
           <div class="t1">مطمئن بودم</div>
           <div class="t2">حدس می‌زدم</div>
@@ -1002,17 +1009,17 @@ ol.cl li b{color:var(--c-accent);}
     <div class="mp-status"><span>۹:۴۱</span><span>جلسه آزمون</span><span>✕</span></div>
     <div class="mp-body">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
-        <span style="font-size:9px;color:#0E7490;font-weight:700;">۳/۱۰</span>
+        <span style="font-size:9px;color:#4F46E5;font-weight:700;">۳/۱۰</span>
         <div class="m-progress" style="flex:1;margin:0;"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="m-card">
-        <div style="font-size:9.5px;font-weight:700;color:#102A33;line-height:1.8;margin-bottom:7px;">اگر تابع f با قاعده زنجیره‌ای مشتق شود، خروجی کدام است؟</div>
+        <div style="font-size:9.5px;font-weight:700;color:#191B3A;line-height:1.8;margin-bottom:7px;">اگر تابع f با قاعده زنجیره‌ای مشتق شود، خروجی کدام است؟</div>
         <div class="m-option" style="color:#BE123C;border-color:#F5C6D0;background:#FDF2F5;">ب) حاصل‌ضرب دو مشتق ✕</div>
         <div class="m-option" style="color:#059669;border-color:#A7DFCB;background:#EFFAF6;">ج) مشتق بیرونی × مشتق درونی ✓</div>
       </div>
       <div class="m-fb no">حدس خوبی بود! قاعده زنجیره‌ای مشتقِ بیرونی را در مشتق درونی ضرب می‌کند — این جمله را برای سؤال بعدی یادت بماند.</div>
       <div class="m-btn" style="margin-top:8px;">سؤال بعدی ←</div>
-      <div style="text-align:center;font-size:8px;color:#56727D;margin-top:8px;">جلسه را می‌توانی نیمه‌کاره رها کنی؛<br>پروفایلت منتظرت می‌ماند</div>
+      <div style="text-align:center;font-size:8px;color:#5E617F;margin-top:8px;">جلسه را می‌توانی نیمه‌کاره رها کنی؛<br>پروفایلت منتظرت می‌ماند</div>
     </div>
   </div>
 </div>
@@ -1098,7 +1105,7 @@ ol.cl li b{color:var(--c-accent);}
 <tr><td>DT9</td><td>ساختار لیدربرد</td><td>دو سطح: «کلیِ هر پایه-رشته» + «تک‌درس × رشته × پایه» با لینک عمومی برای هر ترکیب</td><td>فقط کلی؛ افزودن فنی‌حرفه‌ای/کاردانش به رشته‌ها</td></tr>
 <tr><td>DT10</td><td>معیار لیدربرد تک‌درس</td><td>میانگین نمره‌ی جلسات همان درس × تعداد جلسه‌ی همان درس</td><td>اشتراک امتیاز کلی بین دروس؛ توان Elo هر درس (توصیه نمی‌شود)</td></tr>
 <tr><td>DT11</td><td>کتابخانه آیکون</td><td>lucide-react تری‌شیک + SVG دستی برای آیکون برندها</td><td>react-icons؛ sprite دستی کامل بدون کتابخانه</td></tr>
-<tr><td>DT12</td><td>لوگوی آزمونک</td><td>کانسپت A «تیکِ هدف» + وردمارک وزیرمتن با «ک» فیروزه‌ای</td><td>کانسپت B کتاب صعودی؛ کانسپت C حباب؛ فقط وردمارک</td></tr>
+<tr><td>DT12</td><td>لوگوی آزمونک</td><td>لوگوی نهایی پویا: کاشی بنفش + تیک سفید + نقطه کهربایی + وردمارک وزیرمتن — بسته‌شده در نسخه ۲٫۱</td><td>— تصمیم قطعی است؛ فایل‌های master تحویل شده‌اند</td></tr>
 </tbody>
 </table>
 
@@ -1132,7 +1139,7 @@ ol.cl li b{color:var(--c-accent);}
   <div class="big">طراحی آماده‌ی شروع است</div>
   <div class="sm">وقتی این سند را تأیید کنی، پیاده‌سازی از گام F1 (پوسته و توکن‌ها) شروع می‌شود و به ترتیب نقشه‌ی فصل ۱۴ پیش می‌رود. هر تغییری که در این مرحله روی ماکاپ‌ها، لوگو یا پیش‌فرض‌های قابل‌وتو بدهی، مستقیم به سند اضافه می‌شود تا مرجع پذیرش کد همان چیزی باشد که دیده‌ای و پسندیده‌ای.</div>
   <div class="brand">آزمونک — جشنواره نوجوان خوارزمی</div>
-  <div class="year">نسخه ۲٫۰ لایت · مهر ۱۴۰۵</div>
+  <div class="year">نسخه ۲٫۱ لایت · مهر ۱۴۰۵</div>
 </div>
 
 </body>
