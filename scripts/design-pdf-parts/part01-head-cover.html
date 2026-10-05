@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* ===== سند طراحی فرانت آزمونک — 720×1020 — RTL لایت ===== */
+@page { size: 720px 1020px; margin: 0; }
+
+:root{
+  --c-bg:#F7FAFB;        /* XL */
+  --c-section:#EFF5F7;   /* XL */
+  --c-card:#E9F1F4;      /* L  */
+  --c-stripe:#F1F6F8;    /* L  */
+  --c-header:#164E63;    /* M  */
+  --c-border:#C9DDE2;    /* S  */
+  --c-accent:#0E7490;    /* XS */
+  --c-accent2:#6D28D9;   /* XS — فقط R_s / بنفش */
+  --c-text:#102A33;
+  --c-muted:#56727D;
+  /* پالت محصول (فقط داخل سواچ‌ها و ماکاپ‌ها) */
+  --p-primary:#0E7490; --p-soft:#E0F2F7; --p-success:#059669; --p-warn:#B45309;
+  --p-danger:#BE123C; --p-violet:#6D28D9; --p-gold:#D97706;
+}
+
+html,body{
+  margin:0;padding:0;width:720px;background:var(--c-bg);color:var(--c-text);
+  font-family:'Vazirmatn','Noto Sans SC',sans-serif;
+  font-size:15px;line-height:1.95;
+}
+@media screen{
+  html{height:auto;display:flex;justify-content:center;background:#DCE6EA;}
+  body{transform-origin:top center;margin:20px auto;box-shadow:0 0 40px rgba(16,42,51,.18);}
+}
+p,td,li{overflow-wrap:break-word;word-break:break-word;}
+p{margin:0 0 12px;text-align:justify;}
+
+/* ---------- جلد ---------- */
+.cover{
+  width:720px;height:1020px;box-sizing:border-box;position:relative;
+  break-after:page;overflow:hidden;background:var(--c-bg);
+  border:none;outline:none;box-shadow:none;
+}
+.cv-l1{position:absolute;inset:0;overflow:hidden;z-index:1;}
+.cv-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(14,116,144,.05) .5px,transparent .5px),
+                   linear-gradient(90deg,rgba(14,116,144,.05) .5px,transparent .5px);
+  background-size:50px 50px;
+}
+.cv-arc{
+  position:absolute;left:-40%;bottom:-42%;width:130%;height:80%;
+  border-radius:50% 50% 0 0 / 55% 55% 0 0;
+  background:rgba(14,116,144,.045);
+}
+.cv-l2{position:absolute;inset:0;z-index:2;}
+.cv-anchor{position:absolute;right:86px;top:102px;bottom:160px;width:6px;background:var(--c-accent);border-radius:3px;}
+.cv-l3{position:absolute;inset:0;z-index:3;}
+.cv-kicker{position:absolute;top:153px;right:158px;font-size:13px;letter-spacing:4px;color:var(--c-accent);font-weight:500;}
+.cv-hero{position:absolute;top:255px;right:158px;font-size:64px;font-weight:700;line-height:1.15;color:var(--c-text);max-width:440px;}
+.cv-hero small{display:block;font-size:26px;font-weight:500;color:var(--c-accent);margin-top:14px;letter-spacing:.5px;}
+.cv-summary{position:absolute;top:520px;right:158px;max-width:430px;font-size:16px;line-height:1.9;color:var(--c-muted);text-align:justify;}
+.cv-meta{position:absolute;top:758px;right:158px;font-size:15px;color:var(--c-text);line-height:2.1;}
+.cv-meta b{color:var(--c-accent);font-weight:700;}
+.cv-foot{position:absolute;bottom:78px;right:158px;font-size:11px;letter-spacing:2.5px;color:var(--c-muted);opacity:.75;}
+.cv-deco{position:absolute;left:56px;top:64px;z-index:2;opacity:.9;}
+
+/* ---------- فهرست ---------- */
+.toc-page{
+  width:720px;height:1020px;box-sizing:border-box;position:relative;
+  break-after:page;background:var(--c-bg);padding:74px 66px;
+}
+.toc-title{font-size:30px;font-weight:700;color:var(--c-text);margin:0 0 6px;}
+.toc-sub{font-size:13px;color:var(--c-muted);margin-bottom:30px;}
+.toc-item{
+  display:flex;align-items:baseline;gap:14px;padding:12.5px 2px;
+  border-bottom:1px solid var(--c-border);font-size:15.5px;
+}
+.toc-item .no{color:var(--c-accent);font-weight:700;min-width:34px;font-size:14px;}
+.toc-item .t{font-weight:500;}
+.toc-item .d{color:var(--c-muted);font-size:12px;margin-right:auto;text-align:left;}
+.toc-note{margin-top:26px;background:var(--c-card);border:1px solid var(--c-border);border-radius:12px;padding:16px 18px;font-size:13.5px;color:var(--c-muted);line-height:1.9;}
+
+/* ---------- بدنه ---------- */
+.main-content{padding:58px 60px 44px;}
+.chapter-header{break-after:avoid;break-inside:avoid;margin-top:28px;margin-bottom:14px;}
+.chapter-header.first{margin-top:0;}
+.sec-tag{
+  display:inline-block;background:var(--c-header);color:#fff;font-size:11px;
+  padding:3px 12px;border-radius:999px;letter-spacing:1.5px;margin-bottom:10px;
+}
+.sec-title{font-size:27px;font-weight:700;line-height:1.4;color:var(--c-text);}
+.sec-divider{width:64px;height:4px;background:var(--c-accent);border-radius:2px;margin-top:10px;}
+h3.sub{font-size:18.5px;font-weight:700;color:var(--c-header);margin:20px 0 8px;break-after:avoid;}
+.lead{font-size:15.5px;color:var(--c-text);}
+
+/* کارت‌ها و بلوک‌ها */
+.card{background:#fff;border:1px solid var(--c-border);border-radius:12px;padding:16px 18px;margin-bottom:14px;break-inside:avoid;}
+.card.soft{background:var(--c-card);border-color:var(--c-border);}
+.callout{
+  background:var(--p-soft);border-right:4px solid var(--c-accent);border-radius:10px;
+  padding:12px 16px;font-size:13.5px;line-height:1.85;color:var(--c-text);
+  margin:12px 0 14px;break-inside:avoid;
+}
+.callout .h{font-weight:700;color:var(--c-accent);font-size:13.5px;}
+
+/* جدول‌ها */
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 16px;background:#fff;border-radius:10px;overflow:hidden;}
+table.keep{break-inside:avoid;}
+thead{display:table-header-group;}
+th{background:var(--c-header);color:#fff;font-weight:500;padding:9px 10px;text-align:right;font-size:12px;}
+td{padding:8px 10px;border-bottom:1px solid var(--c-border);vertical-align:top;line-height:1.75;}
+tbody tr:nth-child(odd){background:var(--c-stripe);}
+tbody tr:last-child td{border-bottom:none;}
+td code, .mono{font-family:'Vazirmatn','Noto Sans SC',sans-serif;background:var(--c-card);padding:1px 6px;border-radius:6px;font-size:11.5px;color:var(--c-header);direction:ltr;unicode-bidi:embed;}
+
+/* شکل‌ها و ماکاپ‌ها */
+figure.fig{display:block;width:100%;margin:14px auto 18px;break-inside:avoid;}
+figure.fig figcaption{font-size:11.5px;color:var(--c-muted);margin-top:8px;text-align:center;line-height:1.7;}
+.fig-row{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;max-width:100%;}
+
+/* قاب مرورگر */
+.mock-browser{width:100%;max-width:600px;margin:0 auto;background:#fff;border:1px solid var(--c-border);border-radius:14px;overflow:hidden;break-inside:avoid;}
+.mb-bar{background:var(--c-section);padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--c-border);}
+.mb-dot{width:9px;height:9px;border-radius:50%;background:var(--c-border);}
+.mb-url{flex:1;background:#fff;border:1px solid var(--c-border);border-radius:999px;font-size:9.5px;color:var(--c-muted);padding:2px 12px;text-align:right;direction:ltr;}
+.mb-body{padding:14px 18px 16px;background:#F7FAFB;}
+
+/* قاب گوشی */
+.mock-phone{width:248px;flex:0 0 248px;background:#fff;border:2px solid var(--c-border);border-radius:22px;overflow:hidden;}
+.mp-status{display:flex;justify-content:space-between;align-items:center;background:var(--c-header);color:#fff;font-size:8.5px;padding:5px 12px;}
+.mp-head{display:flex;align-items:center;gap:8px;background:var(--c-header);color:#fff;font-size:11px;font-weight:700;padding:9px 12px 11px;}
+.mp-body{background:var(--c-bg);padding:10px 11px 12px;}
+.m-card{background:#fff;border:1px solid var(--c-border);border-radius:10px;padding:9px 10px;margin-bottom:8px;}
+.m-title{font-size:10px;font-weight:700;color:var(--c-text);}
+.m-sub{font-size:8.5px;color:var(--c-muted);line-height:1.6;}
+.m-btn{background:var(--c-accent);color:#fff;border-radius:9px;text-align:center;font-size:10.5px;font-weight:700;padding:8px 6px;}
+.m-btn.ghost{background:var(--p-soft);color:var(--c-accent);border:1px solid var(--c-accent);}
+.m-chip{display:inline-block;background:var(--p-soft);color:var(--c-accent);font-size:8.5px;border-radius:999px;padding:2px 9px;margin:0 0 0 4px;}
+.m-progress{display:flex;gap:3px;margin:2px 0 9px;}
+.m-progress i{flex:1;height:5px;border-radius:3px;background:var(--c-border);}
+.m-progress i.on{background:var(--c-accent);}
+.m-option{border:1.5px solid var(--c-border);border-radius:9px;background:#fff;font-size:9.5px;color:var(--c-text);padding:8px 10px;margin-bottom:6px;}
+.m-option.sel{border-color:var(--c-accent);background:var(--p-soft);color:var(--c-accent);font-weight:700;}
+.m-trust{display:flex;gap:6px;margin-top:2px;}
+.m-trust div{flex:1;border-radius:9px;text-align:center;font-size:9.5px;font-weight:700;padding:9px 4px;}
+.m-trust .t1{background:#D9F2EA;color:var(--p-success);}
+.m-trust .t2{background:#FBE4E9;color:var(--p-danger);}
+.m-fb{border-radius:9px;padding:7px 9px;font-size:8.5px;line-height:1.6;margin-top:8px;}
+.m-fb.ok{background:#D9F2EA;color:#065F46;border-right:3px solid var(--p-success);}
+.m-fb.no{background:#FBE4E9;color:#9F1239;border-right:3px solid var(--p-danger);}
+
+/* سواچ رنگ */
+.sw-grid{display:flex;flex-wrap:wrap;gap:12px;max-width:100%;margin:12px 0 16px;}
+.sw{flex:1 1 150px;min-width:150px;max-width:100%;background:#fff;border:1px solid var(--c-border);border-radius:12px;overflow:hidden;break-inside:avoid;}
+.sw .chip{height:52px;}
+.sw .lbl{padding:8px 12px;font-size:11px;line-height:1.7;}
+.sw .lbl b{display:block;font-size:11.5px;color:var(--c-text);}
+.sw .lbl span{color:var(--c-muted);direction:ltr;unicode-bidi:embed;font-size:10px;}
+
+/* نمونه تایپ */
+.spec-row{display:flex;align-items:baseline;gap:14px;border-bottom:1px dashed var(--c-border);padding:9px 2px;break-inside:avoid;}
+.spec-row .meta{min-width:150px;font-size:10.5px;color:var(--c-muted);line-height:1.6;}
+.spec-row .meta b{color:var(--c-accent);font-size:11px;}
+
+/* لیست */
+ul.cl{margin:4px 0 14px;padding-right:20px;}
+ul.cl li{margin-bottom:7px;text-align:right;line-height:1.85;}
+ul.cl li b{color:var(--c-header);}
+ol.cl{margin:4px 0 14px;padding-right:22px;}
+ol.cl li{margin-bottom:9px;text-align:right;line-height:1.85;}
+ol.cl li b{color:var(--c-accent);}
+
+/* ---------- پایان ---------- */
+.ending{
+  width:720px;height:1020px;box-sizing:border-box;break-before:page;overflow:hidden;
+  background:var(--c-bg);position:relative;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:80px 90px;
+}
+.ending .line{width:70px;height:5px;background:var(--c-accent);border-radius:3px;margin:26px auto;}
+.ending .big{font-size:34px;font-weight:700;line-height:1.6;}
+.ending .sm{font-size:15px;color:var(--c-muted);line-height:2.05;max-width:470px;text-align:center;}
+.ending .brand{margin-top:56px;font-size:12px;letter-spacing:2px;color:var(--c-accent);}
+.ending .year{font-size:10.5px;color:var(--c-muted);margin-top:8px;letter-spacing:2px;}
+</style>
+</head>
+<body>
+
+<!-- ================= جلد ================= -->
+<div class="cover">
+  <div class="cv-l1">
+    <div class="cv-grid"></div>
+    <div class="cv-arc"></div>
+  </div>
+  <div class="cv-l2">
+    <div class="cv-anchor"></div>
+    <svg class="cv-deco" width="128" height="128" viewBox="0 0 150 150" fill="none">
+      <circle cx="60" cy="60" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.16"/>
+      <circle cx="72" cy="66" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.26"/>
+      <circle cx="84" cy="72" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.4"/>
+      <circle cx="126" cy="34" r="5" fill="#0E7490" opacity="0.45"/>
+      <circle cx="116" cy="46" r="2.5" fill="#0E7490" opacity="0.25"/>
+    </svg>
+  </div>
+  <div class="cv-l3">
+    <div class="cv-kicker">سند طراحی فرانت — نسخه ۱٫۰ لایت</div>
+    <div class="cv-hero">آزمونک<small>طراحی رابط کاربری و تجربه کاربری وب‌اپ</small></div>
+    <div class="cv-summary">این سند تصویریِ کاملِ جهت‌گیری طراحی فرانت آزمونک است: پالت لایت و روشن، تایپوگرافی وزیرمتن، اجزای سراسری، و ماکاپ واقعی هر صفحه از لندینگ و لیدربرد و کامیونیتی تا ورود، پروفایل و فرم آزمون. هر تصمیم با دلیلش نوشته شده و هر پیش‌فرضِ قابل‌وتو جدا نشان داده شده تا پیش از شروع کد، همه‌چیز روی کاغذ تأیید شود.</div>
+    <div class="cv-meta">
+      پدیدآور: <b>پویا</b> — جشنواره نوجوان خوارزمی<br>
+      سند مکمل: برنامه توسعه v1.3 (D1–D16) و کتاب سه‌لایه الگوریتم‌ها
+    </div>
+    <div class="cv-foot">AZMOONAK · FRONTEND DESIGN SPEC · LIGHT EDITION</div>
+  </div>
+</div>

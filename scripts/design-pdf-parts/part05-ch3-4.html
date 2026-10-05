@@ -1,0 +1,74 @@
+
+<!-- فصل ۳ — تایپوگرافی -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۳</div>
+  <div class="sec-title">تایپوگرافی</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">فونت محصول <b>وزیرمتن</b> است — همان انتخاب D4 سند توسعه و همان فونت کتاب الگوریتم‌ها؛ هویت یکدست می‌ماند و فایل‌های فونت از قبل در مخزن آماده‌اند. دیتابیس تایپوگرافی اسکیل برای RTL فقط خانواده‌های Noto عربی و عبری داشت که تأیید کرد انتخاب وزیرمتن برای فارسی بهتر از همه‌ی پیشنهادهای عمومی است. وزیرمتن به‌صورت woff2 سابست‌شده با <code>unicode-range</code> لود می‌شود (متن، عنوان و عدد جدا) تا سهم فعال فونت روی صفحه آزمون حدود ۳۰ تا ۴۰ کیلوبایت بماند.</p>
+
+<div class="card" style="padding:6px 18px 10px;">
+  <div class="spec-row"><span class="meta"><b>عنوان صفحه</b> · Bold 700<br>۲۲–۲۴px</span><span style="font-size:23px;font-weight:700;">جلسه امروزت آماده است</span></div>
+  <div class="spec-row"><span class="meta"><b>متن سؤال</b> · Medium 500<br>۱۷–۱۸px — بزرگ‌ترین متن اپ</span><span style="font-size:17.5px;font-weight:500;">خروجی این قطعه کد چیست؟</span></div>
+  <div class="spec-row"><span class="meta"><b>گزینه‌ها و بدنه</b> · Regular 400<br>۱۶px — کف دسترسی‌پذیری</span><span style="font-size:16px;">الف) اجرا با خطا متوقف می‌شود</span></div>
+  <div class="spec-row"><span class="meta"><b>متن ثانویه</b> · Regular 400<br>۱۳–۱۴px</span><span style="font-size:13.5px;color:#5B6B85;">مرور بعدی این مفهوم: ۹ روز دیگر</span></div>
+  <div class="spec-row" style="border-bottom:none;"><span class="meta"><b>اعداد داشبورد</b> · Bold 700<br>۲۸–۳۶px</span><span style="font-size:32px;font-weight:700;color:#0E7490;">۸۸٪</span></div>
+</div>
+
+<h3 class="sub">قواعد قطعی</h3>
+<ul class="cl">
+  <li><b>ارتفاع خط ۱٫۸ برای فارسی:</b> متن فارسی کشیده‌تر از لاتین خوانده می‌شود؛ ارتفاع خط ۱٫۸ در بدنه و ۱٫۵ در عناوین، جادار و خوانا است. برای فرمول‌های لاتینِ سؤال‌ها بلوک <code>dir="ltr"</code> جدا می‌شود تا جهت به‌هم نریزد.</li>
+  <li><b>اعداد فارسی در رابط، لاتین در فرمول:</b> نمره‌ها، پیشرفت و تاریخ‌ها با اعداد فارسی نمایش داده می‌شوند (۸۸٪ نه 88%)؛ اعداد لاتین فقط داخل عبارت‌های ریاضی سؤال. این قرارداد همان رویه کتاب سه‌لایه است و کاربر هرگز دو نظام عددی قاطی نمی‌بیند.</li>
+  <li><b>سلسله‌مراتب با وزن و رنگ، نه فقط اندازه:</b> عناوین با Bold و سرمه‌ای، بدنه با Regular، متن ثانویه با رنگ <code>text-2</code> — هر سه با هم تفاوت را چندلایه می‌کنند تا در اندازه‌های کوچک هم ساختار حفظ شود.</li>
+  <li><b>ممنوعیت فونت دوم:</b> هیچ صفحه‌ای فونت دیگری لود نمی‌کند؛ آیکون‌ها SVG اینلاین هستند و وارد سیستم تایپ نمی‌شوند. تک‌خانواده‌بودن هم بودجه حجم را حفظ می‌کند و هم یکدستی هویت.</li>
+</ul>
+
+<!-- فصل ۴ — اجزای سراسری -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۴</div>
+  <div class="sec-title">اجزای سراسری</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">دو قاب، در همه‌ی صفحات تکرار می‌شوند: هدرِ چسبان برای دسکتاپ/تبلت و نوار پایینِ آیکونی برای موبایل — چون نوجوان ایرانی اپ را با شستِ یک دست استفاده می‌کند. ماکاپ زیر هر دو را با همان توکن‌ها نشان می‌دهد؛ نوار پایین چهار مقصد اصلی را در دسترس نگه می‌دارد و دکمه‌ی اصلی «جلسه جدید» همیشه مرکز توجه است.</p>
+
+<figure class="fig">
+<div class="fig-row" style="align-items:flex-end;max-width:600px;margin:0 auto;">
+  <!-- هدر دسکتاپ -->
+  <div style="flex:1 1 320px;min-width:300px;max-width:100%;">
+    <div style="border:1px solid #C9DDE2;border-radius:14px;overflow:hidden;background:#fff;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #C9DDE2;">
+        <span style="width:26px;height:26px;border-radius:8px;background:#0E7490;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">آ</span>
+        <span style="font-size:13px;font-weight:700;color:#102A33;">آزمونک</span>
+        <span style="font-size:11px;color:#5B6B85;margin-right:auto;margin-left:8px;">لیدربرد</span>
+        <span style="font-size:11px;color:#5B6B85;margin-left:8px;">پیشرفت بقیه</span>
+        <span style="background:#E0F2F7;color:#0E7490;font-size:11px;border-radius:999px;padding:3px 12px;font-weight:700;">ورود</span>
+      </div>
+      <div style="padding:14px 16px;font-size:10.5px;color:#5B6B85;line-height:1.8;">هدر دسکتاپ: لوگو + سه لینک + دکمه‌ی ورود در چیپ ملایم برند. پس از لاگین، همان دکمه به آواتار و لقب کاربر تبدیل می‌شود و منوی پروفایل باز می‌کند. هدر با اسکرول می‌چسبد و سایه‌ی یک‌پیکسلی ملایم می‌گیرد تا عمق بدون سنگینی حفظ شود.</div>
+    </div>
+  </div>
+  <!-- ناوبری موبایل -->
+  <div class="mock-phone" style="flex:0 0 200px;width:200px;">
+    <div class="mp-body" style="padding:12px 10px 0;">
+      <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:10px;text-align:center;font-size:9.5px;color:#5B6B85;">محتوای صفحه<br><span style="font-size:8px;">(ناوبری پایین، شناور روی محتوا)</span></div>
+      <div style="display:flex;justify-content:space-around;align-items:flex-end;background:#fff;border:1px solid #C9DDE2;border-bottom:none;border-radius:16px 16px 0 0;padding:8px 6px 4px;margin-top:12px;">
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">⌂</div>خانه</div>
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">★</div>لیدربرد</div>
+        <div style="width:40px;height:40px;border-radius:50%;background:#0E7490;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;margin-top:-16px;font-weight:700;">+</div>
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">◎</div>کامیونیتی</div>
+        <div style="text-align:center;font-size:8px;color:#0E7490;font-weight:700;"><div style="font-size:14px;">☺</div>من</div>
+      </div>
+    </div>
+  </div>
+</div>
+<figcaption>شکل ۴-۱: هدر سراسری (راست) و ناوبری پایین موبایل با دکمه‌ی مرکزی «جلسه جدید» (چپ). آیکون‌ها در پیاده‌سازی نهایی SVG اینلاین بدون کتابخانه‌اند.</figcaption>
+</figure>
+
+<h3 class="sub">حالت‌هایی که باید همیشه طراحی شده باشند</h3>
+<ul class="cl">
+  <li><b>لودینگ:</b> اسکلت خاکستریِ جای محتوا (Skeleton) — نه اسپینر؛ چون سرعت احساسی را حفظ می‌کند و پرش صفحه را نمی‌سازد.</li>
+  <li><b>خالی:</b> برای داشبورد جلسه‌ی اول «هنوز جلسه‌ای ندادی»، برای کامیونیتی «اولین نفر باش» — هر حالت خالی یک CTA دارد تا بن‌بست بصری نشود.</li>
+  <li><b>خطا:</b> پیام فارسی ساده با دکمه‌ی «تلاش دوباره»؛ هیچ متن خطای فنی خام به کاربر نمی‌رسد.</li>
+  <li><b>فوکوس و لمس:</b> حلقه‌ی فوکوس فیروزه‌ای ۳ پیکسلی برای ناوبری کیبورد، و حداقل هدف لمسی ۴۴×۴۴ پیکسل (استاندارد آموزشی دیتابیس اسکیل) روی همه‌ی دکمه‌ها.</li>
+</ul>

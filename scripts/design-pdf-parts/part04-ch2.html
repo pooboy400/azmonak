@@ -1,0 +1,47 @@
+
+<!-- فصل ۲ — سیستم رنگ -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۲</div>
+  <div class="sec-title">سیستم رنگ</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">رنگ آزمونک یک خانواده است: فیروزه‌ایِ برند (که هویت سند اصلی و کتاب الگوریتم‌ها را ادامه می‌دهد) روی بوم روشن آبی‌خاکستری. همه‌ی سطوح بزرگ کم‌اشباع‌اند و فقط نقاط کوچک تعاملی اشباع بالا می‌گیرند — دقیقاً مطابق قانون «مساحت بزرگ، اشباع کم» در سیستم پالت آبشاری. سواچ‌های زیر مقادیر واقعی توکن‌ها هستند و در ماکاپ‌های همین سند همان مقادیر استفاده شده‌اند.</p>
+
+<div class="sw-grid">
+  <div class="sw"><div class="chip" style="background:#F7FAFB;border-bottom:1px solid #C9DDE2;"></div><div class="lbl"><b>بوم اصلی — bg-0</b><span>#F7FAFB</span></div></div>
+  <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #C9DDE2;"></div><div class="lbl"><b>سطح و کارت — bg-1</b><span>#FFFFFF</span></div></div>
+  <div class="sw"><div class="chip" style="background:#E0F2F7;"></div><div class="lbl"><b>ملایم برند — primary-soft</b><span>#E0F2F7</span></div></div>
+  <div class="sw"><div class="chip" style="background:#0E7490;"></div><div class="lbl"><b>برند / CTA — primary</b><span>#0E7490</span></div></div>
+</div>
+<div class="sw-grid">
+  <div class="sw"><div class="chip" style="background:#102A33;"></div><div class="lbl"><b>متن اصلی — text-1</b><span>#102A33</span></div></div>
+  <div class="sw"><div class="chip" style="background:#5B6B85;"></div><div class="lbl"><b>متن ثانویه — text-2</b><span>#5B6B85</span></div></div>
+  <div class="sw"><div class="chip" style="background:#0F172A;"></div><div class="lbl"><b>فوتر تیره — footer</b><span>#0F172A</span></div></div>
+  <div class="sw"><div class="chip" style="background:#E2E8F0;"></div><div class="lbl"><b>حاشیه — line</b><span>#E2E8F0</span></div></div>
+</div>
+<div class="sw-grid">
+  <div class="sw"><div class="chip" style="background:#059669;"></div><div class="lbl"><b>موفقیت — success</b><span>#059669</span></div></div>
+  <div class="sw"><div class="chip" style="background:#B45309;"></div><div class="lbl"><b>هشدار مطالعه — warning</b><span>#B45309</span></div></div>
+  <div class="sw"><div class="chip" style="background:#BE123C;"></div><div class="lbl"><b>خطا / افت — danger</b><span>#BE123C</span></div></div>
+  <div class="sw"><div class="chip" style="background:#6D28D9;"></div><div class="lbl"><b>توان R_s — violet</b><span>#6D28D9</span></div></div>
+</div>
+
+<h3 class="sub">کنتراست و دسترسی‌پذیری رنگ</h3>
+<p>فیروزه‌ای برند عمداً نسخه‌ی تیره‌شده‌ی آن (<code>#0E7490</code>) روی پس‌زمینه‌های روشن استفاده می‌شود تا نسبت کنتراست متن سفید روی دکمه‌ها به بالای حد AA برسد؛ نسخه‌ی روشن‌تر فیروزه‌ای فقط برای پس‌زمینه‌های ملایم (<code>#E0F2F7</code>) و هایلایت‌هاست، نه متن. متن اصلی روی بوم کنتراست نزدیک به AAA می‌گیرد که برای سؤال‌های بلند آزمون حیاتی است. رنگ‌های معنایی هم همگی نسخه‌های ۶۰۰–۷۰۰ تیره‌ی پالت‌های استاندارد انتخاب شده‌اند تا هم روی سفید خوانا باشند و هم در حالت تک‌رنگ (برای کاربران کوررنگ) از طریق نماد و موقعیت قابل‌تشخیص بمانند — یعنی هیچ اطلاعات مهمی فقط با رنگ منتقل نمی‌شود.</p>
+
+<table class="keep">
+<thead><tr><th style="width:24%">توکن</th><th style="width:16%">مقدار</th><th>قاعده استفاده</th></tr></thead>
+<tbody>
+<tr><td><code>--bg-0</code></td><td>#F7FAFB</td><td>بوم همه‌ی صفحه‌ها؛ هیچ بخشی وسط بوم یک‌رنگ عریضِ اشباع نمی‌گیرد</td></tr>
+<tr><td><code>--bg-1</code></td><td>#FFFFFF</td><td>کارت‌ها، سطوح برجسته، گزینه‌های سؤال</td></tr>
+<tr><td><code>--primary</code></td><td>#0E7490</td><td>فقط عناصر تعاملی: دکمه اصلی، لینک، حالت انتخاب، خط نمودار نمره</td></tr>
+<tr><td><code>--primary-soft</code></td><td>#E0F2F7</td><td>هاور، چیپ انتخاب‌شده، پس‌زمینه اطلاع‌رسانی ملایم</td></tr>
+<tr><td><code>--success</code></td><td>#059669</td><td>پاسخ درست، ارتقای سطح، تیک مرور</td></tr>
+<tr><td><code>--warning</code></td><td>#B45309</td><td>بنر «برای دسته X مطالعه کن» و هشدار نوسان دبیر</td></tr>
+<tr><td><code>--danger</code></td><td>#BE123C</td><td>پاسخ غلط، افت سطح، خطا</td></tr>
+<tr><td><code>--violet</code></td><td>#6D28D9</td><td>خط توان R_s در نمودار دولایه (D15) — تنها رنگ خارج از خانواده، مجاز به‌عنوان سری دوم نمودار</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><span class="h">قاعده‌ی طلایی آزمونک</span><br>هیچ رنگ معنایی بدون معنا رنگ نمی‌شود. اگر روی صفحه هیچ اتفاقی نیفتاده، صفحه فقط سرمه‌ای و سفید است. رنگ، زبانِ رویدادهاست: ورود رنگ یعنی یک رویداد واقعی در موتور تطبیقی افتاده و سیستم می‌خواهد درباره‌اش حرف بزند.</div>

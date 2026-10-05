@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* ===== سند طراحی فرانت آزمونک — 720×1020 — RTL لایت ===== */
+@page { size: 720px 1020px; margin: 0; }
+
+:root{
+  --c-bg:#F7FAFB;        /* XL */
+  --c-section:#EFF5F7;   /* XL */
+  --c-card:#E9F1F4;      /* L  */
+  --c-stripe:#F1F6F8;    /* L  */
+  --c-header:#164E63;    /* M  */
+  --c-border:#C9DDE2;    /* S  */
+  --c-accent:#0E7490;    /* XS */
+  --c-accent2:#6D28D9;   /* XS — فقط R_s / بنفش */
+  --c-text:#102A33;
+  --c-muted:#56727D;
+  /* پالت محصول (فقط داخل سواچ‌ها و ماکاپ‌ها) */
+  --p-primary:#0E7490; --p-soft:#E0F2F7; --p-success:#059669; --p-warn:#B45309;
+  --p-danger:#BE123C; --p-violet:#6D28D9; --p-gold:#D97706;
+}
+
+html,body{
+  margin:0;padding:0;width:720px;background:var(--c-bg);color:var(--c-text);
+  font-family:'Vazirmatn','Noto Sans SC',sans-serif;
+  font-size:15px;line-height:1.95;
+}
+@media screen{
+  html{height:auto;display:flex;justify-content:center;background:#DCE6EA;}
+  body{transform-origin:top center;margin:20px auto;box-shadow:0 0 40px rgba(16,42,51,.18);}
+}
+p,td,li{overflow-wrap:break-word;word-break:break-word;}
+p{margin:0 0 12px;text-align:justify;}
+
+/* ---------- جلد ---------- */
+.cover{
+  width:720px;height:1020px;box-sizing:border-box;position:relative;
+  break-after:page;overflow:hidden;background:var(--c-bg);
+  border:none;outline:none;box-shadow:none;
+}
+.cv-l1{position:absolute;inset:0;overflow:hidden;z-index:1;}
+.cv-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(14,116,144,.05) .5px,transparent .5px),
+                   linear-gradient(90deg,rgba(14,116,144,.05) .5px,transparent .5px);
+  background-size:50px 50px;
+}
+.cv-arc{
+  position:absolute;left:-40%;bottom:-42%;width:130%;height:80%;
+  border-radius:50% 50% 0 0 / 55% 55% 0 0;
+  background:rgba(14,116,144,.045);
+}
+.cv-l2{position:absolute;inset:0;z-index:2;}
+.cv-anchor{position:absolute;right:86px;top:102px;bottom:160px;width:6px;background:var(--c-accent);border-radius:3px;}
+.cv-l3{position:absolute;inset:0;z-index:3;}
+.cv-kicker{position:absolute;top:153px;right:158px;font-size:13px;letter-spacing:4px;color:var(--c-accent);font-weight:500;}
+.cv-hero{position:absolute;top:255px;right:158px;font-size:64px;font-weight:700;line-height:1.15;color:var(--c-text);max-width:440px;}
+.cv-hero small{display:block;font-size:26px;font-weight:500;color:var(--c-accent);margin-top:14px;letter-spacing:.5px;}
+.cv-summary{position:absolute;top:520px;right:158px;max-width:430px;font-size:16px;line-height:1.9;color:var(--c-muted);text-align:justify;}
+.cv-meta{position:absolute;top:758px;right:158px;font-size:15px;color:var(--c-text);line-height:2.1;}
+.cv-meta b{color:var(--c-accent);font-weight:700;}
+.cv-foot{position:absolute;bottom:78px;right:158px;font-size:11px;letter-spacing:2.5px;color:var(--c-muted);opacity:.75;}
+.cv-deco{position:absolute;left:56px;top:64px;z-index:2;opacity:.9;}
+
+/* ---------- فهرست ---------- */
+.toc-page{
+  width:720px;height:1020px;box-sizing:border-box;position:relative;
+  break-after:page;background:var(--c-bg);padding:74px 66px;
+}
+.toc-title{font-size:30px;font-weight:700;color:var(--c-text);margin:0 0 6px;}
+.toc-sub{font-size:13px;color:var(--c-muted);margin-bottom:30px;}
+.toc-item{
+  display:flex;align-items:baseline;gap:14px;padding:12.5px 2px;
+  border-bottom:1px solid var(--c-border);font-size:15.5px;
+}
+.toc-item .no{color:var(--c-accent);font-weight:700;min-width:34px;font-size:14px;}
+.toc-item .t{font-weight:500;}
+.toc-item .d{color:var(--c-muted);font-size:12px;margin-right:auto;text-align:left;}
+.toc-note{margin-top:26px;background:var(--c-card);border:1px solid var(--c-border);border-radius:12px;padding:16px 18px;font-size:13.5px;color:var(--c-muted);line-height:1.9;}
+
+/* ---------- بدنه ---------- */
+.main-content{padding:58px 60px 44px;}
+.chapter-header{break-after:avoid;break-inside:avoid;margin-top:28px;margin-bottom:14px;}
+.chapter-header.first{margin-top:0;}
+.sec-tag{
+  display:inline-block;background:var(--c-header);color:#fff;font-size:11px;
+  padding:3px 12px;border-radius:999px;letter-spacing:1.5px;margin-bottom:10px;
+}
+.sec-title{font-size:27px;font-weight:700;line-height:1.4;color:var(--c-text);}
+.sec-divider{width:64px;height:4px;background:var(--c-accent);border-radius:2px;margin-top:10px;}
+h3.sub{font-size:18.5px;font-weight:700;color:var(--c-header);margin:20px 0 8px;break-after:avoid;}
+.lead{font-size:15.5px;color:var(--c-text);}
+
+/* کارت‌ها و بلوک‌ها */
+.card{background:#fff;border:1px solid var(--c-border);border-radius:12px;padding:16px 18px;margin-bottom:14px;break-inside:avoid;}
+.card.soft{background:var(--c-card);border-color:var(--c-border);}
+.callout{
+  background:var(--p-soft);border-right:4px solid var(--c-accent);border-radius:10px;
+  padding:12px 16px;font-size:13.5px;line-height:1.85;color:var(--c-text);
+  margin:12px 0 14px;break-inside:avoid;
+}
+.callout .h{font-weight:700;color:var(--c-accent);font-size:13.5px;}
+
+/* جدول‌ها */
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 16px;background:#fff;border-radius:10px;overflow:hidden;}
+table.keep{break-inside:avoid;}
+thead{display:table-header-group;}
+th{background:var(--c-header);color:#fff;font-weight:500;padding:9px 10px;text-align:right;font-size:12px;}
+td{padding:8px 10px;border-bottom:1px solid var(--c-border);vertical-align:top;line-height:1.75;}
+tbody tr:nth-child(odd){background:var(--c-stripe);}
+tbody tr:last-child td{border-bottom:none;}
+td code, .mono{font-family:'Vazirmatn','Noto Sans SC',sans-serif;background:var(--c-card);padding:1px 6px;border-radius:6px;font-size:11.5px;color:var(--c-header);direction:ltr;unicode-bidi:embed;}
+
+/* شکل‌ها و ماکاپ‌ها */
+figure.fig{display:block;width:100%;margin:14px auto 18px;break-inside:avoid;}
+figure.fig figcaption{font-size:11.5px;color:var(--c-muted);margin-top:8px;text-align:center;line-height:1.7;}
+.fig-row{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;max-width:100%;}
+
+/* قاب مرورگر */
+.mock-browser{width:100%;max-width:600px;margin:0 auto;background:#fff;border:1px solid var(--c-border);border-radius:14px;overflow:hidden;break-inside:avoid;}
+.mb-bar{background:var(--c-section);padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--c-border);}
+.mb-dot{width:9px;height:9px;border-radius:50%;background:var(--c-border);}
+.mb-url{flex:1;background:#fff;border:1px solid var(--c-border);border-radius:999px;font-size:9.5px;color:var(--c-muted);padding:2px 12px;text-align:right;direction:ltr;}
+.mb-body{padding:14px 18px 16px;background:#F7FAFB;}
+
+/* قاب گوشی */
+.mock-phone{width:248px;flex:0 0 248px;background:#fff;border:2px solid var(--c-border);border-radius:22px;overflow:hidden;}
+.mp-status{display:flex;justify-content:space-between;align-items:center;background:var(--c-header);color:#fff;font-size:8.5px;padding:5px 12px;}
+.mp-head{display:flex;align-items:center;gap:8px;background:var(--c-header);color:#fff;font-size:11px;font-weight:700;padding:9px 12px 11px;}
+.mp-body{background:var(--c-bg);padding:10px 11px 12px;}
+.m-card{background:#fff;border:1px solid var(--c-border);border-radius:10px;padding:9px 10px;margin-bottom:8px;}
+.m-title{font-size:10px;font-weight:700;color:var(--c-text);}
+.m-sub{font-size:8.5px;color:var(--c-muted);line-height:1.6;}
+.m-btn{background:var(--c-accent);color:#fff;border-radius:9px;text-align:center;font-size:10.5px;font-weight:700;padding:8px 6px;}
+.m-btn.ghost{background:var(--p-soft);color:var(--c-accent);border:1px solid var(--c-accent);}
+.m-chip{display:inline-block;background:var(--p-soft);color:var(--c-accent);font-size:8.5px;border-radius:999px;padding:2px 9px;margin:0 0 0 4px;}
+.m-progress{display:flex;gap:3px;margin:2px 0 9px;}
+.m-progress i{flex:1;height:5px;border-radius:3px;background:var(--c-border);}
+.m-progress i.on{background:var(--c-accent);}
+.m-option{border:1.5px solid var(--c-border);border-radius:9px;background:#fff;font-size:9.5px;color:var(--c-text);padding:8px 10px;margin-bottom:6px;}
+.m-option.sel{border-color:var(--c-accent);background:var(--p-soft);color:var(--c-accent);font-weight:700;}
+.m-trust{display:flex;gap:6px;margin-top:2px;}
+.m-trust div{flex:1;border-radius:9px;text-align:center;font-size:9.5px;font-weight:700;padding:9px 4px;}
+.m-trust .t1{background:#D9F2EA;color:var(--p-success);}
+.m-trust .t2{background:#FBE4E9;color:var(--p-danger);}
+.m-fb{border-radius:9px;padding:7px 9px;font-size:8.5px;line-height:1.6;margin-top:8px;}
+.m-fb.ok{background:#D9F2EA;color:#065F46;border-right:3px solid var(--p-success);}
+.m-fb.no{background:#FBE4E9;color:#9F1239;border-right:3px solid var(--p-danger);}
+
+/* سواچ رنگ */
+.sw-grid{display:flex;flex-wrap:wrap;gap:12px;max-width:100%;margin:12px 0 16px;}
+.sw{flex:1 1 150px;min-width:150px;max-width:100%;background:#fff;border:1px solid var(--c-border);border-radius:12px;overflow:hidden;break-inside:avoid;}
+.sw .chip{height:52px;}
+.sw .lbl{padding:8px 12px;font-size:11px;line-height:1.7;}
+.sw .lbl b{display:block;font-size:11.5px;color:var(--c-text);}
+.sw .lbl span{color:var(--c-muted);direction:ltr;unicode-bidi:embed;font-size:10px;}
+
+/* نمونه تایپ */
+.spec-row{display:flex;align-items:baseline;gap:14px;border-bottom:1px dashed var(--c-border);padding:9px 2px;break-inside:avoid;}
+.spec-row .meta{min-width:150px;font-size:10.5px;color:var(--c-muted);line-height:1.6;}
+.spec-row .meta b{color:var(--c-accent);font-size:11px;}
+
+/* لیست */
+ul.cl{margin:4px 0 14px;padding-right:20px;}
+ul.cl li{margin-bottom:7px;text-align:right;line-height:1.85;}
+ul.cl li b{color:var(--c-header);}
+ol.cl{margin:4px 0 14px;padding-right:22px;}
+ol.cl li{margin-bottom:9px;text-align:right;line-height:1.85;}
+ol.cl li b{color:var(--c-accent);}
+
+/* ---------- پایان ---------- */
+.ending{
+  width:720px;height:1020px;box-sizing:border-box;break-before:page;overflow:hidden;
+  background:var(--c-bg);position:relative;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:80px 90px;
+}
+.ending .line{width:70px;height:5px;background:var(--c-accent);border-radius:3px;margin:26px auto;}
+.ending .big{font-size:34px;font-weight:700;line-height:1.6;}
+.ending .sm{font-size:15px;color:var(--c-muted);line-height:2.05;max-width:470px;text-align:center;}
+.ending .brand{margin-top:56px;font-size:12px;letter-spacing:2px;color:var(--c-accent);}
+.ending .year{font-size:10.5px;color:var(--c-muted);margin-top:8px;letter-spacing:2px;}
+</style>
+</head>
+<body>
+
+<!-- ================= جلد ================= -->
+<div class="cover">
+  <div class="cv-l1">
+    <div class="cv-grid"></div>
+    <div class="cv-arc"></div>
+  </div>
+  <div class="cv-l2">
+    <div class="cv-anchor"></div>
+    <svg class="cv-deco" width="128" height="128" viewBox="0 0 150 150" fill="none">
+      <circle cx="60" cy="60" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.16"/>
+      <circle cx="72" cy="66" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.26"/>
+      <circle cx="84" cy="72" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.4"/>
+      <circle cx="126" cy="34" r="5" fill="#0E7490" opacity="0.45"/>
+      <circle cx="116" cy="46" r="2.5" fill="#0E7490" opacity="0.25"/>
+    </svg>
+  </div>
+  <div class="cv-l3">
+    <div class="cv-kicker">سند طراحی فرانت — نسخه ۱٫۰ لایت</div>
+    <div class="cv-hero">آزمونک<small>طراحی رابط کاربری و تجربه کاربری وب‌اپ</small></div>
+    <div class="cv-summary">این سند تصویریِ کاملِ جهت‌گیری طراحی فرانت آزمونک است: پالت لایت و روشن، تایپوگرافی وزیرمتن، اجزای سراسری، و ماکاپ واقعی هر صفحه از لندینگ و لیدربرد و کامیونیتی تا ورود، پروفایل و فرم آزمون. هر تصمیم با دلیلش نوشته شده و هر پیش‌فرضِ قابل‌وتو جدا نشان داده شده تا پیش از شروع کد، همه‌چیز روی کاغذ تأیید شود.</div>
+    <div class="cv-meta">
+      پدیدآور: <b>پویا</b> — جشنواره نوجوان خوارزمی<br>
+      سند مکمل: برنامه توسعه v1.3 (D1–D16) و کتاب سه‌لایه الگوریتم‌ها
+    </div>
+    <div class="cv-foot">AZMOONAK · FRONTEND DESIGN SPEC · LIGHT EDITION</div>
+  </div>
+</div>
+
+<!-- ================= فهرست ================= -->
+<div class="toc-page">
+  <div class="toc-title">فهرست مطالب</div>
+  <div class="toc-sub">۱۲ فصل — از شالوده و توکن‌ها تا ماکاپ تک‌تک صفحات و نقشه راه ساخت</div>
+
+  <div class="toc-item"><span class="no">۱</span><span class="t">شالوده‌ی طراحی</span><span class="d">قطب‌نما، سبک «تختِ صمیمی»، سه قید سخت</span></div>
+  <div class="toc-item"><span class="no">۲</span><span class="t">سیستم رنگ</span><span class="d">سواچ توکن‌ها، قاعده‌ی رنگ معنایی</span></div>
+  <div class="toc-item"><span class="no">۳</span><span class="t">تایپوگرافی</span><span class="d">وزیرمتن، مقیاس نمونه‌دار، اعداد فارسی</span></div>
+  <div class="toc-item"><span class="no">۴</span><span class="t">اجزای سراسری</span><span class="d">هدر، ناوبری موبایل، حالت‌ها، دسترسی‌پذیری</span></div>
+  <div class="toc-item"><span class="no">۵</span><span class="t">صفحه اصلی — لندینگ</span><span class="d">الگوی سه‌قدمی + ماکاپ کامل</span></div>
+  <div class="toc-item"><span class="no">۶</span><span class="t">لیدربرد (نفرات برتر)</span><span class="d">پودیوم، لیگ هفتگی، حریم خصوصی</span></div>
+  <div class="toc-item"><span class="no">۷</span><span class="t">پیشرفت بقیه — کامیونیتی</span><span class="d">فید، چالش گروهی، اشتراک‌گذاری</span></div>
+  <div class="toc-item"><span class="no">۸</span><span class="t">ورود، پروفایل و فرم آزمون</span><span class="d">سه ماکاپ تعاملی قلب محصول</span></div>
+  <div class="toc-item"><span class="no">۹</span><span class="t">ستون پشتیبانی فوتر</span><span class="d">پنج صفحه: تماس، همکاری، قوانین، سوالات، راهنما</span></div>
+  <div class="toc-item"><span class="no">۱۰</span><span class="t">پرفورمنس و بودجه حجم</span><span class="d">سقف ۲۰۰KB صفحه آزمون، Lighthouse</span></div>
+  <div class="toc-item"><span class="no">۱۱</span><span class="t">تصمیم‌های قابل وتو</span><span class="d">جدول DT1–DT9 در انتظار رأی پویا</span></div>
+  <div class="toc-item"><span class="no">۱۲</span><span class="t">نقشه راه پیاده‌سازی فرانت</span><span class="d">هفت گام ساخت با معیار پذیرش</span></div>
+
+  <div class="toc-note">همه‌ی ماکاپ‌های این سند با همان پالت و فونتِ طراحیِ واقعی محصول رسم شده‌اند — یعنی چیزی که می‌بینی همان چیزی است که در کد ساخته می‌شود. رنگ‌ها، اندازه‌ها و چینش‌ها دقیقاً از توکن‌های فصل ۲ و ۳ گرفته شده‌اند؛ پس این سند هم‌زمان اولین «پیاده‌سازی» طراحی هم هست و می‌توانی به‌عنوان مرجع پذیرش کد از آن استفاده کنی.</div>
+</div>
+
+<!-- ================= بدنه ================= -->
+<div class="main-content">
+
+<!-- فصل ۱ -->
+<div class="chapter-header first">
+  <div class="sec-tag">فصل ۱</div>
+  <div class="sec-title">شالوده‌ی طراحی</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">قطب‌نمای طراحی آزمونک یک جمله است: <b>«موتور جدی، روحیه‌ی بازیگوش»</b>. زیر کاپوت، یک سیستم تطبیقی دقیق با Elo و نردبان سطح و مرور فاصله‌دار کار می‌کند؛ اما آن‌چه نوجوان می‌بیند باید صمیمی، روشن و بدون ابهام باشد. طراحی فرانت وظیفه دارد این دوگانگی را به زبان بصری ترجمه کند: بومِ ساکت و روشن که فکر را تمرکز می‌دهد، و رنگ و حرکت که فقط در لحظه‌های معنادار ظاهر می‌شوند — جواب درست، ارتقای سطح، یادآوری مرور.</p>
+
+<h3 class="sub">چرا تم لایت؟</h3>
+<p>تم لایت بر اساس تصمیم مستقیم پویا انتخاب شد و بر پیش‌فرض تیره‌ی اولیه اولویت دارد. این انتخاب با مخاطب محصول کاملاً سازگار است: دانش‌آموزی که بیشتر بعدازظهرها و در محیط پرنور مطالعه می‌کند، رابط روشن را راحت‌تر می‌خواند؛ صفحه‌ی سؤال سفید، خوانایی متن بلند سؤال را بالا می‌برد و در گوشی‌های ارزان‌قیمت هم روشنایی صفحه کمتر مصرف می‌شود. تنها استثنا، فوتر سایت است که به‌قرارداد رایجِ طراحی، سرمه‌ای تیره می‌ماند تا لنگر بصری و کنتراست خوبی بسازد — این استثنا در فصل ۹ مستند است.</p>
+
+<h3 class="sub">سبک: «تختِ صمیمی»</h3>
+<p>جست‌وجوی دیتابیس سبکِ اسکیل ui-ux-pro-max برای محصول آموزشی دو نتیجه‌ی کلیدی داد: سبک <b>Flat Design</b> با عملکرد عالی و سازگاری کامل با Tailwind، و توصیه‌ی بخش e-learning به ترکیب <b>Vibrant & Block-based</b> با لمس‌های نرم و کارت‌محور. آزمونک این دو را ترکیب می‌کند: پایه کاملاً تخت و سبک (بدون گلس‌مورفینگ و بلاب تزئینی) با عمق خیلی ملایم فقط روی عناصر تعاملی — سایه‌ی کم‌رنگ، شعاع بزرگ، هاور واضح. نتیجه هم برای بودجه حجم ۲۰۰ کیلوبایتی سند امن است، هم حس «بازی جدی» نوجوان‌پسند می‌سازد.</p>
+
+<div class="callout"><span class="h">سه قید سخت که هیچ تصمیمی از آن‌ها عبور نمی‌کند</span><br>
+۱) تم لایت و روشن در کل رابط؛ ۲) بودجه حجم صفحه آزمون زیر ۲۰۰KB با Lighthouse بالای ۹۰ روی شبیه‌سازی 3G (تسک 3.7 سند توسعه)؛ ۳) RTL کامل با فونت وزیرمتن سابست‌شده و اعداد فارسی (D4 و D5). هر پیشنهاد طراحی‌ای که با این سه‌تا بجنگد، حذف است — حتی اگر زیباتر باشد.</div>
+
+<h3 class="sub">اصل آخر: رنگ فقط وقتی معنا دارد</h3>
+<p>در صفحه‌ی ساکن، کاربر باید فقط سرمه‌ای متن و سفید بوم و کمی فیروزه‌ایِ برند را ببیند. رنگ‌های سبز، طلایی، سرخ و بنفش «جایزه‌ی اتفاق» هستند: سبز فقط وقتی جواب درست ثبت شد، سرخ فقط وقتی اشتباه مشخص شد، طلایی فقط وقتی سطح یا لیگ عوض شد. این خودسازی، دقت معنایی رابط را بالا می‌برد و باعث می‌شود سیگنال‌های مهم الگوریتم — از ارتقای نردبان D16 تا هشدار مطالعه — در میان رنگ‌های تزئینی گم نشوند. همان قاعده‌ای که کتاب الگوریتم‌ها هم با آن ساخته شد و به داور جشنواره ثابت می‌کند تصمیم‌های طراحی، سیستم‌مند و قابل‌دفاع‌اند.</p>
+
+<!-- فصل ۲ — سیستم رنگ -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۲</div>
+  <div class="sec-title">سیستم رنگ</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">رنگ آزمونک یک خانواده است: فیروزه‌ایِ برند (که هویت سند اصلی و کتاب الگوریتم‌ها را ادامه می‌دهد) روی بوم روشن آبی‌خاکستری. همه‌ی سطوح بزرگ کم‌اشباع‌اند و فقط نقاط کوچک تعاملی اشباع بالا می‌گیرند — دقیقاً مطابق قانون «مساحت بزرگ، اشباع کم» در سیستم پالت آبشاری. سواچ‌های زیر مقادیر واقعی توکن‌ها هستند و در ماکاپ‌های همین سند همان مقادیر استفاده شده‌اند.</p>
+
+<div class="sw-grid">
+  <div class="sw"><div class="chip" style="background:#F7FAFB;border-bottom:1px solid #C9DDE2;"></div><div class="lbl"><b>بوم اصلی — bg-0</b><span>#F7FAFB</span></div></div>
+  <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #C9DDE2;"></div><div class="lbl"><b>سطح و کارت — bg-1</b><span>#FFFFFF</span></div></div>
+  <div class="sw"><div class="chip" style="background:#E0F2F7;"></div><div class="lbl"><b>ملایم برند — primary-soft</b><span>#E0F2F7</span></div></div>
+  <div class="sw"><div class="chip" style="background:#0E7490;"></div><div class="lbl"><b>برند / CTA — primary</b><span>#0E7490</span></div></div>
+</div>
+<div class="sw-grid">
+  <div class="sw"><div class="chip" style="background:#102A33;"></div><div class="lbl"><b>متن اصلی — text-1</b><span>#102A33</span></div></div>
+  <div class="sw"><div class="chip" style="background:#5B6B85;"></div><div class="lbl"><b>متن ثانویه — text-2</b><span>#5B6B85</span></div></div>
+  <div class="sw"><div class="chip" style="background:#0F172A;"></div><div class="lbl"><b>فوتر تیره — footer</b><span>#0F172A</span></div></div>
+  <div class="sw"><div class="chip" style="background:#E2E8F0;"></div><div class="lbl"><b>حاشیه — line</b><span>#E2E8F0</span></div></div>
+</div>
+<div class="sw-grid">
+  <div class="sw"><div class="chip" style="background:#059669;"></div><div class="lbl"><b>موفقیت — success</b><span>#059669</span></div></div>
+  <div class="sw"><div class="chip" style="background:#B45309;"></div><div class="lbl"><b>هشدار مطالعه — warning</b><span>#B45309</span></div></div>
+  <div class="sw"><div class="chip" style="background:#BE123C;"></div><div class="lbl"><b>خطا / افت — danger</b><span>#BE123C</span></div></div>
+  <div class="sw"><div class="chip" style="background:#6D28D9;"></div><div class="lbl"><b>توان R_s — violet</b><span>#6D28D9</span></div></div>
+</div>
+
+<h3 class="sub">کنتراست و دسترسی‌پذیری رنگ</h3>
+<p>فیروزه‌ای برند عمداً نسخه‌ی تیره‌شده‌ی آن (<code>#0E7490</code>) روی پس‌زمینه‌های روشن استفاده می‌شود تا نسبت کنتراست متن سفید روی دکمه‌ها به بالای حد AA برسد؛ نسخه‌ی روشن‌تر فیروزه‌ای فقط برای پس‌زمینه‌های ملایم (<code>#E0F2F7</code>) و هایلایت‌هاست، نه متن. متن اصلی روی بوم کنتراست نزدیک به AAA می‌گیرد که برای سؤال‌های بلند آزمون حیاتی است. رنگ‌های معنایی هم همگی نسخه‌های ۶۰۰–۷۰۰ تیره‌ی پالت‌های استاندارد انتخاب شده‌اند تا هم روی سفید خوانا باشند و هم در حالت تک‌رنگ (برای کاربران کوررنگ) از طریق نماد و موقعیت قابل‌تشخیص بمانند — یعنی هیچ اطلاعات مهمی فقط با رنگ منتقل نمی‌شود.</p>
+
+<table class="keep">
+<thead><tr><th style="width:24%">توکن</th><th style="width:16%">مقدار</th><th>قاعده استفاده</th></tr></thead>
+<tbody>
+<tr><td><code>--bg-0</code></td><td>#F7FAFB</td><td>بوم همه‌ی صفحه‌ها؛ هیچ بخشی وسط بوم یک‌رنگ عریضِ اشباع نمی‌گیرد</td></tr>
+<tr><td><code>--bg-1</code></td><td>#FFFFFF</td><td>کارت‌ها، سطوح برجسته، گزینه‌های سؤال</td></tr>
+<tr><td><code>--primary</code></td><td>#0E7490</td><td>فقط عناصر تعاملی: دکمه اصلی، لینک، حالت انتخاب، خط نمودار نمره</td></tr>
+<tr><td><code>--primary-soft</code></td><td>#E0F2F7</td><td>هاور، چیپ انتخاب‌شده، پس‌زمینه اطلاع‌رسانی ملایم</td></tr>
+<tr><td><code>--success</code></td><td>#059669</td><td>پاسخ درست، ارتقای سطح، تیک مرور</td></tr>
+<tr><td><code>--warning</code></td><td>#B45309</td><td>بنر «برای دسته X مطالعه کن» و هشدار نوسان دبیر</td></tr>
+<tr><td><code>--danger</code></td><td>#BE123C</td><td>پاسخ غلط، افت سطح، خطا</td></tr>
+<tr><td><code>--violet</code></td><td>#6D28D9</td><td>خط توان R_s در نمودار دولایه (D15) — تنها رنگ خارج از خانواده، مجاز به‌عنوان سری دوم نمودار</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><span class="h">قاعده‌ی طلایی آزمونک</span><br>هیچ رنگ معنایی بدون معنا رنگ نمی‌شود. اگر روی صفحه هیچ اتفاقی نیفتاده، صفحه فقط سرمه‌ای و سفید است. رنگ، زبانِ رویدادهاست: ورود رنگ یعنی یک رویداد واقعی در موتور تطبیقی افتاده و سیستم می‌خواهد درباره‌اش حرف بزند.</div>
+
+<!-- فصل ۳ — تایپوگرافی -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۳</div>
+  <div class="sec-title">تایپوگرافی</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">فونت محصول <b>وزیرمتن</b> است — همان انتخاب D4 سند توسعه و همان فونت کتاب الگوریتم‌ها؛ هویت یکدست می‌ماند و فایل‌های فونت از قبل در مخزن آماده‌اند. دیتابیس تایپوگرافی اسکیل برای RTL فقط خانواده‌های Noto عربی و عبری داشت که تأیید کرد انتخاب وزیرمتن برای فارسی بهتر از همه‌ی پیشنهادهای عمومی است. وزیرمتن به‌صورت woff2 سابست‌شده با <code>unicode-range</code> لود می‌شود (متن، عنوان و عدد جدا) تا سهم فعال فونت روی صفحه آزمون حدود ۳۰ تا ۴۰ کیلوبایت بماند.</p>
+
+<div class="card" style="padding:6px 18px 10px;">
+  <div class="spec-row"><span class="meta"><b>عنوان صفحه</b> · Bold 700<br>۲۲–۲۴px</span><span style="font-size:23px;font-weight:700;">جلسه امروزت آماده است</span></div>
+  <div class="spec-row"><span class="meta"><b>متن سؤال</b> · Medium 500<br>۱۷–۱۸px — بزرگ‌ترین متن اپ</span><span style="font-size:17.5px;font-weight:500;">خروجی این قطعه کد چیست؟</span></div>
+  <div class="spec-row"><span class="meta"><b>گزینه‌ها و بدنه</b> · Regular 400<br>۱۶px — کف دسترسی‌پذیری</span><span style="font-size:16px;">الف) اجرا با خطا متوقف می‌شود</span></div>
+  <div class="spec-row"><span class="meta"><b>متن ثانویه</b> · Regular 400<br>۱۳–۱۴px</span><span style="font-size:13.5px;color:#5B6B85;">مرور بعدی این مفهوم: ۹ روز دیگر</span></div>
+  <div class="spec-row" style="border-bottom:none;"><span class="meta"><b>اعداد داشبورد</b> · Bold 700<br>۲۸–۳۶px</span><span style="font-size:32px;font-weight:700;color:#0E7490;">۸۸٪</span></div>
+</div>
+
+<h3 class="sub">قواعد قطعی</h3>
+<ul class="cl">
+  <li><b>ارتفاع خط ۱٫۸ برای فارسی:</b> متن فارسی کشیده‌تر از لاتین خوانده می‌شود؛ ارتفاع خط ۱٫۸ در بدنه و ۱٫۵ در عناوین، جادار و خوانا است. برای فرمول‌های لاتینِ سؤال‌ها بلوک <code>dir="ltr"</code> جدا می‌شود تا جهت به‌هم نریزد.</li>
+  <li><b>اعداد فارسی در رابط، لاتین در فرمول:</b> نمره‌ها، پیشرفت و تاریخ‌ها با اعداد فارسی نمایش داده می‌شوند (۸۸٪ نه 88%)؛ اعداد لاتین فقط داخل عبارت‌های ریاضی سؤال. این قرارداد همان رویه کتاب سه‌لایه است و کاربر هرگز دو نظام عددی قاطی نمی‌بیند.</li>
+  <li><b>سلسله‌مراتب با وزن و رنگ، نه فقط اندازه:</b> عناوین با Bold و سرمه‌ای، بدنه با Regular، متن ثانویه با رنگ <code>text-2</code> — هر سه با هم تفاوت را چندلایه می‌کنند تا در اندازه‌های کوچک هم ساختار حفظ شود.</li>
+  <li><b>ممنوعیت فونت دوم:</b> هیچ صفحه‌ای فونت دیگری لود نمی‌کند؛ آیکون‌ها SVG اینلاین هستند و وارد سیستم تایپ نمی‌شوند. تک‌خانواده‌بودن هم بودجه حجم را حفظ می‌کند و هم یکدستی هویت.</li>
+</ul>
+
+<!-- فصل ۴ — اجزای سراسری -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۴</div>
+  <div class="sec-title">اجزای سراسری</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">دو قاب، در همه‌ی صفحات تکرار می‌شوند: هدرِ چسبان برای دسکتاپ/تبلت و نوار پایینِ آیکونی برای موبایل — چون نوجوان ایرانی اپ را با شستِ یک دست استفاده می‌کند. ماکاپ زیر هر دو را با همان توکن‌ها نشان می‌دهد؛ نوار پایین چهار مقصد اصلی را در دسترس نگه می‌دارد و دکمه‌ی اصلی «جلسه جدید» همیشه مرکز توجه است.</p>
+
+<figure class="fig">
+<div class="fig-row" style="align-items:flex-end;max-width:600px;margin:0 auto;">
+  <!-- هدر دسکتاپ -->
+  <div style="flex:1 1 320px;min-width:300px;max-width:100%;">
+    <div style="border:1px solid #C9DDE2;border-radius:14px;overflow:hidden;background:#fff;">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #C9DDE2;">
+        <span style="width:26px;height:26px;border-radius:8px;background:#0E7490;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">آ</span>
+        <span style="font-size:13px;font-weight:700;color:#102A33;">آزمونک</span>
+        <span style="font-size:11px;color:#5B6B85;margin-right:auto;margin-left:8px;">لیدربرد</span>
+        <span style="font-size:11px;color:#5B6B85;margin-left:8px;">پیشرفت بقیه</span>
+        <span style="background:#E0F2F7;color:#0E7490;font-size:11px;border-radius:999px;padding:3px 12px;font-weight:700;">ورود</span>
+      </div>
+      <div style="padding:14px 16px;font-size:10.5px;color:#5B6B85;line-height:1.8;">هدر دسکتاپ: لوگو + سه لینک + دکمه‌ی ورود در چیپ ملایم برند. پس از لاگین، همان دکمه به آواتار و لقب کاربر تبدیل می‌شود و منوی پروفایل باز می‌کند. هدر با اسکرول می‌چسبد و سایه‌ی یک‌پیکسلی ملایم می‌گیرد تا عمق بدون سنگینی حفظ شود.</div>
+    </div>
+  </div>
+  <!-- ناوبری موبایل -->
+  <div class="mock-phone" style="flex:0 0 200px;width:200px;">
+    <div class="mp-body" style="padding:12px 10px 0;">
+      <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:10px;text-align:center;font-size:9.5px;color:#5B6B85;">محتوای صفحه<br><span style="font-size:8px;">(ناوبری پایین، شناور روی محتوا)</span></div>
+      <div style="display:flex;justify-content:space-around;align-items:flex-end;background:#fff;border:1px solid #C9DDE2;border-bottom:none;border-radius:16px 16px 0 0;padding:8px 6px 4px;margin-top:12px;">
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">⌂</div>خانه</div>
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">★</div>لیدربرد</div>
+        <div style="width:40px;height:40px;border-radius:50%;background:#0E7490;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;margin-top:-16px;font-weight:700;">+</div>
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">◎</div>کامیونیتی</div>
+        <div style="text-align:center;font-size:8px;color:#0E7490;font-weight:700;"><div style="font-size:14px;">☺</div>من</div>
+      </div>
+    </div>
+  </div>
+</div>
+<figcaption>شکل ۴-۱: هدر سراسری (راست) و ناوبری پایین موبایل با دکمه‌ی مرکزی «جلسه جدید» (چپ). آیکون‌ها در پیاده‌سازی نهایی SVG اینلاین بدون کتابخانه‌اند.</figcaption>
+</figure>
+
+<h3 class="sub">حالت‌هایی که باید همیشه طراحی شده باشند</h3>
+<ul class="cl">
+  <li><b>لودینگ:</b> اسکلت خاکستریِ جای محتوا (Skeleton) — نه اسپینر؛ چون سرعت احساسی را حفظ می‌کند و پرش صفحه را نمی‌سازد.</li>
+  <li><b>خالی:</b> برای داشبورد جلسه‌ی اول «هنوز جلسه‌ای ندادی»، برای کامیونیتی «اولین نفر باش» — هر حالت خالی یک CTA دارد تا بن‌بست بصری نشود.</li>
+  <li><b>خطا:</b> پیام فارسی ساده با دکمه‌ی «تلاش دوباره»؛ هیچ متن خطای فنی خام به کاربر نمی‌رسد.</li>
+  <li><b>فوکوس و لمس:</b> حلقه‌ی فوکوس فیروزه‌ای ۳ پیکسلی برای ناوبری کیبورد، و حداقل هدف لمسی ۴۴×۴۴ پیکسل (استاندارد آموزشی دیتابیس اسکیل) روی همه‌ی دکمه‌ها.</li>
+</ul>
+
+<!-- فصل ۵ — لندینگ -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۵</div>
+  <div class="sec-title">صفحه اصلی — لندینگ</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">الگوی لندینگ مستقیماً از دیتابیس الگوهای اسکیل آمده: <b>Funnel سه‌قدمی</b>. نکته‌ی ظریف این‌که سه قدم آن الگو دقیقاً همان سه صحنه‌ی سند اصلی آزمونک است — «آزمون بده، بفهم چرا غلط زدی، مرور کن» — یعنی ساختار بازاریابی صفحه، از ساختار خود محصول بیرون می‌آید و هیچ ادعایی در لندینگ نمی‌آید که محصول تحویلش را ندهد. هر قدم یک CTA کوچک دارد و CTA اصلیِ «شروع رایگان» در انتهای قیف تکرار می‌شود.</p>
+
+<figure class="fig">
+<div class="mock-browser">
+  <div class="mb-bar"><span class="mb-dot"></span><span class="mb-dot"></span><span class="mb-dot"></span><span class="mb-url">azmoonak.ir</span></div>
+  <div class="mb-body" style="padding:0;">
+    <!-- hero -->
+    <div style="padding:26px 22px 20px;display:flex;gap:14px;align-items:center;background:linear-gradient(180deg,#F0F7F9,#F7FAFB);">
+      <div style="flex:1;">
+        <div style="font-size:19px;font-weight:700;color:#102A33;line-height:1.5;">هر سؤال، یک قدم بهتر شدن</div>
+        <div style="font-size:10.5px;color:#56727D;line-height:1.9;margin:6px 0 10px;">آزمونک سطحت را می‌سنجد، دلیل غلط‌هایت را می‌فهمد و می‌گوید فردا دقیقاً چه چیزی مرور کنی. بدون امتحان‌های خسته‌کننده، فقط ده سؤال در روز.</div>
+        <div style="display:flex;gap:6px;">
+          <span style="background:#0E7490;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:7px 14px;">شروع رایگان</span>
+          <span style="border:1px solid #0E7490;color:#0E7490;font-size:10px;border-radius:9px;padding:7px 12px;">چطور کار می‌کند؟</span>
+        </div>
+      </div>
+      <div style="width:118px;flex:0 0 118px;">
+        <div style="border:2px solid #C9DDE2;border-radius:14px;background:#fff;padding:8px 7px;">
+          <div style="font-size:8px;color:#5B6B85;margin-bottom:5px;">سؤال ۳ از ۱۰</div>
+          <div style="height:4px;background:#C9DDE2;border-radius:3px;margin-bottom:8px;"><div style="width:30%;height:4px;background:#0E7490;border-radius:3px;"></div></div>
+          <div style="font-size:8.5px;color:#102A33;line-height:1.6;margin-bottom:7px;">حاصل ۲ + ۲ × ۳ چیست؟</div>
+          <div style="border:1px solid #C9DDE2;border-radius:6px;font-size:8px;padding:4px 6px;margin-bottom:4px;color:#102A33;">۸</div>
+          <div style="border:1.5px solid #0E7490;background:#E0F2F7;border-radius:6px;font-size:8px;padding:4px 6px;color:#0E7490;font-weight:700;">۱۲ ✓</div>
+        </div>
+      </div>
+    </div>
+    <!-- سه قدم -->
+    <div style="display:flex;gap:8px;padding:14px 18px 4px;">
+      <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:12px;padding:10px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:#0E7490;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۱</div>
+        <div style="font-size:10px;font-weight:700;">آزمون بده</div>
+        <div style="font-size:8.5px;color:#56727D;line-height:1.7;">ده سؤال که سطح واقعی‌ات را می‌سنجد</div>
+      </div>
+      <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:12px;padding:10px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:#0E7490;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۲</div>
+        <div style="font-size:10px;font-weight:700;">بفهم چرا غلط زدی</div>
+        <div style="font-size:8.5px;color:#56727D;line-height:1.7;">بازخورد یک‌خطی برای هر سؤال</div>
+      </div>
+      <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:12px;padding:10px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:#0E7490;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;">۳</div>
+        <div style="font-size:10px;font-weight:700;">مرور کن</div>
+        <div style="font-size:8.5px;color:#56727D;line-height:1.7;">فردا چه مرور کنی — با علم فاصله‌دار</div>
+      </div>
+    </div>
+    <!-- اثبات اجتماعی -->
+    <div style="display:flex;gap:8px;padding:10px 18px;">
+      <div style="flex:1;background:#E9F1F4;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#0E7490;">۱۲۰</div><div style="font-size:8px;color:#56727D;">دانش‌آموز فعال</div></div>
+      <div style="flex:1;background:#E9F1F4;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#0E7490;">۱۵۰</div><div style="font-size:8px;color:#56727D;">سؤال بازبینی‌شده</div></div>
+      <div style="flex:1;background:#E9F1F4;border-radius:12px;padding:10px;text-align:center;"><div style="font-size:15px;font-weight:700;color:#0E7490;">٪۹۸</div><div style="font-size:8px;color:#56727D;">معلم‌ها تأیید کردند</div></div>
+    </div>
+    <!-- CTA + تیزر لیدربرد -->
+    <div style="margin:10px 18px 14px;background:#0F172A;border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px;">
+      <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#fff;">جای تو در لیگ این هفته خالی است</div><div style="font-size:8.5px;color:#94A3C4;margin-top:3px;">با دو جلسه در لیگ برنز شروع می‌کنی</div></div>
+      <span style="background:#0E7490;color:#fff;font-size:9.5px;font-weight:700;border-radius:8px;padding:6px 12px;">شروع کن</span>
+    </div>
+    <!-- فوتر تیره -->
+    <div style="background:#0F172A;padding:12px 18px 14px;display:flex;gap:14px;">
+      <div style="flex:1.2;"><div style="font-size:9px;font-weight:700;color:#fff;margin-bottom:4px;">آزمونک</div><div style="font-size:8px;color:#94A3C4;line-height:1.7;">ساخته‌شده برای جشنواره نوجوان خوارزمی</div></div>
+      <div style="flex:1;"><div style="font-size:8px;font-weight:700;color:#E2E8F0;margin-bottom:3px;">آزمونک</div><div style="font-size:8px;color:#94A3C4;line-height:1.9;">صفحه اصلی<br>لیدربرد</div></div>
+      <div style="flex:1;"><div style="font-size:8px;font-weight:700;color:#E2E8F0;margin-bottom:3px;">پشتیبانی</div><div style="font-size:8px;color:#94A3C4;line-height:1.9;">تماس با ما<br>همکاری با ما<br>قوانین سایت</div></div>
+    </div>
+  </div>
+</div>
+<figcaption>شکل ۵-۱: ماکاپ کامل لندینگ — قیف سه‌قدمی با اثبات اجتماعی و CTA نهایی. اعداد بخش اثبات اجتماعی تا آماده‌شدن داده‌ی واقعی آزمایش میدانی، جای‌نگهدار اعلام‌شده هستند.</figcaption>
+</figure>
+
+<h3 class="sub">قواعد بخش‌بندی لندینگ</h3>
+<ul class="cl">
+  <li><b>هیرو راست‌چین با ماکاپ اپ:</b> سمت راست پیام و دکمه‌ها، سمت چپ نمای واقعی صفحه‌ی سؤال — نه تصویر سه‌بعدی ساختگی؛ همین صداقت به اپِ ماکاپی که واقعاً ساخته می‌شود اعتبار می‌دهد.</li>
+  <li><b>تیزر لیدربرد در لندینگ:</b> کارت تیره‌ی «جای تو خالی است» رقابت را زودتر فعال می‌کند و کاربر را به همان صفحه‌ی لیدربرد فصل ۶ وصل می‌کند — پل بین بازاریابی و انگیزه‌ی ماندن.</li>
+  <li><b>موبایل اول:</b> چیدمان بالا با گرید تک‌ستونه موبایل طراحی شده و سپس به سه‌ستونه گسترش یافته؛ ترتیب بخش‌ها در موبایل عوض نمی‌شود تا روایت قیف حفظ بماند.</li>
+</ul>
+
+<!-- فصل ۶ — لیدربرد -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۶</div>
+  <div class="sec-title">لیدربرد — نفرات برتر</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">نکته‌ی روانیِ لیدربرد نوجوان‌ها: جدول رتبه‌ی خامِ ۱ تا ۵۰۰ برای بچه‌های ضعیف‌تر دلسردکننده است و آن‌ها را از محصول می‌برد. راه‌حل طراحی (قابل وتو در DT1 و DT2): <b>پودیوم + لیگ‌های هفتگی ۲۰ نفره</b> به سبک اپ‌های یادگیری موفق — هر کاربر در لیگ هم‌سطح خودش رقابت می‌کند، فقط ۲۰ نفر در جدولش می‌بیند و صعود بین لیگ‌ها جایزه است، نه تحقیر ماندن در پایین.</p>
+
+<figure class="fig">
+<div class="fig-row" style="align-items:flex-start;">
+<div class="mock-phone">
+  <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
+  <div class="mp-head">★ لیدربرد — لیگ طلا</div>
+  <div class="mp-body">
+    <div style="display:flex;gap:4px;margin-bottom:9px;">
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">این هفته</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">ماه</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">کل</span>
+    </div>
+    <!-- پودیوم -->
+    <div style="display:flex;gap:5px;align-items:flex-end;margin-bottom:10px;">
+      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#102A33;">سارا</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۴</div>
+        <div style="background:#D0E7EE;border-radius:6px 6px 0 0;height:14px;margin-top:4px;"></div>
+      </div>
+      <div style="flex:1;background:#E0F2F7;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:11px;">🥇</div>
+        <div style="font-size:8.5px;color:#102A33;">آرش</div><div style="font-size:14px;font-weight:700;color:#0E7490;">٪۹۸</div>
+        <div style="background:#C0DEE7;border-radius:6px 6px 0 0;height:22px;margin-top:4px;"></div>
+      </div>
+      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#102A33;">محمد</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۱</div>
+        <div style="background:#D8E9EE;border-radius:6px 6px 0 0;height:10px;margin-top:4px;"></div>
+      </div>
+    </div>
+    <!-- جدول -->
+    <div class="m-card" style="padding:7px 9px;">
+      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;border-bottom:1px solid #E2E8F0;"><span style="width:16px;color:#56727D;">۴</span><span style="flex:1;">نگار</span><span style="color:#059669;font-size:8px;">▲۲</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۸</span></div>
+      <div style="display:flex;font-size:8.5px;background:#E0F2F7;border-radius:7px;padding:5px 4px;margin:3px 0;font-weight:700;color:#0E7490;"><span style="width:16px;">۵</span><span style="flex:1;">تو (شما)</span><span style="color:#059669;font-size:8px;">▲۱</span><span style="width:34px;text-align:left;">٪۸۶</span></div>
+      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;"><span style="width:16px;color:#56727D;">۶</span><span style="flex:1;">علی</span><span style="color:#BE123C;font-size:8px;">▼۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۵</span></div>
+    </div>
+    <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:8px 10px;">
+      <div style="font-size:8.5px;font-weight:700;color:#102A33;margin-bottom:5px;">لیگ‌ها</div>
+      <div style="display:flex;gap:4px;align-items:center;">
+        <span style="font-size:8px;background:#E9F1F4;border-radius:999px;padding:2px 8px;color:#56727D;">برنز</span>
+        <span style="font-size:8px;color:#56727D;">←</span>
+        <span style="font-size:8px;background:#E9F1F4;border-radius:999px;padding:2px 8px;color:#56727D;">نقره</span>
+        <span style="font-size:8px;color:#56727D;">←</span>
+        <span style="font-size:8px;background:#0E7490;border-radius:999px;padding:2px 8px;color:#fff;font-weight:700;">طلا</span>
+        <span style="font-size:8px;color:#56727D;">←</span>
+        <span style="font-size:8px;background:#E9F1F4;border-radius:999px;padding:2px 8px;color:#56727D;">الماس</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="flex:1;min-width:250px;max-width:100%;font-size:13px;color:#102A33;line-height:1.95;">
+  <p><b>معیار رتبه (DT1):</b> امتیاز هفته = میانگین نمره‌ی جلسات هفته × تعداد جلسه‌ی کامل. با میانگین وزن‌دار با سختی (D13) حساب می‌شود اما توان Elo خام هرگز معیار رتبه نیست — بچه‌ی تازه‌کار با توان پایین هم باید شانس صعود داشته باشد.</p>
+  <p><b>حریم خصوصی (DT3):</b> در جدول فقط لقب منتخب و آواتار ایموجی نمایش داده می‌شود؛ شماره موبایل و نام واقعی هرگز (سازگار با تصمیم G10). هر کاربر می‌تواند از پروفایل خودش را کلاً از لیدربرد مخفی کند.</p>
+  <p><b>شفافیت:</b> پایین صفحه کارت «امتیاز هفته چطور حساب می‌شود؟» می‌آید — روایت قابل‌توضیح برای دانش‌آموز و داور جشنواره.</p>
+</div>
+</div>
+<figcaption>شکل ۶-۱: ماکاپ لیدربرد موبایل — پودیوم سه‌نفره، ردیف هایلایت‌شده‌ی کاربر، نوار ارتقای لیگ‌ها و تب‌های بازه‌ی زمانی.</figcaption>
+</figure>
+
+<!-- فصل ۷ — کامیونیتی -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۷</div>
+  <div class="sec-title">پیشرفت بقیه — کامیونیتی</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">این صفحه پاسخ به خواسته‌ی «مشاهده‌ی پیشرفت بقیه» برای رقابت و همکاری است. دیتابیس اسکیل برای محصول اجتماعی قالب <b>Vibrant & Block-based</b> را پیشنهاد داد: فیدی از کارت‌های بلوکی که هرکدام یک رویداد اجتماعی را روایت می‌کنند. چون نوجوان ایرانی بیشترین اشتراک را در تلگرام و واتساپ می‌کند، کارت پیشرفت از ابتدا «شیرکردنی» طراحی شده: یک کارت تصویری خوش‌ساخت که مستقیم به پیام‌رسان هم فرستاده می‌شود.</p>
+
+<figure class="fig">
+<div class="fig-row" style="align-items:flex-start;">
+<div style="flex:1;min-width:250px;max-width:100%;font-size:13px;color:#102A33;line-height:1.95;">
+  <p><b>سه تبِ دید:</b> «دوستان» (پیش‌فرض)، «کلاس ما» برای چالش‌های گروهی مدرسه، و «عمومی» برای کسانی که پروفایل‌شان را عمومی گذاشته‌اند. پیش‌فرض «فقط دوستان» بودنِ اشتراک پیشرفت، ورود بچه‌ها به رقابت را امن می‌کند (DT4).</p>
+  <p><b>چالش گروهی:</b> نوار پیشرفت جمعی «این هفته ۵۰ جلسه بریزید» حس همکاری می‌سازد — نه فقط رقابت تک‌نفره. کلاس‌ها می‌توانند چالش بسازند و پیشرفت همه به یک هدف مشترک اضافه شود.</p>
+  <p><b>تشویق سبک (DT5):</b> دکمه‌ی 👏 روی هر کارت — بدون کامنت آزاد در MVP؛ مدیریت گفت‌وگوی بازِ نوجوانان بار انحراف اصلی است و در فاز بعد باز می‌شود.</p>
+  <p><b>مقایسه دوستانه:</b> کارت «تو vs رفیقت» روی یک دسته درس، رقابت سالم تک‌به‌تک را فعال می‌کند و به جلسه‌ی مشترک دعوت می‌کند.</p>
+</div>
+<div class="mock-phone">
+  <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
+  <div class="mp-head">◎ پیشرفت بقیه</div>
+  <div class="mp-body">
+    <div style="display:flex;gap:4px;margin-bottom:9px;">
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">دوستان</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">کلاس ما</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">عمومی</span>
+    </div>
+    <div class="m-card">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+        <span style="width:20px;height:20px;border-radius:50%;background:#E0F2F7;display:flex;align-items:center;justify-content:center;font-size:10px;">🎯</span>
+        <span style="font-size:9px;font-weight:700;color:#102A33;">آرش</span>
+        <span style="font-size:8px;color:#56727D;">جلسه ۱۲ را تمام کرد</span>
+        <span style="margin-right:auto;font-size:8px;color:#059669;">٪۸۸ ▲</span>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:2px;height:26px;margin:6px 0;">
+        <span style="flex:1;height:30%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:45%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:55%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:70%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
+        <span style="flex:1;height:88%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
+      </div>
+      <div style="display:flex;gap:5px;">
+        <span style="flex:1;text-align:center;font-size:8.5px;border:1px solid #C9DDE2;border-radius:7px;padding:4px 0;color:#56727D;">👏 ۷ تبریک</span>
+        <span style="flex:1;text-align:center;font-size:8.5px;background:#E0F2F7;color:#0E7490;border-radius:7px;padding:4px 0;font-weight:700;">اشتراک ↗</span>
+      </div>
+    </div>
+    <div class="m-card" style="border-right:3px solid #0E7490;">
+      <div style="font-size:9px;font-weight:700;color:#102A33;">🤝 چالش کلاس ۱۰۲</div>
+      <div style="font-size:8px;color:#56727D;margin:3px 0 5px;">«این هفته ۵۰ جلسه بریزید»</div>
+      <div style="height:7px;background:#E2E8F0;border-radius:4px;overflow:hidden;"><div style="width:68%;height:7px;background:#059669;border-radius:4px;"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:8px;color:#56727D;margin-top:3px;"><span>۳۴ از ۵۰ جلسه</span><span>۶ نفر</span></div>
+    </div>
+    <div class="m-card" style="background:#fff;">
+      <div style="font-size:9px;font-weight:700;color:#102A33;margin-bottom:4px;">⚔️ تو vs سارا — «توالی‌ها»</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:8px;color:#56727D;">
+        <span style="flex:1;text-align:center;"><b style="font-size:11px;color:#0E7490;">٪۷۲</b><br>تو</span>
+        <span style="font-size:8px;">VS</span>
+        <span style="flex:1;text-align:center;"><b style="font-size:11px;color:#6D28D9;">٪۶۵</b><br>سارا</span>
+      </div>
+      <div class="m-btn ghost" style="margin-top:6px;font-size:8.5px;padding:5px 4px;">جلسه‌ی رقابتی بزنید</div>
+    </div>
+  </div>
+</div>
+</div>
+<figcaption>شکل ۷-۱: ماکاپ کامیونیتی موبایل — کارت اشتراک پیشرفت با ریزنمودار روند، چالش گروهی کلاسی و مقایسه دوستانه.</figcaption>
+</figure>
+
+<div class="callout"><span class="h">اتصال به الگوریتم</span><br>کارت‌های این فید فقط «دکور» نیستند: نمره از D13، فلش رتبه از لیدربرد، روند از همان سری داده‌ی نمودار دولایه‌ی داشبورد (D15) و ارتقای دسته از نردبان D16 می‌آید. یعنی هر چه دانش‌آموز اینجا می‌بیند، دقیقاً خروجی موتور تطبیقی خود اوست — همان شفافیت قابل‌دفاعی که داور جشنواره می‌خواهد.</div>
+
+<!-- فصل ۸ — ورود، پروفایل، آزمون -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۸</div>
+  <div class="sec-title">ورود، پروفایل و فرم آزمون</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">سه صفحه‌ی شخصی محصول. ورود با همان جریان D3 سند: شماره موبایل، کد ۶ رقمی، انتخاب نقش. پروفایل در واقع داشبورد شخصیِ فاز ۲ سند است که روند دولایه‌ی D15 و چیپ‌های سطحِ نردبان D16 را در قالب لایت نمایش می‌دهد. فرم آزمون هم «حالت فوکوس» است — صفحه‌ای که هیچ چیز غیر از سؤال، گزینه‌ها و مرحله‌ی اعتماد D14 در آن نیست.</p>
+
+<figure class="fig">
+<div class="fig-row">
+  <div class="mock-phone">
+    <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
+    <div class="mp-body" style="padding-top:16px;">
+      <div style="text-align:center;margin-bottom:10px;">        <div style="width:40px;height:40px;border-radius:12px;background:#0E7490;color:#fff;font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;">آ</div>
+        <div style="font-size:11px;font-weight:700;color:#102A33;">به آزمونک خوش آمدی</div>
+        <div style="font-size:8px;color:#56727D;">با شماره موبایلت وارد شو</div>
+      </div>
+      <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:8px 10px;font-size:9.5px;color:#102A33;text-align:right;direction:ltr;margin-bottom:7px;">۰۹۱۲ ۳۴۵ ۶۷۸۹</div>
+      <div style="display:flex;gap:4px;justify-content:center;margin-bottom:9px;">
+        <span style="width:24px;height:28px;border:1.5px solid #0E7490;border-radius:7px;background:#E0F2F7;"></span>
+        <span style="width:24px;height:28px;border:1.5px solid #0E7490;border-radius:7px;background:#E0F2F7;"></span>
+        <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
+        <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
+        <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
+        <span style="width:24px;height:28px;border:1px solid #C9DDE2;border-radius:7px;"></span>
+      </div>
+      <div style="display:flex;gap:5px;margin-bottom:9px;">
+        <div style="flex:1;border:1.5px solid #0E7490;background:#E0F2F7;border-radius:10px;padding:8px 4px;text-align:center;">
+          <div style="font-size:12px;">🎒</div><div style="font-size:8.5px;font-weight:700;color:#0E7490;">دانش‌آموز</div>
+        </div>
+        <div style="flex:1;border:1px solid #C9DDE2;border-radius:10px;padding:8px 4px;text-align:center;">
+          <div style="font-size:12px;">🧑‍🏫</div><div style="font-size:8.5px;color:#56727D;">دبیر</div>
+        </div>
+      </div>
+      <div class="m-btn">ورود</div>
+      <div style="text-align:center;font-size:8px;color:#56727D;margin-top:7px;line-height:1.7;">کد تأیید پیامکی ۵ دقیقه اعتبار دارد<br>با ورودت، قوانین سایت را می‌پذیری</div>
+    </div>
+  </div>
+  <!-- پروفایل -->
+  <div class="mock-phone">
+    <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
+    <div class="mp-head">☺ پروفایل تو</div>
+    <div class="mp-body">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span style="width:34px;height:34px;border-radius:50%;background:#E0F2F7;display:flex;align-items:center;justify-content:center;font-size:16px;">🦊</span>
+        <div><div style="font-size:10px;font-weight:700;color:#102A33;">روباه حسابگر</div><div style="font-size:8px;color:#56727D;">لیگ طلا · استریک ۴ روز 🔥</div></div>
+        <span style="margin-right:auto;background:#E0F2F7;color:#0E7490;font-size:8px;border-radius:999px;padding:3px 8px;">ویرایش</span>
+      </div>
+      <div style="display:flex;gap:5px;margin-bottom:8px;">
+        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#0E7490;">۲۸</div><div style="font-size:8px;color:#56727D;">جلسه</div></div>
+        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#0E7490;">٪۸۴</div><div style="font-size:8px;color:#56727D;">میانگین</div></div>
+        <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#B45309;">۳</div><div style="font-size:8px;color:#56727D;">مرور امروز</div></div>
+      </div>
+      <div class="m-card">
+        <div style="font-size:8.5px;font-weight:700;margin-bottom:3px;">روند ۱۰ جلسه اخیر</div>
+        <div style="display:flex;align-items:flex-end;gap:2px;height:30px;">
+          <span style="flex:1;height:35%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:42%;background:#C0DEE7;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:50%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:62%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:58%;background:#7FBFD1;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:70%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:76%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
+          <span style="flex:1;height:88%;background:#0E7490;border-radius:3px 3px 0 0;"></span>
+        </div>
+        <div style="font-size:8px;color:#56727D;margin-top:3px;">▮ نمره جلسه (فیروزه‌ای) · ▮ توان R_s (بنفش، D15)</div>
+      </div>
+      <div class="m-card">
+        <div style="font-size:8.5px;font-weight:700;margin-bottom:5px;">سطح دسته‌ها (نردبان D16)</div>
+        <div style="font-size:8px;color:#102A33;padding:3px 0;">توالی‌ها <span class="m-chip" style="background:#D9F2EA;color:#059669;">سطح ۳</span></div>
+        <div style="font-size:8px;color:#102A33;padding:3px 0;">قاعده زنجیره‌ای <span class="m-chip" style="background:#FDEEDC;color:#B45309;">سطح ۲</span></div>
+        <div style="font-size:8px;color:#102A33;padding:3px 0;">کاربرد مشتق <span class="m-chip" style="background:#FBE4E9;color:#BE123C;">سطح ۱ · مطالعه کن</span></div>
+      </div>
+      <div class="m-btn">جلسه جدید</div>
+    </div>
+  </div>
+</div>
+<figcaption>شکل ۸-۱: جریان ورود OTP با انتخاب نقش دانش‌آموز/دبیر (راست) و داشبورد پروفایل با روند دولایه D15 و چیپ‌های سطح نردبان D16 (چپ).</figcaption>
+</figure>
+
+<p>دو قاب بعدی قلب تعاملی محصول را نشان می‌دهند: صفحه‌ی سؤال در حالت فوکوس و مرحله‌ی اعتماد D14 که بعد از انتخاب گزینه ظاهر می‌شود، و سپس همان صفحه پس از ثبت اعتماد با بازخورد یک‌خطی. تفاوت این دو قاب دقیقاً جایی است که «بازی جدی» تعریف می‌شود — قبل از بازخورد، کاربر ابراز نظر می‌کند؛ بعد از بازخورد، سیستم یک جمله یادگیری می‌دهد.</p>
+
+<figure class="fig">
+<div class="fig-row">
+  <div class="mock-phone">
+    <div class="mp-status"><span>۹:۴۱</span><span>جلسه آزمون</span><span>✕</span></div>
+    <div class="mp-body">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+        <span style="font-size:9px;color:#0E7490;font-weight:700;">۳/۱۰</span>
+        <div class="m-progress" style="flex:1;margin:0;"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="m-card">
+        <div style="font-size:9.5px;font-weight:700;color:#102A33;line-height:1.8;margin-bottom:7px;">اگر تابع f با قاعده زنجیره‌ای مشتق شود، خروجی کدام است؟</div>
+        <div class="m-option">الف) فقط مشتق تابع بیرونی</div>
+        <div class="m-option">ب) حاصل‌ضرب دو مشتق</div>
+        <div class="m-option sel">ج) مشتق بیرونی × مشتق درونی ✓</div>
+        <div class="m-option">د) هیچ‌کدام</div>
+      </div>
+      <div style="background:#E9F1F4;border-radius:10px;padding:9px 10px;">
+        <div style="font-size:9px;font-weight:700;color:#0E7490;text-align:center;margin-bottom:6px;">چقدر مطمئن بودی؟</div>
+        <div class="m-trust">
+          <div class="t1">مطمئن بودم</div>
+          <div class="t2">حدس می‌زدم</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- آزمون: بازخورد -->
+  <div class="mock-phone">
+    <div class="mp-status"><span>۹:۴۱</span><span>جلسه آزمون</span><span>✕</span></div>
+    <div class="mp-body">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+        <span style="font-size:9px;color:#0E7490;font-weight:700;">۳/۱۰</span>
+        <div class="m-progress" style="flex:1;margin:0;"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="m-card">
+        <div style="font-size:9.5px;font-weight:700;color:#102A33;line-height:1.8;margin-bottom:7px;">اگر تابع f با قاعده زنجیره‌ای مشتق شود، خروجی کدام است؟</div>
+        <div class="m-option" style="color:#BE123C;border-color:#F5C6D0;background:#FDF2F5;">ب) حاصل‌ضرب دو مشتق ✕</div>
+        <div class="m-option" style="color:#059669;border-color:#A7DFCB;background:#EFFAF6;">ج) مشتق بیرونی × مشتق درونی ✓</div>
+      </div>
+      <div class="m-fb no">حدس خوبی بود! قاعده زنجیره‌ای مشتقِ بیرونی را در مشتق درونی ضرب می‌کند — این جمله را برای سؤال بعدی یادت بماند.</div>
+      <div class="m-btn" style="margin-top:8px;">سؤال بعدی ←</div>
+      <div style="text-align:center;font-size:8px;color:#56727D;margin-top:8px;">جلسه را می‌توانی نیمه‌کاره رها کنی؛<br>پروفایلت منتظرت می‌ماند</div>
+    </div>
+  </div>
+</div>
+<figcaption>شکل ۸-۲ (چینش راست‌به‌چپ): صفحه‌ی سؤال با مرحله‌ی اعتماد D14 (راست) و بازخورد یک‌خطی سازنده با مسیر ادامه و یادآوری رهاکردن امن جلسه (چپ).</figcaption>
+</figure>
+
+<h3 class="sub">قاعده‌ی طلایی صفحه‌ی آزمون</h3>
+<p>صفحه‌ی آزمون هیچ منو، تب یا لینک حواس‌پرت‌کننده ندارد؛ خروج فقط با دکمه‌ی «✕» با تأیید انجام می‌شود و جلسه‌ی نیمه‌کاره در پروفایل با بنر «جلسه‌ات منتظرته» برمی‌گردد. گزینه‌ها ارتفاع لمسی بالای ۵۶ پیکسل دارند و مرحله‌ی اعتماد با انیمیشن ملایم بالا می‌آید تا از «اصطکاک» به «لحظه‌ی بازی» تبدیل شود — نوجوان این را ابراز نظر می‌بیند، نه فرم. بازخورد همیشه یک‌خطی و سازنده است: جواب درست را نشان می‌دهد و دلیل را در یک جمله می‌گوید؛ تحقیر و امتیاز منفی در این صفحه جایی ندارد.</p>
+
+<!-- فصل ۹ — ستون پشتیبانی -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۹</div>
+  <div class="sec-title">ستون پشتیبانی فوتر</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">فوتر سراسری چهار ستونه است روی پس‌زمینه‌ی سرمه‌ای تیره <code>#0F172A</code> — تنها سطح تیره در کل سایت. ستون پشتیبانی پنج صفحه دارد که همگی یک قالب مشترک می‌گیرند: عنوان، متن تک‌ستونه با حداکثر عرض ۷۲۰ پیکسل، و بسته به محتوا آکاردئون یا فرم. این صفحات سبک‌اند اما از نظر داوری ارزشمندند: «همکاری با ما» مستقیماً به خط تولید محتوای گام ۶ وصل است و «راهنمای سایت» همان روایت آموزشی قابل‌توضیح را به زبان عمومی ترجمه می‌کند.</p>
+
+<table class="keep">
+<thead><tr><th style="width:18%">صفحه</th><th style="width:40%">محتوا</th><th>قالب طراحی</th></tr></thead>
+<tbody>
+<tr><td><b>تماس با ما</b></td><td>فرم کوتاه (نام، راه ارتباطی، پیام) + آدرس تلگرام و ایمیل جشنواره</td><td>فرم دوستونه با دکمه ارسال و پیام موفقیت inline</td></tr>
+<tr><td><b>همکاری با ما</b></td><td>دعوت به نویسندگی سؤال و بازبینی؛ پیوند با قالب Google Sheets گام ۶ و مجوز CC BY-NC سند</td><td>صفحه روایت + فرم درخواست + دانلود قالب نویسندگی</td></tr>
+<tr><td><b>قوانین سایت</b></td><td>شرایط استفاده، حریم خصوصی نوجوانان (بدون اطلاعات هویتی، G10)، مجوز محتوا</td><td>فهرست شماره‌دار با باکس‌های «نکته مهم»</td></tr>
+<tr><td><b>سوالات متداول</b></td><td>۸–۱۲ سؤال واقعی: سطح‌بندی چطور کار می‌کند، نمره چرا افتاد، مرور چیست</td><td>آکاردئون؛ هر جواب ۲–۴ جمله ساده</td></tr>
+<tr><td><b>راهنمای سایت</b></td><td>آموزش تصویری ۴ قدمی با اسکرین‌شات؛ «چطور از آزمونک نتیجه بگیرم»</td><td>مراحل شماره‌دار با تصویر + نکته‌ی طلایی هر قدم</td></tr>
+</tbody>
+</table>
+
+<ul class="cl">
+  <li><b>میکروکپی پشتیبانی صادق است:</b> قوانین به زبان نوجوان نوشته می‌شود نه به زبان حقوقی؛ جمله‌ای مثل «داده‌هایت فقط برای الگوریتم کار می‌کند، نه تبلیغات» در صفحه قوانین نمایش داده می‌شود.</li>
+  <li><b>همکاری با ما، پل محتواست:</b> دبیر و دانش‌آموزِ باسواد از همین صفحه وارد چرخه‌ی نویسندگی می‌شوند؛ سؤال‌های تازه‌ساخت طبق قفل سلامت داده‌ی سند (تسک 6.4) تا پس‌آزمون به آزمودنی‌ها سرو نمی‌شود.</li>
+  <li><b>هر صفحه‌ی پشتیبانی یک CTA دارد:</b> تماس → فرم؛ همکاری → قالب؛ سوالات → ورود به راهنما؛ راهنما → «جلسه اولت را بزن».</li>
+</ul>
+
+<!-- فصل ۱۰ — پرفورمنس -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۱۰</div>
+  <div class="sec-title">پرفورمنس و بودجه حجم</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">بودجه‌ی ۲۰۰ کیلوبایت صفحه آزمون (تسک 3.7) تصمیم‌های طراحی را محدود و هدفمند کرده است: سبک تختِ بدون تزئین، تک‌فونت سابست‌شده، نمودارهای SVG دستی و آیکون‌های اینلاین. جدول زیر سقف هر بسته است و در هر PR با Lighthouse روی شبیه‌سازی 3G کنترل می‌شود؛ عبور از سقف هر ردیف یعنی چرخه‌ی بهینه‌سازی، نه قبول عادت.</p>
+
+<table class="keep">
+<thead><tr><th style="width:20%">بسته</th><th style="width:16%">سقف</th><th>چگونه به سقف می‌رسیم</th></tr></thead>
+<tbody>
+<tr><td>HTML</td><td>~۱۵KB</td><td>رندر سمت سرور (Server Components) — صفحات ساکن بدون JS اضافه</td></tr>
+<tr><td>CSS</td><td>~۲۰KB</td><td>Tailwind 4 با purge؛ بدون هیچ فریم‌ورک UI سنگین</td></tr>
+<tr><td>JavaScript</td><td>~۹۰KB</td><td>فقط صفحه‌ی آزمون و داشبورد interactive؛ تقسیم کد مسیر به مسیر</td></tr>
+<tr><td>فونت فعال</td><td>~۳۵KB</td><td>وزیرمتن woff2 سابست با unicode-range: متن / عنوان / عدد جدا</td></tr>
+<tr><td>نمودارها</td><td>~۰KB</td><td>SVG دستی inline طبق D15 — بدون کتابخانه چارت</td></tr>
+<tr><td>آیکون‌ها</td><td>~۰KB</td><td>Sprite SVG دستی — بدون کتابخانه آیکون</td></tr>
+</tbody>
+</table>
+
+<ul class="cl">
+  <li><b>Lighthouse ≥ ۹۰ روی 3G شبیه‌سازی‌شده</b> در هر کامیت (تسک 3.7 و 8.1) — پرفورمنس یک ویژگی محصول است، نه پاکیزه‌کاری آخر پروژه.</li>
+  <li><b>لندینگ و کامیونیتی حدود ۳۰۰KB</b> نفس می‌کشند چون تب‌های بازخوردی نیستند؛ سقف سخت ۲۰۰KB مخصوص صفحه‌ی آزمون است.</li>
+  <li><b>Service Worker پوسته و آخرین داشبورد را کش می‌کند</b> (تسک 3.6) — بدون آفلاین واقعی طبق D2، فقط باز شدن سریع اپ نصب‌شده.</li>
+</ul>
+
+<!-- فصل ۱۱ — تصمیم‌های قابل وتو -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۱۱</div>
+  <div class="sec-title">تصمیم‌های قابل وتو</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">مثل D13 تا D16 در سند توسعه، پیش‌فرض‌های زیر با منطق مهندسی گذاشته شده‌اند و رأی صریح پویا هر زمان بیاید جایگزین می‌شود. هیچ‌کدام با قیدهای سخت فصل ۱ ناسازگار نیستند؛ وتوی هر ردیف فقط طراحی همان بخش را عوض می‌کند نه ساختار کل.</p>
+
+<table class="keep">
+<thead><tr><th style="width:9%">کد</th><th style="width:27%">موضوع</th><th style="width:33%">پیش‌فرض مهندس</th><th>جایگزین‌های منطقی</th></tr></thead>
+<tbody>
+<tr><td>DT1</td><td>معیار رتبه‌ی لیدربرد</td><td>میانگین نمره‌ی جلسات هفته × تعداد جلسه‌ی کامل</td><td>تعداد جلسه‌ی کامل؛ توان Elo خام (توصیه نمی‌شود)</td></tr>
+<tr><td>DT2</td><td>ساختار رقابت</td><td>پودیوم + لیگ‌های هفتگی ۲۰ نفره (برنز تا الماس)</td><td>جدول رتبه‌ی خام کلی؛ رتبه فقط بین دوستان</td></tr>
+<tr><td>DT3</td><td>هویت در جدول‌ها</td><td>لقب منتخب + آواتار ایموجی؛ امکان مخفی‌شدن کامل</td><td>نام واقعی (نمی‌خواند با G10 حریم خصوصی نوجوان)</td></tr>
+<tr><td>DT4</td><td>پیش‌فرض اشتراک پیشرفت</td><td>«فقط دوستان» هنگام ثبت‌نام</td><td>عمومی پیش‌فرض؛ خصوصی پیش‌فرض</td></tr>
+<tr><td>DT5</td><td>تعامل روی کارت‌ها</td><td>فقط دکمه‌ی تشویق 👏 — بدون کامنت در MVP</td><td>کامنت با واژه‌نامه فیلتر؛ فقط برای کلاس دبیر</td></tr>
+<tr><td>DT6</td><td>فوتر تیره</td><td>سرمه‌ای #0F172A به‌قرارداد طراحی وب</td><td>فوتر روشن با حاشیه — هم‌خوان با کل بوم</td></tr>
+<tr><td>DT7</td><td>رادار دسته‌ها</td><td>۸ دسته برتر در رادار + فهرست بقیه</td><td>رادار کامل همه‌ی دسته‌ها (ریسک خوانایی)</td></tr>
+<tr><td>DT8</td><td>لقب پیش‌فرض</td><td>تولید خودکار لقب دوستانه مثل «روباه حسابگر»</td><td>بدون لقب؛ فقط آواتار ایموجی</td></tr>
+</tbody>
+</table>
+
+<!-- فصل ۱۲ — نقشه راه -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۱۲</div>
+  <div class="sec-title">نقشه راه پیاده‌سازی فرانت</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">ترتیب پیشنهادی ساخت، از پوسته به پیچیدگی: اول شالوده‌ای که همه‌ی صفحات روی آن می‌نشینند، بعد صفحات با کمترین وابستگی به API گام ۲، و در انتها داشبورد داده‌محور. هر گام یک معیار پذیرش روشن دارد تا جلوتر «تمام‌شدن» قابل بحث نباشد.</p>
+
+<ol class="cl">
+  <li><b>گام F1 — پوسته و توکن‌ها:</b> layout سراسری RTL، متغیرهای CSS فصل ۲، وزیرمتن سابست، هدر و ناوبری موبایل فصل ۴. <i>پذیرش: همه‌ی صفحات خالی با پوسته‌ی صحیح رندر می‌شوند و Lighthouse پوسته بالای ۹۰ است.</i></li>
+  <li><b>گام F2 — لندینگ:</b> قیف سه‌قدمی فصل ۵ با فوتر کامل. <i>پذیرش: لندینگ ریسپانسیو از ۳۶۰ تا ۱۲۸۰ پیکسل و بدون تصویر سنگین.</i></li>
+  <li><b>گام F3 — ورود:</b> جریان OTP با استیت‌منیج کلاینت و حالت‌های خطا. <i>پذیرش: تا API گام ۲، ورود آزمایشی با کد دلخواه کار می‌کند و لاگین در localStorage می‌ماند.</i></li>
+  <li><b>گام F4 — پروفایل (نسخه داده‌ی نمونه):</b> داشبورد فصل ۸ با داده‌های ساختگی هم‌ساخت خروجی core. <i>پذیرش: نمودار دولایه SVG و چیپ‌های سطح از داده واقعی‌نما رندر می‌شوند.</i></li>
+  <li><b>گام F5 — فرم آزمون:</b> حالت فوکوس کامل با مرحله‌ی اعتماد D14، بازخورد و خلاصه‌ی پایان. <i>پذیرش: جلسه‌ی ۱۰ سؤالی با داده‌ی نمونه از اول تا آخر بدون خطا می‌رود — تمرین نهایی تست دود تسک 3.8.</i></li>
+  <li><b>گام F6 — لیدربرد و کامیونیتی:</b> پودیوم، لیگ‌ها، فید کارت‌ها با داده‌ی نمونه. <i>پذیرش: سوییچ‌های حریم خصوصی در UI فعال و تب‌ها با داده‌ی خالی/پر هر دو درست رندر می‌شوند.</i></li>
+  <li><b>گام F7 — اتصال به API گام ۲:</b> جایگزینی داده‌ی نمونه با خروجی واقعی core از طریق بک‌اند. <i>پذیرش: جریان کامل ورود تا خلاصه‌ی جلسه روی API واقعی سبز شود و بودجه ۲۰۰KB پاس شود.</i></li>
+</ol>
+
+<div class="callout"><span class="h">یادآوری معماری</span><br>فرانت هیچ منطق الگوریتمی‌ای در خود ندارد — طبق قاعده‌ی شماره ۲ سند توسعه، بک‌اند فقط core را صدا می‌زند و فرانت فقط از API می‌خواند. همین تفکیک است که ادعای «الگوریتم جدا از رابط» سند را در دفاع جشنواره قابل اثبات می‌کند و اجازه می‌دهد هر صفحه‌ی این سند بدون دست‌زدن به موتور، مستقل بهبود یابد.</div>
+
+</div><!-- /main-content -->
+
+<!-- ================= صفحه پایان ================= -->
+<div class="ending">
+  <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+    <circle cx="52" cy="52" r="40" stroke="#0E7490" stroke-width="0.7" opacity="0.18"/>
+    <circle cx="62" cy="58" r="40" stroke="#0E7490" stroke-width="0.7" opacity="0.32"/>
+    <circle cx="98" cy="28" r="4.5" fill="#0E7490" opacity="0.45"/>
+  </svg>
+  <div class="line"></div>
+  <div class="big">طراحی آماده‌ی شروع است</div>
+  <div class="sm">وقتی این سند را تأیید کنی، پیاده‌سازی از گام F1 (پوسته و توکن‌ها) شروع می‌شود و به ترتیب نقشه‌ی فصل ۱۲ پیش می‌رود. هر تغییری که در این مرحله روی ماکاپ‌ها یا پیش‌فرض‌های قابل‌وتو بدهی، مستقیم به سند اضافه می‌شود تا مرجع پذیرش کد همان چیزی باشد که دیده‌ای و پسندیده‌ای.</div>
+  <div class="brand">آزمونک — جشنواره نوجوان خوارزمی</div>
+  <div class="year">نسخه ۱٫۰ لایت · مهر ۱۴۰۵</div>
+</div>
+
+</body>
+</html>
