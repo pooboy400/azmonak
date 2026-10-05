@@ -1,8 +1,31 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// ============================================================
+// آزمونک — Schema v1
+// مبنای طراحی:
+//   - گام ۰٫۳ سند برنامه توسعه v1.3: جدول‌های سند (users, questions,
+//     misconceptions, question_misconception, attempts, ability_state,
+//     review_schedule, misconception_state) + identity/otp_codes (G10)
+//     + status روی questions (G6) + params_snapshot روی attempts (G7)
+//     + نردبان سطح دسته‌ای D16 (سطح ۱–۳، استریک‌ها، شمارنده ضعف)
+//   - افزونه‌های سند طراحی فرانت v2.1: subjects/topics (درس‌محور)،
+//     sessions (لیدربرد هفتگی = میانگین نمره وزن‌دار D13)، friendships/
+//     classes (کامیونیتی)، privacy روی users (G10 رابط)
+// قواعد:
+//   - SQLite از enum پشتیبانی نمی‌کند؛ مقادیر مجاز به‌صورت String با
+//     مقادیر ثابت مستندشده زیر هر فیلد کنترل می‌شوند (کد انگلیسی — D5).
+//   - «داده نمونه»: هر رکورد بذری isSample=true و شناسه با پیشوند smp
+//     دارد و با `bun run db:clean-sample` کامل حذف می‌شود.
+//   - مجاز مقادیر:
+//     role        : STUDENT | TEACHER | ADMIN
+//     grade       : GRADE10 | GRADE11 | GRADE12
+//     major       : EXPERIMENTAL | MATH | HUMANITIES
+//     privacy     : PUBLIC | FRIENDS | PRIVATE   (پیش‌فرض FRIENDS)
+//     q.status    : DRAFT | IN_REVIEW | APPROVED | RETIRED   (G6)
+//     difficulty  : EASY | MEDIUM | HARD  → ۱۱۵۰ / ۱۲۵۰ / ۱۳۵۰
+//     confidence  : CONFIDENT | GUESSED               (D14)
+//     session.type: PLACEMENT | PRACTICE              (D1)
+//     session.status: ACTIVE | COMPLETED | ABANDONED
+//     f.status    : PENDING | ACCEPTED
+// ============================================================
 
 generator client {
   provider = "prisma-client-js"
@@ -13,20 +36,366 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ---------------- هویت (G10 — جدا از داده پژوهشی) ----------------
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  role        String   @default("STUDENT") // STUDENT | TEACHER | ADMIN
+  nickname    String   @unique
+  avatarEmoji String? // ایموجی آواتار به‌جای عکس (سند طراحی — حریم خصوصی)
+  grade       String? // GRADE10 | GRADE11 | GRADE12 — فقط دانش‌آموز
+  major       String? // EXPERIMENTAL | MATH | HUMANITIES — فقط دانش‌آموز
+  privacy     String   @default("FRIENDS") // PUBLIC | FRIENDS | PRIVATE
+  isActive    Boolean  @default(true)
+  isSample    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  identity             Identity?
+  sessions             Session[]
+  attempts             Attempt[]
+  subjectAbilities     SubjectAbility[]
+  topicAbilities       TopicAbility[]
+  reviewSchedules      ReviewSchedule[]
+  misconceptionStates  MisconceptionState[]
+  classesOwned         ClassRoom[]          @relation("ClassTeacher")
+  classMemberships     ClassMember[]
+  friendshipsRequested Friendship[]         @relation("FriendshipRequester")
+  friendshipsReceived  Friendship[]         @relation("FriendshipAddressee")
+
+  @@index([role, grade, major])
+  @@index([isSample])
+  @@map("users")
 }
 
-model Post {
+model Identity {
+  id         String    @id @default(cuid())
+  userId     String    @unique
+  phone      String    @unique // یک شماره فعال به‌ازای هر کاربر (G10)
+  isActive   Boolean   @default(true)
+  verifiedAt DateTime?
+  isSample   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([phone])
+  @@map("identity")
+}
+
+model OtpCode {
+  id           String    @id @default(cuid())
+  phone        String
+  code         String // کد ۵ رقمی (D3)
+  expiresAt    DateTime // انقضای ۲ دقیقه
+  attemptCount Int       @default(0) // حداکثر ۵ تلاش
+  consumedAt   DateTime?
+  isSample     Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+
+  @@index([phone, expiresAt])
+  @@map("otp_codes")
+}
+
+// ---------------- محتوا (درس → مبحث → سؤال) ----------------
+
+model Subject {
   id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
+  code      String   @unique // مثل FAR11T
+  title     String // مثل «فارسی ۳»
+  grade     String // GRADE10 | GRADE11 | GRADE12
+  major     String // EXPERIMENTAL | MATH | HUMANITIES
+  iconKey   String? // نام آیکون lucide (سند طراحی — فصل آیکون‌ها)
+  colorKey  String? // کلید رنگ توکن (سند طراحی — پالت)
+  isActive  Boolean  @default(true)
+  isSample  Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  topics           Topic[]
+  questions        Question[]
+  sessions         Session[]
+  subjectAbilities SubjectAbility[]
+  topicAbilities   TopicAbility[]
+  reviewSchedules  ReviewSchedule[]
+
+  @@unique([grade, major, title])
+  @@index([grade, major, isActive])
+  @@map("subjects")
+}
+
+model Topic {
+  id        String   @id @default(cuid())
+  subjectId String
+  title     String // «دسته» همان فیلد topic سند
+  order     Int      @default(0)
+  isSample  Boolean  @default(false)
+
+  subject         Subject          @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  questions       Question[]
+  topicAbilities  TopicAbility[]
+  reviewSchedules ReviewSchedule[]
+
+  @@unique([subjectId, title])
+  @@map("topics")
+}
+
+model Question {
+  id             String   @id @default(cuid())
+  qid            String   @unique // مثل SMP-FAR11T-01 — یکتا، ثابت، هرگز بازیافت نمی‌شود (G11)
+  subjectId      String
+  topicId        String?
+  status         String   @default("DRAFT") // DRAFT | IN_REVIEW | APPROVED | RETIRED (G6)
+  author         String // الزامی — ثبت منشأ برای مجوز
+  difficulty     String // EASY | MEDIUM | HARD
+  stem           String // صورت سؤال؛ فرمول‌ها با $LaTeX$
+  optionA        String
+  optionB        String
+  optionC        String
+  optionD        String
+  correct        String // A | B | C | D
+  distractorMap  String   @default("-") // مثل "a:M03; c:M01" — اختیاری (D16)
+  explanation    String // پاسخ تشریحی — حداقل دو جمله
+  estTimeSec     Int      @default(90) // مبنای آستانه تأخیر اختصاصی (G4)
+  license        String   @default("CC BY-NC 4.0")
+  notes          String?
+  rating         Float    @default(1250) // سختی Elo: EASY ۱۱۵۰ / MEDIUM ۱۲۵۰ / HARD ۱۳۵۰
+  ratingCount    Int      @default(0) // K_q پس از ۴۰ پاسخ ۴ می‌شود
+  isSample       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  subject    Subject                 @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topic      Topic?                  @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  attempts   Attempt[]
+  misLinks   QuestionMisconception[]
+
+  @@index([subjectId, status])
+  @@index([topicId, difficulty])
+  @@index([status, difficulty])
+  @@index([isSample])
+  @@map("questions")
+}
+
+// ---------------- پژوهشی: جلسه و پاسخ ----------------
+
+model Session {
+  id            String    @id @default(cuid())
+  userId        String
+  subjectId     String
+  type          String    @default("PRACTICE") // PLACEMENT (۴ سؤالی — D1) | PRACTICE (۱۰ سؤالی — D12)
+  status        String    @default("ACTIVE") // ACTIVE | COMPLETED | ABANDONED
+  questionCount Int       @default(10)
+  correctCount  Int       @default(0)
+  score         Float? // نمره وزن‌دار D13 (۰–۱۰۰) — پس از اتمام
+  rStart        Float     @default(1100) // توان R_s پیش از جلسه
+  rEnd          Float? // توان R_s پس از جلسه (نمودار دولایه D15)
+  startedAt     DateTime  @default(now())
+  finishedAt    DateTime?
+  lastActivityAt DateTime? // برای ازسرگیری جلسه نیمه‌کاره
+  isSample      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  attempts Attempt[]
+
+  @@index([userId, startedAt])
+  @@index([subjectId, status, startedAt])
+  @@index([userId, subjectId, type])
+  @@index([isSample])
+  @@map("sessions")
+}
+
+model Attempt {
+  id             String   @id @default(cuid())
+  sessionId      String
+  userId         String
+  questionId     String
+  orderInSession Int      @default(0) // ۱ تا ۱۰
+  selected       String // A | B | C | D
+  isCorrect      Boolean
+  confidence     String // CONFIDENT | GUESSED (D14 — پس از انتخاب، پیش از بازخورد)
+  latencySec     Float    @default(0) // t_fast=۱۵s / t_slow=۷۰s (D10)
+  weight         Float    @default(1) // وزن D13: آسان ۱ / متوسط ۱٫۵ / سخت ۲
+  rBefore        Float    @default(1100)
+  rAfter         Float    @default(1100)
+  paramsSnapshot String? // snapshot پارامترهای الگوریتم در لحظه پاسخ (G7)
+  isSample       Boolean  @default(false)
+  createdAt      DateTime @default(now()) // لحظه پاسخ
+
+  session  Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([userId, questionId])
+  @@index([userId, createdAt])
+  @@index([questionId, createdAt])
+  @@index([isSample])
+  @@map("attempts")
+}
+
+// ---------------- توان و نردبان سطح (D16) ----------------
+
+// توان سراسری هر (دانش‌آموز، درس) — همان ردیف GLOBAL
+model SubjectAbility {
+  id            String   @id @default(cuid())
+  userId        String
+  subjectId     String
+  rating        Float    @default(1100) // R_s
+  answeredCount Int      @default(0) // برنامه K: ۳۲ ← ۲۴ (پس از ۵۰) ← ۱۶ (پس از ۱۵۰)
+  isSample      Boolean  @default(false)
+  updatedAt     DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subjectId])
+  @@map("ability_state_subject")
+}
+
+// ردیف دسته‌محور نردبان سطح — به‌ازای هر (دانش‌آموز، مبحث): سطح ۱–۳ + استریک‌ها
+model TopicAbility {
+  id            String   @id @default(cuid())
+  userId        String
+  subjectId     String // نرمال‌سازی‌شده برای کوئری‌های داشبورد
+  topicId       String
+  level         Int      @default(2) // ۱–۳ (۱۱۵۰/۱۲۵۰/۱۳۵۰) — نوار سختی انتخاب
+  wrongStreak   Int      @default(0) // n=۲ غلط پیاپی ← افت سطح
+  rightStreak   Int      @default(0) // m=۲ درست پیاپی ← ارتقا (حداکثر ۱ در جلسه)
+  weaknessCount Int      @default(0) // شمارنده ضعف در کف سطح ۱
+  answeredCount Int      @default(0) // مبنای هشدار مطالعه: <۳۰٪ در ۵ پاسخ آخر
+  isSample      Boolean  @default(false)
+  updatedAt     DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topic   Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+  @@index([subjectId, level])
+  @@map("ability_state_topic")
+}
+
+// ---------------- مرور فاصله‌دار SM-2 ----------------
+
+model ReviewSchedule {
+  id             String    @id @default(cuid())
+  userId         String
+  subjectId      String
+  topicId        String
+  ef             Float     @default(2.5) // کف ۱٫۳
+  intervalDays   Int       @default(0) // I(1)=1, I(2)=6, I(n)=ceil(I(n-1)×EF)
+  repetitions    Int       @default(0)
+  dueAt          DateTime // صف «مرور امروز»
+  lastReviewedAt DateTime?
+  isSample       Boolean   @default(false)
+  updatedAt      DateTime  @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topic   Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+  @@index([dueAt])
+  @@map("review_schedule")
+}
+
+// ---------------- بدفهمی (پارک‌شده با D16 — اسکیما حفظ شده) ----------------
+
+model Misconception {
+  code            String   @id // M01 … M10
+  title           String // «مشتق را تفاضل می‌فهمد نه نرخ لحظه‌ای»
+  behaviorSign    String // نشانه رفتاری در پاسخ‌ها
+  prerequisites   String   @default("") // کدها جدا با ; (گراف)
+  remedialTopic   String? // موضوع سؤال اصلاحی هدفمند
+  explanationText String   @default("") // متن آموزشی پس از تثبیت
+  isSample        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  misLinks QuestionMisconception[]
+  states   MisconceptionState[]
+
+  @@map("misconceptions")
+}
+
+model QuestionMisconception {
+  id                String  @id @default(cuid())
+  questionId        String
+  option            String // A | B | C | D — گزینه فریبنده
+  misconceptionCode String
+  isSample          Boolean @default(false)
+
+  question      Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  misconception Misconception @relation(fields: [misconceptionCode], references: [code], onDelete: Cascade)
+
+  @@unique([questionId, option])
+  @@map("question_misconception")
+}
+
+model MisconceptionState {
+  id                String    @id @default(cuid())
+  userId            String
+  misconceptionCode String
+  witnessCount      Int       @default(0) // قاعده دو شاهد (D12): دو جلسه ≥ ۲ ساعت فاصله
+  witnesses         String    @default("[]") // JSON: [{attemptId, seenAt}]
+  confirmedAt       DateTime?
+  isSample          Boolean   @default(false)
+  updatedAt         DateTime  @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  misconception Misconception @relation(fields: [misconceptionCode], references: [code], onDelete: Cascade)
+
+  @@unique([userId, misconceptionCode])
+  @@map("misconception_state")
+}
+
+// ---------------- کامیونیتی (سند طراحی فرانت v2.1) ----------------
+
+model Friendship {
+  id          String    @id @default(cuid())
+  requesterId String
+  addresseeId String
+  status      String    @default("PENDING") // PENDING | ACCEPTED
+  createdAt   DateTime  @default(now())
+  respondedAt DateTime?
+  isSample    Boolean   @default(false)
+
+  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId, status])
+  @@map("friendships")
+}
+
+model ClassRoom {
+  id        String   @id @default(cuid())
+  name      String // «یازدهم تجربی ۱»
+  code      String   @unique // کد پیوستن کلاس
+  teacherId String
+  grade     String
+  major     String
+  isSample  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  teacher User           @relation("ClassTeacher", fields: [teacherId], references: [id], onDelete: Cascade)
+  members ClassMember[]
+
+  @@index([grade, major])
+  @@map("classes")
+}
+
+model ClassMember {
+  id        String   @id @default(cuid())
+  classId   String
+  studentId String
+  joinedAt  DateTime @default(now())
+  isSample  Boolean  @default(false)
+
+  class   ClassRoom @relation(fields: [classId], references: [id], onDelete: Cascade)
+  student User      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([classId, studentId])
+  @@map("class_members")
 }
