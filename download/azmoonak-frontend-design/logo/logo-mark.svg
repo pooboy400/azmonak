@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- آزمونک — کانسپت A «تیکِ هدف» — نسخه تمام‌رنگی -->
+  <rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/>
+  <circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/>
+  <circle cx="59" cy="62" r="8" fill="#FFFFFF"/>
+  <path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

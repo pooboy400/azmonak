@@ -171,6 +171,32 @@ ol.cl{margin:4px 0 14px;padding-right:22px;}
 ol.cl li{margin-bottom:9px;text-align:right;line-height:1.85;}
 ol.cl li b{color:var(--c-accent);}
 
+/* آیکون lucide (sprite اینلاین) */
+.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.14em;flex:none;}
+
+/* لوگو */
+.cv-mark{position:absolute;left:64px;bottom:148px;z-index:2;}
+.logo-cell{flex:1 1 170px;min-width:170px;max-width:100%;background:#fff;border:1px solid var(--c-border);border-radius:14px;padding:16px 12px 12px;text-align:center;break-inside:avoid;position:relative;}
+.logo-cell .nm{font-size:13px;font-weight:700;color:var(--c-text);margin-top:10px;}
+.logo-cell .rs{font-size:10.5px;color:var(--c-muted);line-height:1.8;margin-top:4px;min-height:56px;}
+.logo-cell .tag{display:inline-block;background:var(--p-soft);color:var(--c-accent);font-size:9px;border-radius:999px;padding:2px 9px;margin:3px 2px 0;}
+.logo-cell .best{position:absolute;top:10px;left:10px;background:var(--p-gold);color:#fff;font-size:9px;font-weight:700;border-radius:999px;padding:2px 9px;}
+.icboard{display:flex;flex-wrap:wrap;gap:8px;max-width:100%;margin:12px 0 16px;}
+.ic-tile{flex:1 1 96px;min-width:96px;max-width:150px;background:#fff;border:1px solid var(--c-border);border-radius:10px;padding:9px 4px 7px;text-align:center;break-inside:avoid;}
+.ic-tile .ic{font-size:21px;color:var(--c-accent);}
+.ic-tile .lb{font-size:9px;color:var(--c-muted);margin-top:3px;}
+.ic-sec{width:100%;font-size:11px;font-weight:700;color:var(--c-header);margin:6px 0 0;break-inside:avoid;}
+
+/* انتخابگر لیدربرد */
+.lb-seg{display:flex;gap:4px;margin-bottom:7px;}
+.lb-seg span{flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;font-weight:700;}
+.lb-seg .on{background:#0E7490;color:#fff;border-color:#0E7490;}
+.lb-lbl{font-size:7.5px;color:#56727D;margin:0 0 3px;}
+.lb-chips{display:flex;gap:3px;flex-wrap:nowrap;margin-bottom:7px;}
+.lb-chip{display:inline-flex;align-items:center;gap:2px;font-size:8px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:999px;padding:3px 6px;white-space:nowrap;}
+.lb-chip .ic{font-size:9px;}
+.lb-chip.on{background:#E0F2F7;border-color:#0E7490;color:#0E7490;font-weight:700;}
+
 /* ---------- پایان ---------- */
 .ending{
   width:720px;height:1020px;box-sizing:border-box;break-before:page;overflow:hidden;
@@ -185,6 +211,53 @@ ol.cl li b{color:var(--c-accent);}
 </style>
 </head>
 <body>
+
+<!-- sprite آیکون‌های lucide (استخراج دقیق از lucide-react v0.525) + سیمبل لوگو -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+<symbol id="i-calc" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></symbol>
+<symbol id="i-atom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+<symbol id="i-dna" viewBox="0 0 24 24"><path d="m10 16 1.5 1.5"/><path d="m14 8-1.5-1.5"/><path d="M15 21c-1.798 0-3.2-2.032-4.5-5-1.3-2.968-2.202-5-4-5"/><path d="m18 7c2 0 3-2 3-3"/><path d="M6 3c1.798 0 3.2 2.032 4.5 5 1.3 2.968 2.202 5 4 5"/><path d="m9 6 1.5 1.5"/><path d="m13 18 1.5-1.5"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol>
+<symbol id="i-lang" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
+<symbol id="i-scroll" viewBox="0 0 24 24"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol>
+<symbol id="i-moonstar" viewBox="0 0 24 24"><path d="M18 5h4"/><path d="M20 3v4"/><path d="M21 14h4"/><path d="M23 12v4"/><path d="m12.5 6.5 1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1Z"/><path d="M9 8a5.5 5.5 0 0 0 5.5 5.5A5.5 5.5 0 0 1 9 19a5.5 5.5 0 0 0 0-11"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+<symbol id="i-medal" viewBox="0 0 24 24"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/></symbol>
+<symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.685a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+<symbol id="i-msg" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-listcheck" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-thumbs" viewBox="0 0 24 24"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+<symbol id="i-logo" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/><circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#FFFFFF"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-logo-b" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/><path d="M24 52 C36 45 52 47 60 55 C68 47 84 45 96 52 L96 78 C84 71 68 73 60 81 C52 73 36 71 24 78 Z" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round"/><path d="M34 40 L58 33 L88 17" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M77 11 L89 16 L84 28" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-logo-c" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#E0F2F7"/><circle cx="60" cy="54" r="29" fill="#0E7490"/><path d="M68 80 L79 97 L50 84 Z" fill="#0E7490"/><path d="M46 54 L56 64 L76 42" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 24 l2.8 7 L37 34 l-7.2 3 L27 44 l-2.8-7 L17 34 l7.2-3 Z" fill="#F59E0B"/><circle cx="93" cy="27" r="4" fill="#F59E0B"/></symbol>
+<symbol id="i-logo-mono" viewBox="0 0 120 120"><circle cx="59" cy="62" r="26" fill="none" stroke="#0E7490" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#0E7490"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#0E7490" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-logo-flat" viewBox="0 0 120 120"><circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#FFFFFF"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
 
 <!-- ================= جلد ================= -->
 <div class="cover">
@@ -203,13 +276,14 @@ ol.cl li b{color:var(--c-accent);}
     </svg>
   </div>
   <div class="cv-l3">
-    <div class="cv-kicker">سند طراحی فرانت — نسخه ۱٫۰ لایت</div>
+    <div class="cv-kicker">سند طراحی فرانت — نسخه ۲٫۰ لایت</div>
     <div class="cv-hero">آزمونک<small>طراحی رابط کاربری و تجربه کاربری وب‌اپ</small></div>
-    <div class="cv-summary">این سند تصویریِ کاملِ جهت‌گیری طراحی فرانت آزمونک است: پالت لایت و روشن، تایپوگرافی وزیرمتن، اجزای سراسری، و ماکاپ واقعی هر صفحه از لندینگ و لیدربرد و کامیونیتی تا ورود، پروفایل و فرم آزمون. هر تصمیم با دلیلش نوشته شده و هر پیش‌فرضِ قابل‌وتو جدا نشان داده شده تا پیش از شروع کد، همه‌چیز روی کاغذ تأیید شود.</div>
+    <div class="cv-summary">این سند تصویریِ کاملِ جهت‌گیری طراحی فرانت آزمونک است: لوگوی اختصاصی با سه کانسپت رقیب، پالت لایت و روشن، تایپوگرافی وزیرمتن، سیستم آیکون lucide، و ماکاپ واقعی هر صفحه — از لندینگ و لیدربردِ درس‌محور (تک‌درس × رشته × پایه) و کامیونیتی تا ورود، پروفایل و فرم آزمون. هر تصمیم با دلیلش نوشته شده و هر پیش‌فرضِ قابل‌وتو جدا نشان داده شده تا پیش از شروع کد، همه‌چیز روی کاغذ تأیید شود.</div>
     <div class="cv-meta">
       پدیدآور: <b>پویا</b> — جشنواره نوجوان خوارزمی<br>
       سند مکمل: برنامه توسعه v1.3 (D1–D16) و کتاب سه‌لایه الگوریتم‌ها
     </div>
+    <div class="cv-mark"><svg width="92" height="92"><use href="#i-logo"/></svg></div>
     <div class="cv-foot">AZMOONAK · FRONTEND DESIGN SPEC · LIGHT EDITION</div>
   </div>
 </div>
@@ -217,22 +291,24 @@ ol.cl li b{color:var(--c-accent);}
 <!-- ================= فهرست ================= -->
 <div class="toc-page">
   <div class="toc-title">فهرست مطالب</div>
-  <div class="toc-sub">۱۲ فصل — از شالوده و توکن‌ها تا ماکاپ تک‌تک صفحات و نقشه راه ساخت</div>
+  <div class="toc-sub">۱۴ فصل — از لوگو و شالوده تا ماکاپ تک‌تک صفحات و نقشه راه ساخت</div>
 
   <div class="toc-item"><span class="no">۱</span><span class="t">شالوده‌ی طراحی</span><span class="d">قطب‌نما، سبک «تختِ صمیمی»، سه قید سخت</span></div>
-  <div class="toc-item"><span class="no">۲</span><span class="t">سیستم رنگ</span><span class="d">سواچ توکن‌ها، قاعده‌ی رنگ معنایی</span></div>
-  <div class="toc-item"><span class="no">۳</span><span class="t">تایپوگرافی</span><span class="d">وزیرمتن، مقیاس نمونه‌دار، اعداد فارسی</span></div>
-  <div class="toc-item"><span class="no">۴</span><span class="t">اجزای سراسری</span><span class="d">هدر، ناوبری موبایل، حالت‌ها، دسترسی‌پذیری</span></div>
-  <div class="toc-item"><span class="no">۵</span><span class="t">صفحه اصلی — لندینگ</span><span class="d">الگوی سه‌قدمی + ماکاپ کامل</span></div>
-  <div class="toc-item"><span class="no">۶</span><span class="t">لیدربرد (نفرات برتر)</span><span class="d">پودیوم، لیگ هفتگی، حریم خصوصی</span></div>
-  <div class="toc-item"><span class="no">۷</span><span class="t">پیشرفت بقیه — کامیونیتی</span><span class="d">فید، چالش گروهی، اشتراک‌گذاری</span></div>
-  <div class="toc-item"><span class="no">۸</span><span class="t">ورود، پروفایل و فرم آزمون</span><span class="d">سه ماکاپ تعاملی قلب محصول</span></div>
-  <div class="toc-item"><span class="no">۹</span><span class="t">ستون پشتیبانی فوتر</span><span class="d">پنج صفحه: تماس، همکاری، قوانین، سوالات، راهنما</span></div>
-  <div class="toc-item"><span class="no">۱۰</span><span class="t">پرفورمنس و بودجه حجم</span><span class="d">سقف ۲۰۰KB صفحه آزمون، Lighthouse</span></div>
-  <div class="toc-item"><span class="no">۱۱</span><span class="t">تصمیم‌های قابل وتو</span><span class="d">جدول DT1–DT9 در انتظار رأی پویا</span></div>
-  <div class="toc-item"><span class="no">۱۲</span><span class="t">نقشه راه پیاده‌سازی فرانت</span><span class="d">هفت گام ساخت با معیار پذیرش</span></div>
+  <div class="toc-item"><span class="no">۲</span><span class="t">لوگو و هویت بصری</span><span class="d">سه کانسپت، لاک‌آپ، قواعد کاربرد — جدید</span></div>
+  <div class="toc-item"><span class="no">۳</span><span class="t">سیستم رنگ</span><span class="d">سواچ توکن‌ها، قاعده‌ی رنگ معنایی</span></div>
+  <div class="toc-item"><span class="no">۴</span><span class="t">تایپوگرافی</span><span class="d">وزیرمتن، مقیاس نمونه‌دار، اعداد فارسی</span></div>
+  <div class="toc-item"><span class="no">۵</span><span class="t">سیستم آیکون‌ها</span><span class="d">lucide-react، نقشه‌ی آیکون‌های محصول — جدید</span></div>
+  <div class="toc-item"><span class="no">۶</span><span class="t">اجزای سراسری</span><span class="d">هدر، ناوبری موبایل، حالت‌ها، دسترسی‌پذیری</span></div>
+  <div class="toc-item"><span class="no">۷</span><span class="t">صفحه اصلی — لندینگ</span><span class="d">الگوی سه‌قدمی + ماکاپ کامل</span></div>
+  <div class="toc-item"><span class="no">۸</span><span class="t">لیدربرد (نفرات برتر)</span><span class="d">دو سطح کلی/تک‌درس × رشته × پایه — بازطراحی</span></div>
+  <div class="toc-item"><span class="no">۹</span><span class="t">پیشرفت بقیه — کامیونیتی</span><span class="d">فید، چالش گروهی، اشتراک‌گذاری</span></div>
+  <div class="toc-item"><span class="no">۱۰</span><span class="t">ورود، پروفایل و فرم آزمون</span><span class="d">سه ماکاپ تعاملی قلب محصول</span></div>
+  <div class="toc-item"><span class="no">۱۱</span><span class="t">ستون پشتیبانی فوتر</span><span class="d">پنج صفحه: تماس، همکاری، قوانین، سوالات، راهنما</span></div>
+  <div class="toc-item"><span class="no">۱۲</span><span class="t">پرفورمنس و بودجه حجم</span><span class="d">سقف ۲۰۰KB صفحه آزمون، Lighthouse</span></div>
+  <div class="toc-item"><span class="no">۱۳</span><span class="t">تصمیم‌های قابل وتو</span><span class="d">جدول DT1–DT12 در انتظار رأی پویا</span></div>
+  <div class="toc-item"><span class="no">۱۴</span><span class="t">نقشه راه پیاده‌سازی فرانت</span><span class="d">هفت گام ساخت با معیار پذیرش</span></div>
 
-  <div class="toc-note">همه‌ی ماکاپ‌های این سند با همان پالت و فونتِ طراحیِ واقعی محصول رسم شده‌اند — یعنی چیزی که می‌بینی همان چیزی است که در کد ساخته می‌شود. رنگ‌ها، اندازه‌ها و چینش‌ها دقیقاً از توکن‌های فصل ۲ و ۳ گرفته شده‌اند؛ پس این سند هم‌زمان اولین «پیاده‌سازی» طراحی هم هست و می‌توانی به‌عنوان مرجع پذیرش کد از آن استفاده کنی.</div>
+  <div class="toc-note">همه‌ی ماکاپ‌های این سند با همان پالت و فونتِ طراحیِ واقعی محصول رسم شده‌اند — یعنی چیزی که می‌بینی همان چیزی است که در کد ساخته می‌شود. رنگ‌ها، اندازه‌ها و چینش‌ها دقیقاً از توکن‌های فصل ۳ و ۴ گرفته شده‌اند؛ پس این سند هم‌زمان اولین «پیاده‌سازی» طراحی هم هست و می‌توانی به‌عنوان مرجع پذیرش کد از آن استفاده کنی.</div>
 </div>
 
 <!-- ================= بدنه ================= -->
@@ -248,7 +324,7 @@ ol.cl li b{color:var(--c-accent);}
 <p class="lead">قطب‌نمای طراحی آزمونک یک جمله است: <b>«موتور جدی، روحیه‌ی بازیگوش»</b>. زیر کاپوت، یک سیستم تطبیقی دقیق با Elo و نردبان سطح و مرور فاصله‌دار کار می‌کند؛ اما آن‌چه نوجوان می‌بیند باید صمیمی، روشن و بدون ابهام باشد. طراحی فرانت وظیفه دارد این دوگانگی را به زبان بصری ترجمه کند: بومِ ساکت و روشن که فکر را تمرکز می‌دهد، و رنگ و حرکت که فقط در لحظه‌های معنادار ظاهر می‌شوند — جواب درست، ارتقای سطح، یادآوری مرور.</p>
 
 <h3 class="sub">چرا تم لایت؟</h3>
-<p>تم لایت بر اساس تصمیم مستقیم پویا انتخاب شد و بر پیش‌فرض تیره‌ی اولیه اولویت دارد. این انتخاب با مخاطب محصول کاملاً سازگار است: دانش‌آموزی که بیشتر بعدازظهرها و در محیط پرنور مطالعه می‌کند، رابط روشن را راحت‌تر می‌خواند؛ صفحه‌ی سؤال سفید، خوانایی متن بلند سؤال را بالا می‌برد و در گوشی‌های ارزان‌قیمت هم روشنایی صفحه کمتر مصرف می‌شود. تنها استثنا، فوتر سایت است که به‌قرارداد رایجِ طراحی، سرمه‌ای تیره می‌ماند تا لنگر بصری و کنتراست خوبی بسازد — این استثنا در فصل ۹ مستند است.</p>
+<p>تم لایت بر اساس تصمیم مستقیم پویا انتخاب شد و بر پیش‌فرض تیره‌ی اولیه اولویت دارد. این انتخاب با مخاطب محصول کاملاً سازگار است: دانش‌آموزی که بیشتر بعدازظهرها و در محیط پرنور مطالعه می‌کند، رابط روشن را راحت‌تر می‌خواند؛ صفحه‌ی سؤال سفید، خوانایی متن بلند سؤال را بالا می‌برد و در گوشی‌های ارزان‌قیمت هم روشنایی صفحه کمتر مصرف می‌شود. تنها استثنا، فوتر سایت است که به‌قرارداد رایجِ طراحی، سرمه‌ای تیره می‌ماند تا لنگر بصری و کنتراست خوبی بسازد — این استثنا در فصل ۱۱ مستند است.</p>
 
 <h3 class="sub">سبک: «تختِ صمیمی»</h3>
 <p>جست‌وجوی دیتابیس سبکِ اسکیل ui-ux-pro-max برای محصول آموزشی دو نتیجه‌ی کلیدی داد: سبک <b>Flat Design</b> با عملکرد عالی و سازگاری کامل با Tailwind، و توصیه‌ی بخش e-learning به ترکیب <b>Vibrant & Block-based</b> با لمس‌های نرم و کارت‌محور. آزمونک این دو را ترکیب می‌کند: پایه کاملاً تخت و سبک (بدون گلس‌مورفینگ و بلاب تزئینی) با عمق خیلی ملایم فقط روی عناصر تعاملی — سایه‌ی کم‌رنگ، شعاع بزرگ، هاور واضح. نتیجه هم برای بودجه حجم ۲۰۰ کیلوبایتی سند امن است، هم حس «بازی جدی» نوجوان‌پسند می‌سازد.</p>
@@ -259,9 +335,79 @@ ol.cl li b{color:var(--c-accent);}
 <h3 class="sub">اصل آخر: رنگ فقط وقتی معنا دارد</h3>
 <p>در صفحه‌ی ساکن، کاربر باید فقط سرمه‌ای متن و سفید بوم و کمی فیروزه‌ایِ برند را ببیند. رنگ‌های سبز، طلایی، سرخ و بنفش «جایزه‌ی اتفاق» هستند: سبز فقط وقتی جواب درست ثبت شد، سرخ فقط وقتی اشتباه مشخص شد، طلایی فقط وقتی سطح یا لیگ عوض شد. این خودسازی، دقت معنایی رابط را بالا می‌برد و باعث می‌شود سیگنال‌های مهم الگوریتم — از ارتقای نردبان D16 تا هشدار مطالعه — در میان رنگ‌های تزئینی گم نشوند. همان قاعده‌ای که کتاب الگوریتم‌ها هم با آن ساخته شد و به داور جشنواره ثابت می‌کند تصمیم‌های طراحی، سیستم‌مند و قابل‌دفاع‌اند.</p>
 
-<!-- فصل ۲ — سیستم رنگ -->
+<!-- فصل ۲ — لوگو و هویت بصری -->
 <div class="chapter-header">
   <div class="sec-tag">فصل ۲</div>
+  <div class="sec-title">لوگو و هویت بصری</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">لوگوی آزمونک باید در یک نگاه سه چیز را بگوید: <b>هدف‌مندی</b> (آزمونِ معیاردار)، <b>تأیید</b> (جواب درست و پیشرفت) و <b>صمیمیت</b> (پسوند «ک»ِ دوستانه). سه کانسپت زیر با همین سه محور طراحی شده‌اند و همه از پالت محصول می‌خورند — هیچ رنگی بیرون از توکن‌های فصل ۳ وارد لوگو نمی‌شود تا هویت، همان زبان رنگ رابط را ادامه دهد. برش‌های رسمی (فاوآیکون، PWA، لاک‌آپ) هم از قبل ساخته شده‌اند و در گام F1 فقط به <code>public/</code> کپی می‌شوند.</p>
+
+<figure class="fig">
+<div class="fig-row">
+  <div class="logo-cell">
+    <div class="best">پیشنهاد اصلی</div>
+    <svg width="96" height="96"><use href="#i-logo"/></svg>
+    <div class="nm">کانسپت A — «تیکِ هدف»</div>
+    <div class="rs">حلقه‌ی هدف + تیک طلایی که از آن می‌گذرد: هر جلسه یک شلیک به هدف است و تیک یعنی زدی. در ۱۶ پیکسلیِ فاوآیکون هم خوانا می‌ماند و داستانش با معیار نمره‌ی محصول یکی است.</div>
+    <span class="tag">یادماندنی</span><span class="tag">خوانا در سایز کوچک</span><span class="tag">هم‌معنای نمره</span>
+  </div>
+  <div class="logo-cell">
+    <svg width="96" height="96"><use href="#i-logo-b"/></svg>
+    <div class="nm">کانسپت B — «کتابِ صعودی»</div>
+    <div class="rs">کتاب باز دانش + خط صعودی رو به بالا: روایت «هر سؤال، یک قدم بهتر شدن». روایتش قوی است اما جزئیاتش در سایز کوچک کم‌رنگ می‌شود و برای فاوآیکون سنگین است.</div>
+    <span class="tag">روایت پیشرفت</span><span class="tag">جزئیات بیشتر</span>
+  </div>
+  <div class="logo-cell">
+    <svg width="96" height="96"><use href="#i-logo-c"/></svg>
+    <div class="nm">کانسپت C — «حباب آزمونک»</div>
+    <div class="rs">حباب گفت‌وگو با تیک: صمیمیت و اشاره به کامیونیتی و اشتراک پیشرفت. دوستانه‌ترین گزینه اما دورتر از جدیتِ موتور تطبیقی و قواعد رنگ (کاشی ملایم).</div>
+    <span class="tag">دوستانه</span><span class="tag">اشاره به کامیونیتی</span>
+  </div>
+</div>
+<figcaption>شکل ۲-۱: سه کانسپت لوگو — هر سه با همان پالت محصول؛ کانسپت A با نشان طلایی «پیشنهاد اصلی» و دلیلش در کارت بعدی.</figcaption>
+</figure>
+
+<div class="callout"><span class="h">توصیه مهندس (قابل وتو در DT12)</span><br>کانسپت A «تیکِ هدف» — اول چون در کوچک‌ترین سایز (فاوآیکون ۱۶ پیکسل) هنوز یک معنای کامل دارد: هدف + تیک. دوم چون داستانش با محصول یکی است: نمره‌ی جلسه همان «زدنِ هدف» است. سوم چون هندسه‌اش (دو دایره + یک خط شکسته) سبک‌ترین شکل قابل‌بازتولید SVG است و در اسپرایت آیکون‌ها بدون فونت و تصویر جا می‌شود. اگر رأی پویا B یا C باشد فقط این فصل و فایل‌های svg عوض می‌شود؛ هیچ تصمیم دیگری وابسته نیست.</div>
+
+<h3 class="sub">برش‌های لازم و قواعد کاربرد</h3>
+<figure class="fig">
+<div class="fig-row">
+  <div style="flex:1 1 250px;min-width:250px;max-width:100%;background:#fff;border:1px solid #C9DDE2;border-radius:14px;padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <svg width="52" height="52"><use href="#i-logo"/></svg>
+      <span style="font-size:34px;font-weight:700;color:#102A33;line-height:1;">آزمون<span style="color:#0E7490;">ک</span></span>
+    </div>
+    <div style="font-size:10px;color:#56727D;margin-top:10px;line-height:1.8;">لاک‌آپ افقی برای هدر دسکتاپ و صفحه ورود: مارک ۵۲ پیکسلی + وردمارک وزیرمتن Bold که فقط «ک» آخر فیروزه‌ای است — اشاره به صمیمیتِ اسم.</div>
+    <div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap;">
+      <div style="background:#0F172A;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:8px;"><svg width="30" height="30"><use href="#i-logo"/></svg><span style="font-size:16px;font-weight:700;color:#fff;">آزمونک</span></div>
+      <div style="border:1px dashed #C9DDE2;border-radius:12px;padding:10px;"><svg width="34" height="34"><use href="#i-logo-mono"/></svg></div>
+      <div style="display:flex;align-items:flex-end;gap:6px;">
+        <svg width="16" height="16"><use href="#i-logo"/></svg>
+        <svg width="24" height="24"><use href="#i-logo"/></svg>
+        <svg width="32" height="32"><use href="#i-logo"/></svg>
+      </div>
+    </div>
+    <div style="font-size:9.5px;color:#56727D;margin-top:8px;">از راست: ترکیب فوتر تیره (وردمارک سفید)، نسخه تک‌رنگ چاپ، و زنجیره‌ی فاوآیکون ۱۶ / ۲۴ / ۳۲ پیکسل.</div>
+  </div>
+  <div style="flex:1 1 250px;min-width:250px;max-width:100%;">
+    <ul class="cl" style="margin-top:0;">
+      <li><b>چهار برش رسمی:</b> <code>logo-mark.svg</code> (کاشی فیروزه‌ای)، <code>logo-mark-mono.svg</code> (تک‌رنگ)، <code>logo-mark-white.svg</code> (سفید برای فوتر) و <code>logo-lockup.svg</code> (مارک+وردمارک) به‌علاوه <code>favicon.svg</code> و آیکون PWA در ۱۹۲/۵۱۲ پیکسل — همه در گام F1 به <code>public/</code> می‌روند.</li>
+      <li><b>مساحت امن:</b> حداقل ۱۰٪ عرض لوگو دور آن فضای خالی بماند؛ لوگو روی عکس و بافت شلوغ نمی‌نشیند.</li>
+      <li><b>ممنوعیت‌ها:</b> گرادیان و سایه (سبک تخت!)، کشیدگی و تغییر تناسبات، چرخاندن، رنگ بیرون از پالت، و جداکردن تیک طلایی به‌عنوان آیکون مستقل.</li>
+      <li><b>حداقل سایز:</b> مارک ۲۴ پیکسل، لاک‌آپ ۱۲۰ پیکسل عرض؛ زیر این سایزها نسخه ساده‌شده (فقط حلقه و تیک) می‌آید.</li>
+    </ul>
+  </div>
+</div>
+<figcaption>شکل ۲-۲: برش‌های کانسپت A — لاک‌آپ، فوتر تیره، تک‌رنگ چاپی و زنجیره‌ی فاوآیکون، همراه قواعد کاربرد.</figcaption>
+</figure>
+
+<p>جای لوگو در محصول شش‌جاست و برای هرکدام برش مشخصی بسته شده: هدر دسکتاپ (لاک‌آپ ۲۶ پیکسلی)، هدر موبایل و صفحه ورود (مارک تنها)، فوتر تیره (نسخه سفید)، فاوآیکون مرورگر، آیکون PWA نصب‌شده، و تصویر اشتراک‌گذاری (OG) که وقتی کاربر رتبه‌اش را در تلگرام می‌فرستد، لوگو را کنار کارت رتبه نشان می‌دهد. همین حلقه‌ی آخر — لوگو روی کارت اشتراک رتبه — پیوند لوگو با لیدربرد درس‌محور فصل ۸ است: هویت برند دقیقاً جایی می‌نشیند که نوجوان‌ها می‌بینند؛ داخل پیام‌رسان، نه فقط داخل سایت.</p>
+
+<!-- فصل ۳ — سیستم رنگ -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۳</div>
   <div class="sec-title">سیستم رنگ</div>
   <div class="sec-divider"></div>
 </div>
@@ -306,9 +452,9 @@ ol.cl li b{color:var(--c-accent);}
 
 <div class="callout"><span class="h">قاعده‌ی طلایی آزمونک</span><br>هیچ رنگ معنایی بدون معنا رنگ نمی‌شود. اگر روی صفحه هیچ اتفاقی نیفتاده، صفحه فقط سرمه‌ای و سفید است. رنگ، زبانِ رویدادهاست: ورود رنگ یعنی یک رویداد واقعی در موتور تطبیقی افتاده و سیستم می‌خواهد درباره‌اش حرف بزند.</div>
 
-<!-- فصل ۳ — تایپوگرافی -->
+<!-- فصل ۴ — تایپوگرافی -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۳</div>
+  <div class="sec-tag">فصل ۴</div>
   <div class="sec-title">تایپوگرافی</div>
   <div class="sec-divider"></div>
 </div>
@@ -328,12 +474,91 @@ ol.cl li b{color:var(--c-accent);}
   <li><b>ارتفاع خط ۱٫۸ برای فارسی:</b> متن فارسی کشیده‌تر از لاتین خوانده می‌شود؛ ارتفاع خط ۱٫۸ در بدنه و ۱٫۵ در عناوین، جادار و خوانا است. برای فرمول‌های لاتینِ سؤال‌ها بلوک <code>dir="ltr"</code> جدا می‌شود تا جهت به‌هم نریزد.</li>
   <li><b>اعداد فارسی در رابط، لاتین در فرمول:</b> نمره‌ها، پیشرفت و تاریخ‌ها با اعداد فارسی نمایش داده می‌شوند (۸۸٪ نه 88%)؛ اعداد لاتین فقط داخل عبارت‌های ریاضی سؤال. این قرارداد همان رویه کتاب سه‌لایه است و کاربر هرگز دو نظام عددی قاطی نمی‌بیند.</li>
   <li><b>سلسله‌مراتب با وزن و رنگ، نه فقط اندازه:</b> عناوین با Bold و سرمه‌ای، بدنه با Regular، متن ثانویه با رنگ <code>text-2</code> — هر سه با هم تفاوت را چندلایه می‌کنند تا در اندازه‌های کوچک هم ساختار حفظ شود.</li>
-  <li><b>ممنوعیت فونت دوم:</b> هیچ صفحه‌ای فونت دیگری لود نمی‌کند؛ آیکون‌ها SVG اینلاین هستند و وارد سیستم تایپ نمی‌شوند. تک‌خانواده‌بودن هم بودجه حجم را حفظ می‌کند و هم یکدستی هویت.</li>
+  <li><b>ممنوعیت فونت دوم:</b> هیچ صفحه‌ای فونت دیگری لود نمی‌کند؛ آیکون‌ها از سیستم lucide می‌آیند (فصل ۵) و وارد سیستم تایپ نمی‌شوند. تک‌خانواده‌بودن هم بودجه حجم را حفظ می‌کند و هم یکدستی هویت.</li>
 </ul>
 
-<!-- فصل ۴ — اجزای سراسری -->
+<!-- فصل ۵ — سیستم آیکون‌ها -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۴</div>
+  <div class="sec-tag">فصل ۵</div>
+  <div class="sec-title">سیستم آیکون‌ها — lucide</div>
+  <div class="sec-divider"></div>
+</div>
+
+<p class="lead">آیکون‌های محصول یک خانواده‌اند: <b>lucide</b> — همان کتابخانه‌ای که shadcn/ui به‌صورت پیش‌فرض با آن کار می‌کند و نسخه‌ی <code>lucide-react 0.525</code> از قبل در پروژه نصب است. انتخابش سه دلیل مهندسی دارد: اول، همه‌ی آیکون‌ها با استروک یکنواخت ۲ پیکسل و هندسه‌ی هم‌خانواده رسم می‌شوند و ترکیب ناهم‌خوانِ «آیکون خطی و توپر» ممکن نمی‌شود؛ دوم، باندل درختی دارد (tree-shaking) — یعنی فقط آیکون‌های واقعاً import‌شده وارد بسته‌ی جاوااسکریپت می‌شوند و هر آیکون حدود ۳۰۰ تا ۶۰۰ بایت فشرده است؛ سوم، مجوز ISC و نگهداری فعال ریسک آینده را کم می‌کند. <b>react-icons</b> هم گزینه‌ی معتادی بود اما چندخانوادگی‌اش (هر خانواده با وزن و استروک متفاوت) دقیقاً همان چیزی است که یکدستی را می‌شکند؛ به‌عنوان جایگزین مجاز در DT11 ثبت شده ولی پیش‌فرض نیست.</p>
+
+<figure class="fig">
+<div class="icboard">
+  <div class="ic-sec">ناوبری و قاب‌ها</div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-home"/></svg><div class="lb">خانه</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-trophy"/></svg><div class="lb">لیدربرد</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-users"/></svg><div class="lb">کامیونیتی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-user"/></svg><div class="lb">پروفایل</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-share"/></svg><div class="lb">اشتراک‌گذاری</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-x"/></svg><div class="lb">بستن</div></div>
+  <div class="ic-sec">درس‌ها — چیپ انتخاب درس در لیدربرد فصل ۸</div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-calc"/></svg><div class="lb">ریاضی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-atom"/></svg><div class="lb">فیزیک</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-flask"/></svg><div class="lb">شیمی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-dna"/></svg><div class="lb">زیست‌شناسی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-pen"/></svg><div class="lb">فارسی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-scroll"/></svg><div class="lb">عربی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-moonstar"/></svg><div class="lb">دینی و زندگی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-lang"/></svg><div class="lb">انگلیسی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-book"/></svg><div class="lb">مطالعه</div></div>
+  <div class="ic-sec">وضعیت و انگیزه</div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-medal"/></svg><div class="lb">مدال درس</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-crown"/></svg><div class="lb">رتبه اول</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-trend"/></svg><div class="lb">روند صعودی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-flame"/></svg><div class="lb">استریک</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-clock"/></svg><div class="lb">مرور بعدی</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-target"/></svg><div class="lb">هدف / سطح</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-check"/></svg><div class="lb">پاسخ درست</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-sparkles"/></svg><div class="lb">ارتقای سطح</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-star"/></svg><div class="lb">امتیاز</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-shield"/></svg><div class="lb">حریم خصوصی</div></div>
+  <div class="ic-sec">عملیات</div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-send"/></svg><div class="lb">ارسال</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-msg"/></svg><div class="lb">پیام‌رسان</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-thumbs"/></svg><div class="lb">تبریک</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-pencil"/></svg><div class="lb">ویرایش لقب</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-logout"/></svg><div class="lb">خروج از لیدربرد</div></div>
+  <div class="ic-sec">پشتیبانی</div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-phone"/></svg><div class="lb">تماس</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-mail"/></svg><div class="lb">ایمیل</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-help"/></svg><div class="lb">راهنما</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-scale"/></svg><div class="lb">قوانین</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-file"/></svg><div class="lb">فرم همکاری</div></div>
+  <div class="ic-tile"><svg class="ic"><use href="#i-grad"/></svg><div class="lb">جشنواره</div></div>
+</div>
+<figcaption>شکل ۵-۱: نمونه‌ی واقعی آیکون‌های lucide در پنج گروه کاربردی — همین آیکون‌ها در ماکاپ‌های بقیه‌ی سند هم استفاده شده‌اند.</figcaption>
+</figure>
+
+<table class="keep">
+<thead><tr><th style="width:22%">قاعده</th><th>مقدار بسته‌شده</th></tr></thead>
+<tbody>
+<tr><td>اندازه‌های مجاز</td><td>۱۶ پیکسل درون چیپ و جدول · ۲۰ در دکمه و منو · ۲۴ در ناوبری موبایل — بیرون از این سه اندازه، آیکون نداریم</td></tr>
+<tr><td>استروک و پُری</td><td>استروک ۲ پیکسل ثابت؛ هیچ آیکون توپری وارد سیستم نمی‌شود تا وزن بصری همه‌جا یکسان بماند</td></tr>
+<tr><td>رنگ</td><td>آیکون همیشه از <code>currentColor</code> والد رنگ می‌گیرد؛ آیکون رنگ مستقل و رنگین‌کمانی ممنوع</td></tr>
+<tr><td>هدف لمسی</td><td>آیکون ۲۴ پیکسلی همیشه داخل دکمه‌ی حداقل ۴۴×۴۴ می‌نشیند (قاعده‌ی فصل ۶)</td></tr>
+<tr><td>صفحه‌ی آزمون</td><td>فقط ۶ آیکون لازم است (check، x، clock، flame، trend، share) و مستقیم import می‌شوند — حدود ۲ تا ۳ کیلوبایت فشرده، بدون لود کتابخانه‌ی کامل</td></tr>
+</tbody>
+</table>
+
+<h3 class="sub">آیکون برندها — استثنای سنجیده</h3>
+<p>lucide آیکون برند ندارد و این درست است؛ آیکون برند کارِ روزمره‌ی یک کتابخانه‌ی UI نیست. آزمونک فقط به دو آیکون برند نیاز دارد: تلگرام و واتساپ برای دکمه‌های اشتراک پیشرفت (فصل ۹). برای هر دو، به‌جای کشیدن کل react-icons به پروژه، دو SVG دستی تک‌خطی با همان استروک ۲ رسم می‌شود که وزنشان جمعاً زیر یک کیلوبایت است و کنار آیکون‌های lucide یک‌دست دیده می‌شوند. نمونه‌ی دکمه‌های اشتراک زیر دقیقاً با همین منطق ساخته شده — در ماکاپ این سند، نماینده‌ی برندها آیکون‌های هم‌خانواده‌ی send و msg هستند و در کد نهایی جای خود را به SVG رسمی برند می‌دهند.</p>
+
+<figure class="fig">
+<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+  <span style="display:inline-flex;align-items:center;gap:6px;background:#0E7490;color:#fff;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-send"/></svg>اشتراک در تلگرام</span>
+  <span style="display:inline-flex;align-items:center;gap:6px;background:#059669;color:#fff;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-msg"/></svg>اشتراک در واتساپ</span>
+  <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#102A33;border:1px solid #C9DDE2;font-size:11px;font-weight:700;border-radius:9px;padding:8px 14px;"><svg class="ic" style="font-size:14px;"><use href="#i-share"/></svg>کپی لینک رتبه</span>
+</div>
+<figcaption>شکل ۵-۲: دکمه‌های اشتراک share-first — در کد نهایی آیکون تلگرام/واتساپ، SVG دستی استروک‌۲ می‌شود (DT11).</figcaption>
+</figure>
+
+<!-- فصل ۶ — اجزای سراسری -->
+<div class="chapter-header">
+  <div class="sec-tag">فصل ۶</div>
   <div class="sec-title">اجزای سراسری</div>
   <div class="sec-divider"></div>
 </div>
@@ -346,7 +571,7 @@ ol.cl li b{color:var(--c-accent);}
   <div style="flex:1 1 320px;min-width:300px;max-width:100%;">
     <div style="border:1px solid #C9DDE2;border-radius:14px;overflow:hidden;background:#fff;">
       <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #C9DDE2;">
-        <span style="width:26px;height:26px;border-radius:8px;background:#0E7490;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">آ</span>
+        <svg width="26" height="26"><use href="#i-logo"/></svg>
         <span style="font-size:13px;font-weight:700;color:#102A33;">آزمونک</span>
         <span style="font-size:11px;color:#5B6B85;margin-right:auto;margin-left:8px;">لیدربرد</span>
         <span style="font-size:11px;color:#5B6B85;margin-left:8px;">پیشرفت بقیه</span>
@@ -360,16 +585,16 @@ ol.cl li b{color:var(--c-accent);}
     <div class="mp-body" style="padding:12px 10px 0;">
       <div style="background:#fff;border:1px solid #C9DDE2;border-radius:10px;padding:10px;text-align:center;font-size:9.5px;color:#5B6B85;">محتوای صفحه<br><span style="font-size:8px;">(ناوبری پایین، شناور روی محتوا)</span></div>
       <div style="display:flex;justify-content:space-around;align-items:flex-end;background:#fff;border:1px solid #C9DDE2;border-bottom:none;border-radius:16px 16px 0 0;padding:8px 6px 4px;margin-top:12px;">
-        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">⌂</div>خانه</div>
-        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">★</div>لیدربرد</div>
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-home"/></svg>خانه</div>
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-trophy"/></svg>لیدربرد</div>
         <div style="width:40px;height:40px;border-radius:50%;background:#0E7490;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;margin-top:-16px;font-weight:700;">+</div>
-        <div style="text-align:center;font-size:8px;color:#5B6B85;"><div style="font-size:14px;">◎</div>کامیونیتی</div>
-        <div style="text-align:center;font-size:8px;color:#0E7490;font-weight:700;"><div style="font-size:14px;">☺</div>من</div>
+        <div style="text-align:center;font-size:8px;color:#5B6B85;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-users"/></svg>کامیونیتی</div>
+        <div style="text-align:center;font-size:8px;color:#0E7490;font-weight:700;"><svg class="ic" style="font-size:14px;display:block;margin:0 auto 2px;"><use href="#i-user"/></svg>من</div>
       </div>
     </div>
   </div>
 </div>
-<figcaption>شکل ۴-۱: هدر سراسری (راست) و ناوبری پایین موبایل با دکمه‌ی مرکزی «جلسه جدید» (چپ). آیکون‌ها در پیاده‌سازی نهایی SVG اینلاین بدون کتابخانه‌اند.</figcaption>
+<figcaption>شکل ۶-۱: هدر سراسری با لوگوی فصل ۲ (راست) و ناوبری پایین موبایل با دکمه‌ی مرکزی «جلسه جدید» (چپ). آیکون‌های ناوبری از lucide-react تری‌شیک می‌آیند (فصل ۵).</figcaption>
 </figure>
 
 <h3 class="sub">حالت‌هایی که باید همیشه طراحی شده باشند</h3>
@@ -380,9 +605,9 @@ ol.cl li b{color:var(--c-accent);}
   <li><b>فوکوس و لمس:</b> حلقه‌ی فوکوس فیروزه‌ای ۳ پیکسلی برای ناوبری کیبورد، و حداقل هدف لمسی ۴۴×۴۴ پیکسل (استاندارد آموزشی دیتابیس اسکیل) روی همه‌ی دکمه‌ها.</li>
 </ul>
 
-<!-- فصل ۵ — لندینگ -->
+<!-- فصل ۷ — لندینگ -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۵</div>
+  <div class="sec-tag">فصل ۷</div>
   <div class="sec-title">صفحه اصلی — لندینگ</div>
   <div class="sec-divider"></div>
 </div>
@@ -396,6 +621,7 @@ ol.cl li b{color:var(--c-accent);}
     <!-- hero -->
     <div style="padding:26px 22px 20px;display:flex;gap:14px;align-items:center;background:linear-gradient(180deg,#F0F7F9,#F7FAFB);">
       <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px;"><svg width="24" height="24"><use href="#i-logo"/></svg><span style="font-size:11px;font-weight:700;color:#102A33;">آزمونک</span></div>
         <div style="font-size:19px;font-weight:700;color:#102A33;line-height:1.5;">هر سؤال، یک قدم بهتر شدن</div>
         <div style="font-size:10.5px;color:#56727D;line-height:1.9;margin:6px 0 10px;">آزمونک سطحت را می‌سنجد، دلیل غلط‌هایت را می‌فهمد و می‌گوید فردا دقیقاً چه چیزی مرور کنی. بدون امتحان‌های خسته‌کننده، فقط ده سؤال در روز.</div>
         <div style="display:flex;gap:6px;">
@@ -439,7 +665,7 @@ ol.cl li b{color:var(--c-accent);}
     </div>
     <!-- CTA + تیزر لیدربرد -->
     <div style="margin:10px 18px 14px;background:#0F172A;border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px;">
-      <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#fff;">جای تو در لیگ این هفته خالی است</div><div style="font-size:8.5px;color:#94A3C4;margin-top:3px;">با دو جلسه در لیگ برنز شروع می‌کنی</div></div>
+      <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#fff;">جای تو در لیگ ریاضی یازدهم تجربی خالیه</div><div style="font-size:8.5px;color:#94A3C4;margin-top:3px;">رتبه‌ات را همین هفته بساز — در کلی و تک‌تک دروس</div></div>
       <span style="background:#0E7490;color:#fff;font-size:9.5px;font-weight:700;border-radius:8px;padding:6px 12px;">شروع کن</span>
     </div>
     <!-- فوتر تیره -->
@@ -450,37 +676,41 @@ ol.cl li b{color:var(--c-accent);}
     </div>
   </div>
 </div>
-<figcaption>شکل ۵-۱: ماکاپ کامل لندینگ — قیف سه‌قدمی با اثبات اجتماعی و CTA نهایی. اعداد بخش اثبات اجتماعی تا آماده‌شدن داده‌ی واقعی آزمایش میدانی، جای‌نگهدار اعلام‌شده هستند.</figcaption>
+<figcaption>شکل ۷-۱: ماکاپ کامل لندینگ — قیف سه‌قدمی با اثبات اجتماعی و CTA نهایی درس‌محور. اعداد بخش اثبات اجتماعی تا آماده‌شدن داده‌ی واقعی آزمایش میدانی، جای‌نگهدار اعلام‌شده هستند.</figcaption>
 </figure>
 
 <h3 class="sub">قواعد بخش‌بندی لندینگ</h3>
 <ul class="cl">
   <li><b>هیرو راست‌چین با ماکاپ اپ:</b> سمت راست پیام و دکمه‌ها، سمت چپ نمای واقعی صفحه‌ی سؤال — نه تصویر سه‌بعدی ساختگی؛ همین صداقت به اپِ ماکاپی که واقعاً ساخته می‌شود اعتبار می‌دهد.</li>
-  <li><b>تیزر لیدربرد در لندینگ:</b> کارت تیره‌ی «جای تو خالی است» رقابت را زودتر فعال می‌کند و کاربر را به همان صفحه‌ی لیدربرد فصل ۶ وصل می‌کند — پل بین بازاریابی و انگیزه‌ی ماندن.</li>
+  <li><b>تیزر لیدربرد در لندینگ:</b> کارت تیره‌ی «جای تو خالیه» با نام بردن از یک لیگ واقعی و درسی (ریاضی، یازدهم تجربی) رقابت را زودتر فعال می‌کند و کاربر را به لیدربرد دو سطحی فصل ۸ وصل می‌کند — پل بین بازاریابی و انگیزه‌ی ماندن.</li>
   <li><b>موبایل اول:</b> چیدمان بالا با گرید تک‌ستونه موبایل طراحی شده و سپس به سه‌ستونه گسترش یافته؛ ترتیب بخش‌ها در موبایل عوض نمی‌شود تا روایت قیف حفظ بماند.</li>
 </ul>
 
-<!-- فصل ۶ — لیدربرد -->
+<!-- فصل ۸ — لیدربرد -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۶</div>
+  <div class="sec-tag">فصل ۸</div>
   <div class="sec-title">لیدربرد — نفرات برتر</div>
   <div class="sec-divider"></div>
 </div>
 
-<p class="lead">نکته‌ی روانیِ لیدربرد نوجوان‌ها: جدول رتبه‌ی خامِ ۱ تا ۵۰۰ برای بچه‌های ضعیف‌تر دلسردکننده است و آن‌ها را از محصول می‌برد. راه‌حل طراحی (قابل وتو در DT1 و DT2): <b>پودیوم + لیگ‌های هفتگی ۲۰ نفره</b> به سبک اپ‌های یادگیری موفق — هر کاربر در لیگ هم‌سطح خودش رقابت می‌کند، فقط ۲۰ نفر در جدولش می‌بیند و صعود بین لیگ‌ها جایزه است، نه تحقیر ماندن در پایین.</p>
+<p class="lead">دو تصمیم، لیدربرد را می‌سازد. اول، روان‌شناسی رقابت: جدول رتبه‌ی خام ۱ تا ۵۰۰ برای بچه‌های ضعیف‌تر دلسردکننده است؛ پس <b>پودیوم + لیگ‌های هفتگی ۲۰ نفره</b> به سبک اپ‌های یادگیری موفق می‌آید — صعود بین لیگ‌ها جایزه است، نه تحقیر ماندن در پایین (DT1 و DT2). دوم، خواسته‌ی جدید پویا در نسخه ۲: رتبه‌بندی <b>دو سطحی</b> — برای هر رشته و هر پایه، یک لیدربرد «کلی» و به‌ازای هر درس یک لیدربرد جدا؛ رتبه‌ی «فارسی، تجربی، یازدهم» از رتبه‌ی «ریاضی، تجربی، یازدهم» کاملاً جداست و لیدربرد کلیِ «یازدهم تجربی» همه‌ی دروس را با هم جمع می‌زند (DT9 و DT10).</p>
 
 <figure class="fig">
 <div class="fig-row" style="align-items:flex-start;">
 <div class="mock-phone">
   <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
-  <div class="mp-head">★ لیدربرد — لیگ طلا</div>
+  <div class="mp-head"><svg class="ic" style="font-size:12px;"><use href="#i-trophy"/></svg>لیدربرد — کلی</div>
   <div class="mp-body">
+    <div class="lb-seg"><span class="on">کلی پایه-رشته</span><span>تک‌درس</span></div>
+    <div class="lb-lbl">رشته</div>
+    <div class="lb-chips"><span class="lb-chip on">تجربی</span><span class="lb-chip">ریاضی</span><span class="lb-chip">انسانی</span></div>
+    <div class="lb-lbl">پایه</div>
+    <div class="lb-chips"><span class="lb-chip">دهم</span><span class="lb-chip on">یازدهم</span><span class="lb-chip">دوازدهم</span></div>
     <div style="display:flex;gap:4px;margin-bottom:9px;">
       <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">این هفته</span>
       <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">ماه</span>
       <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">کل</span>
     </div>
-    <!-- پودیوم -->
     <div style="display:flex;gap:5px;align-items:flex-end;margin-bottom:10px;">
       <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
         <div style="font-size:8.5px;color:#102A33;">سارا</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۴</div>
@@ -496,7 +726,6 @@ ol.cl li b{color:var(--c-accent);}
         <div style="background:#D8E9EE;border-radius:6px 6px 0 0;height:10px;margin-top:4px;"></div>
       </div>
     </div>
-    <!-- جدول -->
     <div class="m-card" style="padding:7px 9px;">
       <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;border-bottom:1px solid #E2E8F0;"><span style="width:16px;color:#56727D;">۴</span><span style="flex:1;">نگار</span><span style="color:#059669;font-size:8px;">▲۲</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۸</span></div>
       <div style="display:flex;font-size:8.5px;background:#E0F2F7;border-radius:7px;padding:5px 4px;margin:3px 0;font-weight:700;color:#0E7490;"><span style="width:16px;">۵</span><span style="flex:1;">تو (شما)</span><span style="color:#059669;font-size:8px;">▲۱</span><span style="width:34px;text-align:left;">٪۸۶</span></div>
@@ -516,18 +745,80 @@ ol.cl li b{color:var(--c-accent);}
     </div>
   </div>
 </div>
-<div style="flex:1;min-width:250px;max-width:100%;font-size:13px;color:#102A33;line-height:1.95;">
-  <p><b>معیار رتبه (DT1):</b> امتیاز هفته = میانگین نمره‌ی جلسات هفته × تعداد جلسه‌ی کامل. با میانگین وزن‌دار با سختی (D13) حساب می‌شود اما توان Elo خام هرگز معیار رتبه نیست — بچه‌ی تازه‌کار با توان پایین هم باید شانس صعود داشته باشد.</p>
-  <p><b>حریم خصوصی (DT3):</b> در جدول فقط لقب منتخب و آواتار ایموجی نمایش داده می‌شود؛ شماره موبایل و نام واقعی هرگز (سازگار با تصمیم G10). هر کاربر می‌تواند از پروفایل خودش را کلاً از لیدربرد مخفی کند.</p>
-  <p><b>شفافیت:</b> پایین صفحه کارت «امتیاز هفته چطور حساب می‌شود؟» می‌آید — روایت قابل‌توضیح برای دانش‌آموز و داور جشنواره.</p>
+<div class="mock-phone">
+  <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
+  <div class="mp-head"><svg class="ic" style="font-size:12px;"><use href="#i-calc"/></svg>لیدربرد — ریاضی</div>
+  <div class="mp-body">
+    <div class="lb-seg"><span>کلی</span><span class="on">تک‌درس</span></div>
+    <div class="lb-lbl">درس — یازدهم تجربی</div>
+    <div class="lb-chips">
+      <span class="lb-chip on"><svg class="ic"><use href="#i-calc"/></svg>ریاضی</span>
+      <span class="lb-chip"><svg class="ic"><use href="#i-atom"/></svg>فیزیک</span>
+      <span class="lb-chip"><svg class="ic"><use href="#i-flask"/></svg>شیمی</span>
+      <span class="lb-chip"><svg class="ic"><use href="#i-dna"/></svg>زیست</span>
+      <span class="lb-chip"><svg class="ic"><use href="#i-pen"/></svg>فارسی</span>
+      <span class="lb-chip"><svg class="ic"><use href="#i-scroll"/></svg>عربی</span>
+    </div>
+    <div style="display:flex;gap:4px;margin-bottom:9px;">
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">این هفته</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">ماه</span>
+      <span style="flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;">کل</span>
+    </div>
+    <div style="display:flex;gap:5px;align-items:flex-end;margin-bottom:10px;">
+      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#102A33;">محمد</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۴</div>
+        <div style="background:#D0E7EE;border-radius:6px 6px 0 0;height:14px;margin-top:4px;"></div>
+      </div>
+      <div style="flex:1;background:#E0F2F7;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:11px;">🥇</div>
+        <div style="font-size:8.5px;color:#102A33;">نگار</div><div style="font-size:14px;font-weight:700;color:#0E7490;">٪۹۶</div>
+        <div style="background:#C0DEE7;border-radius:6px 6px 0 0;height:22px;margin-top:4px;"></div>
+      </div>
+      <div style="flex:1;background:#E9F1F4;border-radius:10px 10px 0 0;padding:8px 4px 6px;text-align:center;">
+        <div style="font-size:8.5px;color:#102A33;">سارا</div><div style="font-size:13px;font-weight:700;color:#0E7490;">٪۹۲</div>
+        <div style="background:#D8E9EE;border-radius:6px 6px 0 0;height:10px;margin-top:4px;"></div>
+      </div>
+    </div>
+    <div class="m-card" style="padding:7px 9px;">
+      <div style="display:flex;font-size:8.5px;background:#E0F2F7;border-radius:7px;padding:5px 4px;margin-bottom:3px;font-weight:700;color:#0E7490;"><span style="width:16px;">۴</span><span style="flex:1;">تو (شما)</span><span style="color:#059669;font-size:8px;">▲۳</span><span style="width:34px;text-align:left;">٪۸۹</span></div>
+      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;border-top:1px solid #E2E8F0;"><span style="width:16px;color:#56727D;">۵</span><span style="flex:1;">آرش</span><span style="color:#BE123C;font-size:8px;">▼۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۸</span></div>
+      <div style="display:flex;font-size:8.5px;color:#102A33;padding:5px 0;"><span style="width:16px;color:#56727D;">۶</span><span style="flex:1;">احسان</span><span style="color:#059669;font-size:8px;">▲۱</span><span style="width:34px;text-align:left;font-weight:700;">٪۸۷</span></div>
+    </div>
+    <div class="m-card" style="display:flex;align-items:center;gap:5px;padding:7px 9px;">
+      <svg class="ic" style="font-size:13px;color:#D97706;"><use href="#i-medal"/></svg>
+      <div style="flex:1;font-size:8px;line-height:1.7;color:#102A33;"><b>رتبه‌های من:</b> کلی ۸ از ۴۲ · بهترین درس: ریاضی ۴ از ۳۸</div>
+      <span style="font-size:8px;color:#0E7490;font-weight:700;white-space:nowrap;">اشتراک ↗</span>
+    </div>
+  </div>
 </div>
 </div>
-<figcaption>شکل ۶-۱: ماکاپ لیدربرد موبایل — پودیوم سه‌نفره، ردیف هایلایت‌شده‌ی کاربر، نوار ارتقای لیگ‌ها و تب‌های بازه‌ی زمانی.</figcaption>
+<figcaption>شکل ۸-۱: دو حالت لیدربرد موبایل — کلیِ پایه-رشته با انتخابگر رشته و پایه (راست) و تک‌درس با چیپ‌های درسِ آیکون‌دار، رتبه‌ی جدای همان درس و کارت «رتبه‌های من» (چپ).</figcaption>
 </figure>
 
-<!-- فصل ۷ — کامیونیتی -->
+<p><b>معیار رتبه در هر دو سطح (DT1 و DT10):</b> امتیاز = میانگین نمره‌ی جلساتِ همان دامنه × تعداد جلسه‌ی کامل همان دامنه. در سطح تک‌درس فقط جلسات همان درس شمرده می‌شود و جدولش جدا نگه‌داری می‌شود؛ در سطح کلی همه‌ی دروس با هم. نمره با میانگین وزن‌دار با سختی (D13) حساب می‌شود اما توان Elo خام هرگز معیار رتبه نیست — بچه‌ی تازه‌کار با توان پایین هم باید شانس دیده‌شدن داشته باشد.</p>
+
+<p><b>هر ترکیب، یک آدرس عمومی:</b> هر لیدربرد یک لینک ثابت و قابل‌اشتراک دارد؛ مثل <code>/leaderboard?grade=11&track=exp&subject=math</code> برای «ریاضی، یازدهم تجربی». کاربر می‌تواند کارت «رتبه ۴ ریاضی یازدهم تجربی» را با لوگو و اسپارک‌لاین روندش در تلگرام بفرستد — همان دکمه‌ی «اشتراک» در کارت «رتبه‌های من». پیش‌فرض انتخابگرها، رشته و پایه‌ی خود کاربر است؛ بازکردن لینک از بیرون هم همان ترکیب را می‌آورد.</p>
+
+<p><b>درس‌ها از داده می‌آیند، نه هاردکد:</b> فهرست چیپ‌های درس برای هر ترکیب رشته×پایه از API گام ۲ خوانده می‌شود (همان مپ درس‌های خط تولید محتوای گام ۶ سند توسعه)؛ پس افزودن «زمین‌شناسی» به تجربی دوازدهم فقط داده است، نه کد. هر چیپ درس هم آیکون lucide خودش را از همین مپ می‌گیرد (فصل ۵) و اگر درسی آیکون اختصاصی نداشت، آیکون پیش‌فرض book می‌گیرد.</p>
+
+<p><b>حریم خصوصی سر جایش است (DT3):</b> در هر دو سطح فقط لقب منتخب و آواتار ایموجی نمایش داده می‌شود؛ شماره موبایل و نام واقعی هرگز (G10). سوییچ «خروج از لیدربرد» در پروفایل، کاربر را از همه‌ی سطوح هم‌زمان بیرون می‌برد — نه این‌که در ریاضی دیده شود و در کلی نه. لیگ ۲۰ نفره هم برای هر ترکیب درس×رشته×پایه جدا محاسبه می‌شود تا حجم جدول هرگز از ۲۰ ردیف رد نشود.</p>
+
+<table class="keep">
+<thead><tr><th style="width:20%">کنترل</th><th style="width:36%">گزینه‌ها</th><th>پیش‌فرض و رفتار</th></tr></thead>
+<tbody>
+<tr><td>دامنه (سگمنت)</td><td>کلی پایه-رشته · تک‌درس</td><td>کلی — سوییچ بین دو سطح بدون رفرش صفحه</td></tr>
+<tr><td>رشته (چیپ)</td><td>تجربی · ریاضی · انسانی</td><td>رشته‌ی خود کاربر؛ تغییرش هر دو سطح را فیلتر می‌کند</td></tr>
+<tr><td>پایه (چیپ)</td><td>دهم · یازدهم · دوازدهم</td><td>پایه‌ی خود کاربر</td></tr>
+<tr><td>درس (چیپ اسکرولی)</td><td>درس‌های همان رشته×پایه با آیکون</td><td>فقط در حالت تک‌درس نمایش داده می‌شود</td></tr>
+<tr><td>بازه (تب)</td><td>این هفته · ماه · کل</td><td>این هفته — موتور لیگ هفتگی</td></tr>
+</tbody>
+</table>
+
+<div class="callout"><span class="h">شفافیت برای داور</span><br>پایین هر دو جدول کارت «امتیاز چطور حساب می‌شود؟» می‌آید و مثال یک‌خطی دارد: «نمره‌ی جلسات ریاضی‌ات این هفته ٪۸۶ بوده و ۳ جلسه کامل زدی — امتیازت ۲۵۸». همین روایت، خوانایی الگوریتم رتبه را برای دانش‌آموز و داور جشنواره هم‌زمان تضمین می‌کند و با فلسفه‌ی قابل‌توضیح‌بودن سند اصلی یکی است.</div>
+
+<!-- فصل ۹ — کامیونیتی -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۷</div>
+  <div class="sec-tag">فصل ۹</div>
   <div class="sec-title">پیشرفت بقیه — کامیونیتی</div>
   <div class="sec-divider"></div>
 </div>
@@ -544,7 +835,7 @@ ol.cl li b{color:var(--c-accent);}
 </div>
 <div class="mock-phone">
   <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
-  <div class="mp-head">◎ پیشرفت بقیه</div>
+  <div class="mp-head"><svg class="ic" style="font-size:12px;"><use href="#i-users"/></svg>پیشرفت بقیه</div>
   <div class="mp-body">
     <div style="display:flex;gap:4px;margin-bottom:9px;">
       <span style="flex:1;text-align:center;font-size:8.5px;background:#0E7490;color:#fff;border-radius:7px;padding:4px 0;font-weight:700;">دوستان</span>
@@ -588,14 +879,14 @@ ol.cl li b{color:var(--c-accent);}
   </div>
 </div>
 </div>
-<figcaption>شکل ۷-۱: ماکاپ کامیونیتی موبایل — کارت اشتراک پیشرفت با ریزنمودار روند، چالش گروهی کلاسی و مقایسه دوستانه.</figcaption>
+<figcaption>شکل ۹-۱: ماکاپ کامیونیتی موبایل — کارت اشتراک پیشرفت با ریزنمودار روند، چالش گروهی کلاسی و مقایسه دوستانه.</figcaption>
 </figure>
 
 <div class="callout"><span class="h">اتصال به الگوریتم</span><br>کارت‌های این فید فقط «دکور» نیستند: نمره از D13، فلش رتبه از لیدربرد، روند از همان سری داده‌ی نمودار دولایه‌ی داشبورد (D15) و ارتقای دسته از نردبان D16 می‌آید. یعنی هر چه دانش‌آموز اینجا می‌بیند، دقیقاً خروجی موتور تطبیقی خود اوست — همان شفافیت قابل‌دفاعی که داور جشنواره می‌خواهد.</div>
 
-<!-- فصل ۸ — ورود، پروفایل، آزمون -->
+<!-- فصل ۱۰ — ورود، پروفایل، آزمون -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۸</div>
+  <div class="sec-tag">فصل ۱۰</div>
   <div class="sec-title">ورود، پروفایل و فرم آزمون</div>
   <div class="sec-divider"></div>
 </div>
@@ -607,7 +898,7 @@ ol.cl li b{color:var(--c-accent);}
   <div class="mock-phone">
     <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
     <div class="mp-body" style="padding-top:16px;">
-      <div style="text-align:center;margin-bottom:10px;">        <div style="width:40px;height:40px;border-radius:12px;background:#0E7490;color:#fff;font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;">آ</div>
+      <div style="text-align:center;margin-bottom:10px;">        <svg width="40" height="40" style="display:block;margin:0 auto 6px;"><use href="#i-logo"/></svg>
         <div style="font-size:11px;font-weight:700;color:#102A33;">به آزمونک خوش آمدی</div>
         <div style="font-size:8px;color:#56727D;">با شماره موبایلت وارد شو</div>
       </div>
@@ -635,7 +926,7 @@ ol.cl li b{color:var(--c-accent);}
   <!-- پروفایل -->
   <div class="mock-phone">
     <div class="mp-status"><span>۹:۴۱</span><span>آزمونک</span><span>٪۹۸</span></div>
-    <div class="mp-head">☺ پروفایل تو</div>
+    <div class="mp-head"><svg class="ic" style="font-size:12px;"><use href="#i-user"/></svg>پروفایل تو</div>
     <div class="mp-body">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
         <span style="width:34px;height:34px;border-radius:50%;background:#E0F2F7;display:flex;align-items:center;justify-content:center;font-size:16px;">🦊</span>
@@ -646,6 +937,11 @@ ol.cl li b{color:var(--c-accent);}
         <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#0E7490;">۲۸</div><div style="font-size:8px;color:#56727D;">جلسه</div></div>
         <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#0E7490;">٪۸۴</div><div style="font-size:8px;color:#56727D;">میانگین</div></div>
         <div style="flex:1;background:#fff;border:1px solid #C9DDE2;border-radius:9px;padding:7px 4px;text-align:center;"><div style="font-size:11px;font-weight:700;color:#B45309;">۳</div><div style="font-size:8px;color:#56727D;">مرور امروز</div></div>
+      </div>
+      <div class="m-card" style="display:flex;align-items:center;gap:5px;padding:6px 9px;">
+        <svg class="ic" style="font-size:12px;color:#D97706;"><use href="#i-medal"/></svg>
+        <span style="font-size:8px;color:#102A33;"><b>رتبه‌های من:</b> کلی ۸ از ۴۲ · بهترین درس: ریاضی ۴ از ۳۸</span>
+        <span style="margin-right:auto;font-size:8px;color:#0E7490;font-weight:700;white-space:nowrap;">اشتراک ↗</span>
       </div>
       <div class="m-card">
         <div style="font-size:8.5px;font-weight:700;margin-bottom:3px;">روند ۱۰ جلسه اخیر</div>
@@ -671,7 +967,7 @@ ol.cl li b{color:var(--c-accent);}
     </div>
   </div>
 </div>
-<figcaption>شکل ۸-۱: جریان ورود OTP با انتخاب نقش دانش‌آموز/دبیر (راست) و داشبورد پروفایل با روند دولایه D15 و چیپ‌های سطح نردبان D16 (چپ).</figcaption>
+<figcaption>شکل ۱۰-۱: جریان ورود OTP با لوگوی فصل ۲ و انتخاب نقش دانش‌آموز/دبیر (راست) و داشبورد پروفایل با روند دولایه D15، چیپ‌های سطح نردبان D16 و نوار «رتبه‌های من» متصل به لیدربرد فصل ۸ (چپ).</figcaption>
 </figure>
 
 <p>دو قاب بعدی قلب تعاملی محصول را نشان می‌دهند: صفحه‌ی سؤال در حالت فوکوس و مرحله‌ی اعتماد D14 که بعد از انتخاب گزینه ظاهر می‌شود، و سپس همان صفحه پس از ثبت اعتماد با بازخورد یک‌خطی. تفاوت این دو قاب دقیقاً جایی است که «بازی جدی» تعریف می‌شود — قبل از بازخورد، کاربر ابراز نظر می‌کند؛ بعد از بازخورد، سیستم یک جمله یادگیری می‌دهد.</p>
@@ -720,15 +1016,15 @@ ol.cl li b{color:var(--c-accent);}
     </div>
   </div>
 </div>
-<figcaption>شکل ۸-۲ (چینش راست‌به‌چپ): صفحه‌ی سؤال با مرحله‌ی اعتماد D14 (راست) و بازخورد یک‌خطی سازنده با مسیر ادامه و یادآوری رهاکردن امن جلسه (چپ).</figcaption>
+<figcaption>شکل ۱۰-۲ (چینش راست‌به‌چپ): صفحه‌ی سؤال با مرحله‌ی اعتماد D14 (راست) و بازخورد یک‌خطی سازنده با مسیر ادامه و یادآوری رهاکردن امن جلسه (چپ).</figcaption>
 </figure>
 
 <h3 class="sub">قاعده‌ی طلایی صفحه‌ی آزمون</h3>
 <p>صفحه‌ی آزمون هیچ منو، تب یا لینک حواس‌پرت‌کننده ندارد؛ خروج فقط با دکمه‌ی «✕» با تأیید انجام می‌شود و جلسه‌ی نیمه‌کاره در پروفایل با بنر «جلسه‌ات منتظرته» برمی‌گردد. گزینه‌ها ارتفاع لمسی بالای ۵۶ پیکسل دارند و مرحله‌ی اعتماد با انیمیشن ملایم بالا می‌آید تا از «اصطکاک» به «لحظه‌ی بازی» تبدیل شود — نوجوان این را ابراز نظر می‌بیند، نه فرم. بازخورد همیشه یک‌خطی و سازنده است: جواب درست را نشان می‌دهد و دلیل را در یک جمله می‌گوید؛ تحقیر و امتیاز منفی در این صفحه جایی ندارد.</p>
 
-<!-- فصل ۹ — ستون پشتیبانی -->
+<!-- فصل ۱۱ — ستون پشتیبانی -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۹</div>
+  <div class="sec-tag">فصل ۱۱</div>
   <div class="sec-title">ستون پشتیبانی فوتر</div>
   <div class="sec-divider"></div>
 </div>
@@ -752,14 +1048,14 @@ ol.cl li b{color:var(--c-accent);}
   <li><b>هر صفحه‌ی پشتیبانی یک CTA دارد:</b> تماس → فرم؛ همکاری → قالب؛ سوالات → ورود به راهنما؛ راهنما → «جلسه اولت را بزن».</li>
 </ul>
 
-<!-- فصل ۱۰ — پرفورمنس -->
+<!-- فصل ۱۲ — پرفورمنس -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۱۰</div>
+  <div class="sec-tag">فصل ۱۲</div>
   <div class="sec-title">پرفورمنس و بودجه حجم</div>
   <div class="sec-divider"></div>
 </div>
 
-<p class="lead">بودجه‌ی ۲۰۰ کیلوبایت صفحه آزمون (تسک 3.7) تصمیم‌های طراحی را محدود و هدفمند کرده است: سبک تختِ بدون تزئین، تک‌فونت سابست‌شده، نمودارهای SVG دستی و آیکون‌های اینلاین. جدول زیر سقف هر بسته است و در هر PR با Lighthouse روی شبیه‌سازی 3G کنترل می‌شود؛ عبور از سقف هر ردیف یعنی چرخه‌ی بهینه‌سازی، نه قبول عادت.</p>
+<p class="lead">بودجه‌ی ۲۰۰ کیلوبایت صفحه آزمون (تسک 3.7) تصمیم‌های طراحی را محدود و هدفمند کرده است: سبک تختِ بدون تزئین، تک‌فونت سابست‌شده، نمودارهای SVG دستی و آیکون‌های تری‌شیک lucide. جدول زیر سقف هر بسته است و در هر PR با Lighthouse روی شبیه‌سازی 3G کنترل می‌شود؛ عبور از سقف هر ردیف یعنی چرخه‌ی بهینه‌سازی، نه قبول عادت.</p>
 
 <table class="keep">
 <thead><tr><th style="width:20%">بسته</th><th style="width:16%">سقف</th><th>چگونه به سقف می‌رسیم</th></tr></thead>
@@ -769,7 +1065,7 @@ ol.cl li b{color:var(--c-accent);}
 <tr><td>JavaScript</td><td>~۹۰KB</td><td>فقط صفحه‌ی آزمون و داشبورد interactive؛ تقسیم کد مسیر به مسیر</td></tr>
 <tr><td>فونت فعال</td><td>~۳۵KB</td><td>وزیرمتن woff2 سابست با unicode-range: متن / عنوان / عدد جدا</td></tr>
 <tr><td>نمودارها</td><td>~۰KB</td><td>SVG دستی inline طبق D15 — بدون کتابخانه چارت</td></tr>
-<tr><td>آیکون‌ها</td><td>~۰KB</td><td>Sprite SVG دستی — بدون کتابخانه آیکون</td></tr>
+<tr><td>آیکون‌ها</td><td>~۶KB</td><td>lucide-react تری‌شیک — فقط آیکون‌های مصرفی هر صفحه + ۲ SVG برند دستی (فصل ۵)</td></tr>
 </tbody>
 </table>
 
@@ -779,9 +1075,9 @@ ol.cl li b{color:var(--c-accent);}
   <li><b>Service Worker پوسته و آخرین داشبورد را کش می‌کند</b> (تسک 3.6) — بدون آفلاین واقعی طبق D2، فقط باز شدن سریع اپ نصب‌شده.</li>
 </ul>
 
-<!-- فصل ۱۱ — تصمیم‌های قابل وتو -->
+<!-- فصل ۱۳ — تصمیم‌های قابل وتو -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۱۱</div>
+  <div class="sec-tag">فصل ۱۳</div>
   <div class="sec-title">تصمیم‌های قابل وتو</div>
   <div class="sec-divider"></div>
 </div>
@@ -799,12 +1095,16 @@ ol.cl li b{color:var(--c-accent);}
 <tr><td>DT6</td><td>فوتر تیره</td><td>سرمه‌ای #0F172A به‌قرارداد طراحی وب</td><td>فوتر روشن با حاشیه — هم‌خوان با کل بوم</td></tr>
 <tr><td>DT7</td><td>رادار دسته‌ها</td><td>۸ دسته برتر در رادار + فهرست بقیه</td><td>رادار کامل همه‌ی دسته‌ها (ریسک خوانایی)</td></tr>
 <tr><td>DT8</td><td>لقب پیش‌فرض</td><td>تولید خودکار لقب دوستانه مثل «روباه حسابگر»</td><td>بدون لقب؛ فقط آواتار ایموجی</td></tr>
+<tr><td>DT9</td><td>ساختار لیدربرد</td><td>دو سطح: «کلیِ هر پایه-رشته» + «تک‌درس × رشته × پایه» با لینک عمومی برای هر ترکیب</td><td>فقط کلی؛ افزودن فنی‌حرفه‌ای/کاردانش به رشته‌ها</td></tr>
+<tr><td>DT10</td><td>معیار لیدربرد تک‌درس</td><td>میانگین نمره‌ی جلسات همان درس × تعداد جلسه‌ی همان درس</td><td>اشتراک امتیاز کلی بین دروس؛ توان Elo هر درس (توصیه نمی‌شود)</td></tr>
+<tr><td>DT11</td><td>کتابخانه آیکون</td><td>lucide-react تری‌شیک + SVG دستی برای آیکون برندها</td><td>react-icons؛ sprite دستی کامل بدون کتابخانه</td></tr>
+<tr><td>DT12</td><td>لوگوی آزمونک</td><td>کانسپت A «تیکِ هدف» + وردمارک وزیرمتن با «ک» فیروزه‌ای</td><td>کانسپت B کتاب صعودی؛ کانسپت C حباب؛ فقط وردمارک</td></tr>
 </tbody>
 </table>
 
-<!-- فصل ۱۲ — نقشه راه -->
+<!-- فصل ۱۴ — نقشه راه -->
 <div class="chapter-header">
-  <div class="sec-tag">فصل ۱۲</div>
+  <div class="sec-tag">فصل ۱۴</div>
   <div class="sec-title">نقشه راه پیاده‌سازی فرانت</div>
   <div class="sec-divider"></div>
 </div>
@@ -812,12 +1112,12 @@ ol.cl li b{color:var(--c-accent);}
 <p class="lead">ترتیب پیشنهادی ساخت، از پوسته به پیچیدگی: اول شالوده‌ای که همه‌ی صفحات روی آن می‌نشینند، بعد صفحات با کمترین وابستگی به API گام ۲، و در انتها داشبورد داده‌محور. هر گام یک معیار پذیرش روشن دارد تا جلوتر «تمام‌شدن» قابل بحث نباشد.</p>
 
 <ol class="cl">
-  <li><b>گام F1 — پوسته و توکن‌ها:</b> layout سراسری RTL، متغیرهای CSS فصل ۲، وزیرمتن سابست، هدر و ناوبری موبایل فصل ۴. <i>پذیرش: همه‌ی صفحات خالی با پوسته‌ی صحیح رندر می‌شوند و Lighthouse پوسته بالای ۹۰ است.</i></li>
-  <li><b>گام F2 — لندینگ:</b> قیف سه‌قدمی فصل ۵ با فوتر کامل. <i>پذیرش: لندینگ ریسپانسیو از ۳۶۰ تا ۱۲۸۰ پیکسل و بدون تصویر سنگین.</i></li>
+  <li><b>گام F1 — پوسته و توکن‌ها:</b> layout سراسری RTL، متغیرهای CSS فصل ۳، وزیرمتن سابست، فایل‌های لوگو و فاوآیکون فصل ۲، آیکون‌های پایه lucide فصل ۵، و هدر و ناوبری موبایل فصل ۶. <i>پذیرش: همه‌ی صفحات خالی با پوسته‌ی صحیح رندر می‌شوند و Lighthouse پوسته بالای ۹۰ است.</i></li>
+  <li><b>گام F2 — لندینگ:</b> قیف سه‌قدمی فصل ۷ با فوتر کامل. <i>پذیرش: لندینگ ریسپانسیو از ۳۶۰ تا ۱۲۸۰ پیکسل و بدون تصویر سنگین.</i></li>
   <li><b>گام F3 — ورود:</b> جریان OTP با استیت‌منیج کلاینت و حالت‌های خطا. <i>پذیرش: تا API گام ۲، ورود آزمایشی با کد دلخواه کار می‌کند و لاگین در localStorage می‌ماند.</i></li>
-  <li><b>گام F4 — پروفایل (نسخه داده‌ی نمونه):</b> داشبورد فصل ۸ با داده‌های ساختگی هم‌ساخت خروجی core. <i>پذیرش: نمودار دولایه SVG و چیپ‌های سطح از داده واقعی‌نما رندر می‌شوند.</i></li>
+  <li><b>گام F4 — پروفایل (نسخه داده‌ی نمونه):</b> داشبورد فصل ۱۰ با داده‌های ساختگی هم‌ساخت خروجی core. <i>پذیرش: نمودار دولایه SVG و چیپ‌های سطح از داده واقعی‌نما رندر می‌شوند.</i></li>
   <li><b>گام F5 — فرم آزمون:</b> حالت فوکوس کامل با مرحله‌ی اعتماد D14، بازخورد و خلاصه‌ی پایان. <i>پذیرش: جلسه‌ی ۱۰ سؤالی با داده‌ی نمونه از اول تا آخر بدون خطا می‌رود — تمرین نهایی تست دود تسک 3.8.</i></li>
-  <li><b>گام F6 — لیدربرد و کامیونیتی:</b> پودیوم، لیگ‌ها، فید کارت‌ها با داده‌ی نمونه. <i>پذیرش: سوییچ‌های حریم خصوصی در UI فعال و تب‌ها با داده‌ی خالی/پر هر دو درست رندر می‌شوند.</i></li>
+  <li><b>گام F6 — لیدربرد و کامیونیتی:</b> پودیوم، دو سطح کلی/تک‌درس با انتخابگر رشته×پایه×درس و لینک عمومی هر ترکیب، لیگ‌ها، فید کارت‌ها با داده‌ی نمونه. <i>پذیرش: سوییچ‌های حریم خصوصی در UI فعال و تب‌ها با داده‌ی خالی/پر هر دو درست رندر می‌شوند.</i></li>
   <li><b>گام F7 — اتصال به API گام ۲:</b> جایگزینی داده‌ی نمونه با خروجی واقعی core از طریق بک‌اند. <i>پذیرش: جریان کامل ورود تا خلاصه‌ی جلسه روی API واقعی سبز شود و بودجه ۲۰۰KB پاس شود.</i></li>
 </ol>
 
@@ -827,16 +1127,12 @@ ol.cl li b{color:var(--c-accent);}
 
 <!-- ================= صفحه پایان ================= -->
 <div class="ending">
-  <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-    <circle cx="52" cy="52" r="40" stroke="#0E7490" stroke-width="0.7" opacity="0.18"/>
-    <circle cx="62" cy="58" r="40" stroke="#0E7490" stroke-width="0.7" opacity="0.32"/>
-    <circle cx="98" cy="28" r="4.5" fill="#0E7490" opacity="0.45"/>
-  </svg>
+  <svg width="88" height="88"><use href="#i-logo"/></svg>
   <div class="line"></div>
   <div class="big">طراحی آماده‌ی شروع است</div>
-  <div class="sm">وقتی این سند را تأیید کنی، پیاده‌سازی از گام F1 (پوسته و توکن‌ها) شروع می‌شود و به ترتیب نقشه‌ی فصل ۱۲ پیش می‌رود. هر تغییری که در این مرحله روی ماکاپ‌ها یا پیش‌فرض‌های قابل‌وتو بدهی، مستقیم به سند اضافه می‌شود تا مرجع پذیرش کد همان چیزی باشد که دیده‌ای و پسندیده‌ای.</div>
+  <div class="sm">وقتی این سند را تأیید کنی، پیاده‌سازی از گام F1 (پوسته و توکن‌ها) شروع می‌شود و به ترتیب نقشه‌ی فصل ۱۴ پیش می‌رود. هر تغییری که در این مرحله روی ماکاپ‌ها، لوگو یا پیش‌فرض‌های قابل‌وتو بدهی، مستقیم به سند اضافه می‌شود تا مرجع پذیرش کد همان چیزی باشد که دیده‌ای و پسندیده‌ای.</div>
   <div class="brand">آزمونک — جشنواره نوجوان خوارزمی</div>
-  <div class="year">نسخه ۱٫۰ لایت · مهر ۱۴۰۵</div>
+  <div class="year">نسخه ۲٫۰ لایت · مهر ۱۴۰۵</div>
 </div>
 
 </body>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* ===== سند طراحی فرانت آزمونک — 720×1020 — RTL لایت ===== */
+@page { size: 720px 1020px; margin: 0; }
+
+:root{
+  --c-bg:#F7FAFB;        /* XL */
+  --c-section:#EFF5F7;   /* XL */
+  --c-card:#E9F1F4;      /* L  */
+  --c-stripe:#F1F6F8;    /* L  */
+  --c-header:#164E63;    /* M  */
+  --c-border:#C9DDE2;    /* S  */
+  --c-accent:#0E7490;    /* XS */
+  --c-accent2:#6D28D9;   /* XS — فقط R_s / بنفش */
+  --c-text:#102A33;
+  --c-muted:#56727D;
+  /* پالت محصول (فقط داخل سواچ‌ها و ماکاپ‌ها) */
+  --p-primary:#0E7490; --p-soft:#E0F2F7; --p-success:#059669; --p-warn:#B45309;
+  --p-danger:#BE123C; --p-violet:#6D28D9; --p-gold:#D97706;
+}
+
+html,body{
+  margin:0;padding:0;width:720px;background:var(--c-bg);color:var(--c-text);
+  font-family:'Vazirmatn','Noto Sans SC',sans-serif;
+  font-size:15px;line-height:1.95;
+}
+@media screen{
+  html{height:auto;display:flex;justify-content:center;background:#DCE6EA;}
+  body{transform-origin:top center;margin:20px auto;box-shadow:0 0 40px rgba(16,42,51,.18);}
+}
+p,td,li{overflow-wrap:break-word;word-break:break-word;}
+p{margin:0 0 12px;text-align:justify;}
+
+/* ---------- جلد ---------- */
+.cover{
+  width:720px;height:1020px;box-sizing:border-box;position:relative;
+  break-after:page;overflow:hidden;background:var(--c-bg);
+  border:none;outline:none;box-shadow:none;
+}
+.cv-l1{position:absolute;inset:0;overflow:hidden;z-index:1;}
+.cv-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(14,116,144,.05) .5px,transparent .5px),
+                   linear-gradient(90deg,rgba(14,116,144,.05) .5px,transparent .5px);
+  background-size:50px 50px;
+}
+.cv-arc{
+  position:absolute;left:-40%;bottom:-42%;width:130%;height:80%;
+  border-radius:50% 50% 0 0 / 55% 55% 0 0;
+  background:rgba(14,116,144,.045);
+}
+.cv-l2{position:absolute;inset:0;z-index:2;}
+.cv-anchor{position:absolute;right:86px;top:102px;bottom:160px;width:6px;background:var(--c-accent);border-radius:3px;}
+.cv-l3{position:absolute;inset:0;z-index:3;}
+.cv-kicker{position:absolute;top:153px;right:158px;font-size:13px;letter-spacing:4px;color:var(--c-accent);font-weight:500;}
+.cv-hero{position:absolute;top:255px;right:158px;font-size:64px;font-weight:700;line-height:1.15;color:var(--c-text);max-width:440px;}
+.cv-hero small{display:block;font-size:26px;font-weight:500;color:var(--c-accent);margin-top:14px;letter-spacing:.5px;}
+.cv-summary{position:absolute;top:520px;right:158px;max-width:430px;font-size:16px;line-height:1.9;color:var(--c-muted);text-align:justify;}
+.cv-meta{position:absolute;top:758px;right:158px;font-size:15px;color:var(--c-text);line-height:2.1;}
+.cv-meta b{color:var(--c-accent);font-weight:700;}
+.cv-foot{position:absolute;bottom:78px;right:158px;font-size:11px;letter-spacing:2.5px;color:var(--c-muted);opacity:.75;}
+.cv-deco{position:absolute;left:56px;top:64px;z-index:2;opacity:.9;}
+
+/* ---------- فهرست ---------- */
+.toc-page{
+  width:720px;height:1020px;box-sizing:border-box;position:relative;
+  break-after:page;background:var(--c-bg);padding:74px 66px;
+}
+.toc-title{font-size:30px;font-weight:700;color:var(--c-text);margin:0 0 6px;}
+.toc-sub{font-size:13px;color:var(--c-muted);margin-bottom:30px;}
+.toc-item{
+  display:flex;align-items:baseline;gap:14px;padding:12.5px 2px;
+  border-bottom:1px solid var(--c-border);font-size:15.5px;
+}
+.toc-item .no{color:var(--c-accent);font-weight:700;min-width:34px;font-size:14px;}
+.toc-item .t{font-weight:500;}
+.toc-item .d{color:var(--c-muted);font-size:12px;margin-right:auto;text-align:left;}
+.toc-note{margin-top:26px;background:var(--c-card);border:1px solid var(--c-border);border-radius:12px;padding:16px 18px;font-size:13.5px;color:var(--c-muted);line-height:1.9;}
+
+/* ---------- بدنه ---------- */
+.main-content{padding:58px 60px 44px;}
+.chapter-header{break-after:avoid;break-inside:avoid;margin-top:28px;margin-bottom:14px;}
+.chapter-header.first{margin-top:0;}
+.sec-tag{
+  display:inline-block;background:var(--c-header);color:#fff;font-size:11px;
+  padding:3px 12px;border-radius:999px;letter-spacing:1.5px;margin-bottom:10px;
+}
+.sec-title{font-size:27px;font-weight:700;line-height:1.4;color:var(--c-text);}
+.sec-divider{width:64px;height:4px;background:var(--c-accent);border-radius:2px;margin-top:10px;}
+h3.sub{font-size:18.5px;font-weight:700;color:var(--c-header);margin:20px 0 8px;break-after:avoid;}
+.lead{font-size:15.5px;color:var(--c-text);}
+
+/* کارت‌ها و بلوک‌ها */
+.card{background:#fff;border:1px solid var(--c-border);border-radius:12px;padding:16px 18px;margin-bottom:14px;break-inside:avoid;}
+.card.soft{background:var(--c-card);border-color:var(--c-border);}
+.callout{
+  background:var(--p-soft);border-right:4px solid var(--c-accent);border-radius:10px;
+  padding:12px 16px;font-size:13.5px;line-height:1.85;color:var(--c-text);
+  margin:12px 0 14px;break-inside:avoid;
+}
+.callout .h{font-weight:700;color:var(--c-accent);font-size:13.5px;}
+
+/* جدول‌ها */
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 16px;background:#fff;border-radius:10px;overflow:hidden;}
+table.keep{break-inside:avoid;}
+thead{display:table-header-group;}
+th{background:var(--c-header);color:#fff;font-weight:500;padding:9px 10px;text-align:right;font-size:12px;}
+td{padding:8px 10px;border-bottom:1px solid var(--c-border);vertical-align:top;line-height:1.75;}
+tbody tr:nth-child(odd){background:var(--c-stripe);}
+tbody tr:last-child td{border-bottom:none;}
+td code, .mono{font-family:'Vazirmatn','Noto Sans SC',sans-serif;background:var(--c-card);padding:1px 6px;border-radius:6px;font-size:11.5px;color:var(--c-header);direction:ltr;unicode-bidi:embed;}
+
+/* شکل‌ها و ماکاپ‌ها */
+figure.fig{display:block;width:100%;margin:14px auto 18px;break-inside:avoid;}
+figure.fig figcaption{font-size:11.5px;color:var(--c-muted);margin-top:8px;text-align:center;line-height:1.7;}
+.fig-row{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;max-width:100%;}
+
+/* قاب مرورگر */
+.mock-browser{width:100%;max-width:600px;margin:0 auto;background:#fff;border:1px solid var(--c-border);border-radius:14px;overflow:hidden;break-inside:avoid;}
+.mb-bar{background:var(--c-section);padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--c-border);}
+.mb-dot{width:9px;height:9px;border-radius:50%;background:var(--c-border);}
+.mb-url{flex:1;background:#fff;border:1px solid var(--c-border);border-radius:999px;font-size:9.5px;color:var(--c-muted);padding:2px 12px;text-align:right;direction:ltr;}
+.mb-body{padding:14px 18px 16px;background:#F7FAFB;}
+
+/* قاب گوشی */
+.mock-phone{width:248px;flex:0 0 248px;background:#fff;border:2px solid var(--c-border);border-radius:22px;overflow:hidden;}
+.mp-status{display:flex;justify-content:space-between;align-items:center;background:var(--c-header);color:#fff;font-size:8.5px;padding:5px 12px;}
+.mp-head{display:flex;align-items:center;gap:8px;background:var(--c-header);color:#fff;font-size:11px;font-weight:700;padding:9px 12px 11px;}
+.mp-body{background:var(--c-bg);padding:10px 11px 12px;}
+.m-card{background:#fff;border:1px solid var(--c-border);border-radius:10px;padding:9px 10px;margin-bottom:8px;}
+.m-title{font-size:10px;font-weight:700;color:var(--c-text);}
+.m-sub{font-size:8.5px;color:var(--c-muted);line-height:1.6;}
+.m-btn{background:var(--c-accent);color:#fff;border-radius:9px;text-align:center;font-size:10.5px;font-weight:700;padding:8px 6px;}
+.m-btn.ghost{background:var(--p-soft);color:var(--c-accent);border:1px solid var(--c-accent);}
+.m-chip{display:inline-block;background:var(--p-soft);color:var(--c-accent);font-size:8.5px;border-radius:999px;padding:2px 9px;margin:0 0 0 4px;}
+.m-progress{display:flex;gap:3px;margin:2px 0 9px;}
+.m-progress i{flex:1;height:5px;border-radius:3px;background:var(--c-border);}
+.m-progress i.on{background:var(--c-accent);}
+.m-option{border:1.5px solid var(--c-border);border-radius:9px;background:#fff;font-size:9.5px;color:var(--c-text);padding:8px 10px;margin-bottom:6px;}
+.m-option.sel{border-color:var(--c-accent);background:var(--p-soft);color:var(--c-accent);font-weight:700;}
+.m-trust{display:flex;gap:6px;margin-top:2px;}
+.m-trust div{flex:1;border-radius:9px;text-align:center;font-size:9.5px;font-weight:700;padding:9px 4px;}
+.m-trust .t1{background:#D9F2EA;color:var(--p-success);}
+.m-trust .t2{background:#FBE4E9;color:var(--p-danger);}
+.m-fb{border-radius:9px;padding:7px 9px;font-size:8.5px;line-height:1.6;margin-top:8px;}
+.m-fb.ok{background:#D9F2EA;color:#065F46;border-right:3px solid var(--p-success);}
+.m-fb.no{background:#FBE4E9;color:#9F1239;border-right:3px solid var(--p-danger);}
+
+/* سواچ رنگ */
+.sw-grid{display:flex;flex-wrap:wrap;gap:12px;max-width:100%;margin:12px 0 16px;}
+.sw{flex:1 1 150px;min-width:150px;max-width:100%;background:#fff;border:1px solid var(--c-border);border-radius:12px;overflow:hidden;break-inside:avoid;}
+.sw .chip{height:52px;}
+.sw .lbl{padding:8px 12px;font-size:11px;line-height:1.7;}
+.sw .lbl b{display:block;font-size:11.5px;color:var(--c-text);}
+.sw .lbl span{color:var(--c-muted);direction:ltr;unicode-bidi:embed;font-size:10px;}
+
+/* نمونه تایپ */
+.spec-row{display:flex;align-items:baseline;gap:14px;border-bottom:1px dashed var(--c-border);padding:9px 2px;break-inside:avoid;}
+.spec-row .meta{min-width:150px;font-size:10.5px;color:var(--c-muted);line-height:1.6;}
+.spec-row .meta b{color:var(--c-accent);font-size:11px;}
+
+/* لیست */
+ul.cl{margin:4px 0 14px;padding-right:20px;}
+ul.cl li{margin-bottom:7px;text-align:right;line-height:1.85;}
+ul.cl li b{color:var(--c-header);}
+ol.cl{margin:4px 0 14px;padding-right:22px;}
+ol.cl li{margin-bottom:9px;text-align:right;line-height:1.85;}
+ol.cl li b{color:var(--c-accent);}
+
+/* آیکون lucide (sprite اینلاین) */
+.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.14em;flex:none;}
+
+/* لوگو */
+.cv-mark{position:absolute;left:64px;bottom:148px;z-index:2;}
+.logo-cell{flex:1 1 170px;min-width:170px;max-width:100%;background:#fff;border:1px solid var(--c-border);border-radius:14px;padding:16px 12px 12px;text-align:center;break-inside:avoid;position:relative;}
+.logo-cell .nm{font-size:13px;font-weight:700;color:var(--c-text);margin-top:10px;}
+.logo-cell .rs{font-size:10.5px;color:var(--c-muted);line-height:1.8;margin-top:4px;min-height:56px;}
+.logo-cell .tag{display:inline-block;background:var(--p-soft);color:var(--c-accent);font-size:9px;border-radius:999px;padding:2px 9px;margin:3px 2px 0;}
+.logo-cell .best{position:absolute;top:10px;left:10px;background:var(--p-gold);color:#fff;font-size:9px;font-weight:700;border-radius:999px;padding:2px 9px;}
+.icboard{display:flex;flex-wrap:wrap;gap:8px;max-width:100%;margin:12px 0 16px;}
+.ic-tile{flex:1 1 96px;min-width:96px;max-width:100%;background:#fff;border:1px solid var(--c-border);border-radius:10px;padding:9px 4px 7px;text-align:center;break-inside:avoid;}
+.ic-tile .ic{font-size:21px;color:var(--c-accent);}
+.ic-tile .lb{font-size:9px;color:var(--c-muted);margin-top:3px;}
+.ic-sec{width:100%;font-size:11px;font-weight:700;color:var(--c-header);margin:6px 0 0;break-inside:avoid;}
+
+/* انتخابگر لیدربرد */
+.lb-seg{display:flex;gap:4px;margin-bottom:7px;}
+.lb-seg span{flex:1;text-align:center;font-size:8.5px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:7px;padding:4px 0;font-weight:700;}
+.lb-seg .on{background:#0E7490;color:#fff;border-color:#0E7490;}
+.lb-lbl{font-size:7.5px;color:#56727D;margin:0 0 3px;}
+.lb-chips{display:flex;gap:3px;flex-wrap:nowrap;margin-bottom:7px;}
+.lb-chip{display:inline-flex;align-items:center;gap:2px;font-size:8px;background:#fff;border:1px solid #C9DDE2;color:#56727D;border-radius:999px;padding:3px 6px;white-space:nowrap;}
+.lb-chip .ic{font-size:9px;}
+.lb-chip.on{background:#E0F2F7;border-color:#0E7490;color:#0E7490;font-weight:700;}
+
+/* ---------- پایان ---------- */
+.ending{
+  width:720px;height:1020px;box-sizing:border-box;break-before:page;overflow:hidden;
+  background:var(--c-bg);position:relative;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:80px 90px;
+}
+.ending .line{width:70px;height:5px;background:var(--c-accent);border-radius:3px;margin:26px auto;}
+.ending .big{font-size:34px;font-weight:700;line-height:1.6;}
+.ending .sm{font-size:15px;color:var(--c-muted);line-height:2.05;max-width:470px;text-align:center;}
+.ending .brand{margin-top:56px;font-size:12px;letter-spacing:2px;color:var(--c-accent);}
+.ending .year{font-size:10.5px;color:var(--c-muted);margin-top:8px;letter-spacing:2px;}
+</style>
+</head>
+<body>
+
+<!-- sprite آیکون‌های lucide (استخراج دقیق از lucide-react v0.525) + سیمبل لوگو -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+<symbol id="i-calc" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></symbol>
+<symbol id="i-atom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+<symbol id="i-dna" viewBox="0 0 24 24"><path d="m10 16 1.5 1.5"/><path d="m14 8-1.5-1.5"/><path d="M15 21c-1.798 0-3.2-2.032-4.5-5-1.3-2.968-2.202-5-4-5"/><path d="m18 7c2 0 3-2 3-3"/><path d="M6 3c1.798 0 3.2 2.032 4.5 5 1.3 2.968 2.202 5 4 5"/><path d="m9 6 1.5 1.5"/><path d="m13 18 1.5-1.5"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol>
+<symbol id="i-lang" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
+<symbol id="i-scroll" viewBox="0 0 24 24"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol>
+<symbol id="i-moonstar" viewBox="0 0 24 24"><path d="M18 5h4"/><path d="M20 3v4"/><path d="M21 14h4"/><path d="M23 12v4"/><path d="m12.5 6.5 1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1Z"/><path d="M9 8a5.5 5.5 0 0 0 5.5 5.5A5.5 5.5 0 0 1 9 19a5.5 5.5 0 0 0 0-11"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+<symbol id="i-medal" viewBox="0 0 24 24"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/></symbol>
+<symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.685a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+<symbol id="i-msg" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-listcheck" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-thumbs" viewBox="0 0 24 24"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+<symbol id="i-logo" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/><circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#FFFFFF"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-logo-b" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#0E7490"/><path d="M24 52 C36 45 52 47 60 55 C68 47 84 45 96 52 L96 78 C84 71 68 73 60 81 C52 73 36 71 24 78 Z" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linejoin="round"/><path d="M34 40 L58 33 L88 17" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M77 11 L89 16 L84 28" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-logo-c" viewBox="0 0 120 120"><rect x="3" y="3" width="114" height="114" rx="30" fill="#E0F2F7"/><circle cx="60" cy="54" r="29" fill="#0E7490"/><path d="M68 80 L79 97 L50 84 Z" fill="#0E7490"/><path d="M46 54 L56 64 L76 42" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 24 l2.8 7 L37 34 l-7.2 3 L27 44 l-2.8-7 L17 34 l7.2-3 Z" fill="#F59E0B"/><circle cx="93" cy="27" r="4" fill="#F59E0B"/></symbol>
+<symbol id="i-logo-mono" viewBox="0 0 120 120"><circle cx="59" cy="62" r="26" fill="none" stroke="#0E7490" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#0E7490"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#0E7490" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-logo-flat" viewBox="0 0 120 120"><circle cx="59" cy="62" r="26" fill="none" stroke="#FFFFFF" stroke-width="9"/><circle cx="59" cy="62" r="8" fill="#FFFFFF"/><path d="M32 66 L51 85 L95 30" fill="none" stroke="#F59E0B" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+
+<!-- ================= جلد ================= -->
+<div class="cover">
+  <div class="cv-l1">
+    <div class="cv-grid"></div>
+    <div class="cv-arc"></div>
+  </div>
+  <div class="cv-l2">
+    <div class="cv-anchor"></div>
+    <svg class="cv-deco" width="128" height="128" viewBox="0 0 150 150" fill="none">
+      <circle cx="60" cy="60" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.16"/>
+      <circle cx="72" cy="66" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.26"/>
+      <circle cx="84" cy="72" r="44" stroke="#0E7490" stroke-width="0.7" opacity="0.4"/>
+      <circle cx="126" cy="34" r="5" fill="#0E7490" opacity="0.45"/>
+      <circle cx="116" cy="46" r="2.5" fill="#0E7490" opacity="0.25"/>
+    </svg>
+  </div>
+  <div class="cv-l3">
+    <div class="cv-kicker">سند طراحی فرانت — نسخه ۲٫۰ لایت</div>
+    <div class="cv-hero">آزمونک<small>طراحی رابط کاربری و تجربه کاربری وب‌اپ</small></div>
+    <div class="cv-summary">این سند تصویریِ کاملِ جهت‌گیری طراحی فرانت آزمونک است: لوگوی اختصاصی با سه کانسپت رقیب، پالت لایت و روشن، تایپوگرافی وزیرمتن، سیستم آیکون lucide، و ماکاپ واقعی هر صفحه — از لندینگ و لیدربردِ درس‌محور (تک‌درس × رشته × پایه) و کامیونیتی تا ورود، پروفایل و فرم آزمون. هر تصمیم با دلیلش نوشته شده و هر پیش‌فرضِ قابل‌وتو جدا نشان داده شده تا پیش از شروع کد، همه‌چیز روی کاغذ تأیید شود.</div>
+    <div class="cv-meta">
+      پدیدآور: <b>پویا</b> — جشنواره نوجوان خوارزمی<br>
+      سند مکمل: برنامه توسعه v1.3 (D1–D16) و کتاب سه‌لایه الگوریتم‌ها
+    </div>
+    <div class="cv-mark"><svg width="92" height="92"><use href="#i-logo"/></svg></div>
+    <div class="cv-foot">AZMOONAK · FRONTEND DESIGN SPEC · LIGHT EDITION</div>
+  </div>
+</div>
+
+
+</body>
+</html>
