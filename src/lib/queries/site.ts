@@ -145,7 +145,7 @@ export async function getTopWeek(limit = 3): Promise<{ weekStart: Date; items: T
     const agg = new Map<string, { total: number; n: number; u: (typeof sessions)[0]["user"] }>();
     for (const s of sessions) {
       if (s.score === null) continue;
-      if (s.user.privacy === "PRIVATE") continue; // لیدربرد از حالت خصوصی صرف‌نظر می‌کند (G10)
+      if (s.user.privacy !== "PUBLIC") continue; // سایت عمومی فقط رکورد PUBLIC را نمایش می‌دهد (G10) — PRIVATE و FRIENDS (پیش‌فرض) حذف
       const a = agg.get(s.user.id) ?? { total: 0, n: 0, u: s.user };
       a.total += s.score;
       a.n += 1;

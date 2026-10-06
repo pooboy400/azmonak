@@ -8,7 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactMessage, type ContactFormState } from "@/lib/actions/contact";
 
-const initialState: ContactFormState = { status: "idle", message: "" };
+const initialState: ContactFormState = {
+  status: "idle",
+  message: "",
+  values: { name: "", contact: "", body: "" },
+};
 
 export function ContactForm() {
   const [state, formAction, pending] = useActionState(submitContactMessage, initialState);
@@ -17,7 +21,7 @@ export function ContactForm() {
     <form action={formAction} className="space-y-4 rounded-2xl border border-border bg-card p-6 sm:p-8">
       <div>
         <Label htmlFor="contact-name">نام یا لقب</Label>
-        <Input id="contact-name" name="name" placeholder="مثلاً سارا" className="mt-1.5" required maxLength={60} />
+        <Input id="contact-name" name="name" placeholder="مثلاً سارا" defaultValue={state.values.name} className="mt-1.5" required maxLength={60} />
       </div>
       <div>
         <Label htmlFor="contact-channel">ایمیل یا شماره موبایل</Label>
@@ -25,6 +29,7 @@ export function ContactForm() {
           id="contact-channel"
           name="contact"
           placeholder="مثلاً ۰۹۱۲۰۰۰۰۰۰۰"
+          defaultValue={state.values.contact}
           className="mt-1.5"
           required
           maxLength={120}
@@ -37,6 +42,7 @@ export function ContactForm() {
           name="body"
           rows={5}
           placeholder="پیامت را همین‌جا بنویس…"
+          defaultValue={state.values.body}
           className="mt-1.5 resize-none"
           required
           maxLength={2000}
@@ -54,7 +60,7 @@ export function ContactForm() {
         </p>
       )}
 
-      <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+      <Button type="submit" disabled={pending} className="w-full cursor-pointer sm:w-auto">
         {pending ? (
           "در حال ارسال…"
         ) : (

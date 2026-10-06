@@ -43,7 +43,7 @@ export function LeaderboardPodium({ items }: { items: TopLearner[] }) {
             <div className={`mx-auto mb-4 w-fit rounded-full ${style.ring}`}>
               <UserAvatar src={item.avatarUrl} nickname={item.nickname} size={64} />
             </div>
-            <h3 className="mb-1 text-base font-bold text-card-foreground">{item.nickname}</h3>
+            <h3 className="mb-1 truncate text-base font-bold text-card-foreground" title={item.nickname}>{item.nickname}</h3>
             <p className="mb-3 text-xs text-muted-foreground">{cohortLabel(item.grade, item.major)}</p>
             <div className="flex items-center justify-center gap-4 border-t border-border pt-3 text-sm">
               <div>

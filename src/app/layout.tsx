@@ -17,7 +17,12 @@ const vazirmatn = localFont({
 
 // متادیتا از دیتابیس (site_settings) — با fallback در صورت در دسترس نبودن DB
 export async function generateMetadata(): Promise<Metadata> {
-  const s = await getSiteSettings();
+  let s: Map<string, string>;
+  try {
+    s = await getSiteSettings();
+  } catch {
+    s = new Map(); // نبود DB نباید کل سایت را ۵۰۰ کند — مقادیر پیش‌فرض برند
+  }
   const name = s.get("site.name") ?? "آزمونک";
   const tagline = s.get("site.tagline") ?? "آزمون تطبیقی هوشمند";
   const description = s.get("site.description") ?? tagline;

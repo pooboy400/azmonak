@@ -20,8 +20,8 @@ export function SiteLogo({
   textClassName?: string;
 }) {
   return (
-    <Link href={href} className="flex shrink-0 items-center gap-2.5" aria-label={`${name} — صفحه اصلی`}>
-      <svg viewBox="0 0 120 120" className={markClassName} role="img" aria-hidden="true">
+    <Link href={href} className="flex shrink-0 items-center gap-2.5" aria-label={href === "/" ? `${name} — صفحه اصلی` : name}>
+      <svg viewBox="0 0 120 120" className={markClassName} aria-hidden="true">
         <rect x="0" y="0" width="120" height="120" rx="30" fill="#4F46E5" />
         <path
           d="M33 62 L61 90 L92 38"

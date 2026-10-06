@@ -80,8 +80,8 @@ export default async function LandingPage() {
 
           {/* پنل تصویری */}
           <div className="relative mx-auto w-full max-w-md">
-            <div className="absolute inset-6 rounded-[2.5rem] bg-gradient-to-br from-[#4840E0] to-[#7A5CFF] opacity-90 blur-2xl" aria-hidden />
-            <div className="relative rounded-[2rem] border border-primary/10 bg-gradient-to-br from-[#4840E0] to-[#6A5CFF] p-8 shadow-2xl shadow-primary/25">
+            <div className="absolute inset-6 rounded-[2.5rem] bg-gradient-to-br from-[#4F46E5] to-[#7A5CFF] opacity-90 blur-2xl" aria-hidden />
+            <div className="relative rounded-[2rem] border border-primary/10 bg-gradient-to-br from-[#4F46E5] to-[#6A5CFF] p-8 shadow-2xl shadow-primary/25">
               <div className="mb-6 flex items-center justify-between">
                 <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white">جلسه تمرین زنده</span>
                 <Image src="/logo-mark.png" alt="" width={40} height={40} className="h-10 w-10 rounded-xl" />
@@ -92,7 +92,7 @@ export default async function LandingPage() {
                   <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-medium text-emerald-600">سطح مناسب تو</span>
                 </div>
                 <div className="h-2 overflow-hidden rounded-full bg-muted" aria-hidden>
-                  <div className="h-full w-[70%] rounded-full bg-gradient-to-l from-[#4840E0] to-[#7A5CFF]" />
+                  <div className="h-full w-[70%] rounded-full bg-gradient-to-l from-[#4F46E5] to-[#7A5CFF]" />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-3 text-center text-white">

@@ -31,12 +31,11 @@ export function SubjectCard({ subject, portalUrl }: { subject: SubjectRow; porta
         </span>
       )}
       {!hasContent && <span className="inline-block text-xs text-muted-foreground/70">{subject.code}</span>}
-      <span className="sr-only">{`${subject.title} — ${cohortLabel(subject.grade, subject.major)}`}</span>
     </>
   );
 
   const cardClass =
-    "group block rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/5";
+    "group block rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2";
 
   // درس فعال → کل کارت لینک پورتال است (URL از دیتابیس؛ portal.url) و تکست «تمرین در پورتال» با hover ظاهر و کلیک‌پذیر می‌شود
   if (hasContent) {
