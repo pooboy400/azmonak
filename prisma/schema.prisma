@@ -41,7 +41,8 @@ datasource db {
 model User {
   id          String   @id @default(cuid())
   role        String   @default("STUDENT") // STUDENT | TEACHER | ADMIN
-  nickname    String   @unique
+  username    String?  @unique // آیدی یکتا تلگرام‌مانند (a-z + 0-9 + _ ، ۴ تا ۲۴ نویسه) — برای جست‌وجوی افراد؛ null یعنی هنوز انتخاب نشده (آنبوردینگ اجباری)
+  nickname    String // نام نمایشی/لقب — یکتا نیست (مثل تلگرام)؛ آیدی هویت یکتاست نه لقب
   avatarUrl   String? // آواتار آپلودی کاربر (تصمیم جدید — عکس پروفایل، نه استیکر/ایموجی)؛ خالی = placeholder پیش‌فرض در UI
   grade       String? // GRADE10 | GRADE11 | GRADE12 — فقط دانش‌آموز
   major       String? // EXPERIMENTAL | MATH | HUMANITIES — فقط دانش‌آموز

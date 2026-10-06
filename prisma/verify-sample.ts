@@ -81,7 +81,7 @@ async function main() {
   }
 
   console.log("\n=== 4) profile dual-line trend — درسا.زیستی on زیست‌شناسی ۳ (D15) ===");
-  const dorsa = await db.user.findUnique({ where: { nickname: "درسا.زیستی" } });
+  const dorsa = await db.user.findUnique({ where: { username: "dorsa_zisti" } });
   const bio = await db.subject.findFirst({ where: { code: "BIO11T" } });
   if (dorsa && bio) {
     const hist = await db.session.findMany({
@@ -124,7 +124,7 @@ async function main() {
   console.log(`  non-sample users: ${nonSample} (0 = everything is removable sample data)`);
   const qRatings = await db.question.groupBy({ by: ["difficulty"], _count: true, _avg: { rating: true } });
   for (const q of qRatings) console.log(`  ${q.difficulty}: n=${q._count} avgRating=${q._avg.rating?.toFixed(0)}`);
-  const activeSessions = await db.session.findMany({ where: { status: "ACTIVE" }, include: { user: true, subject: true } });
+  const activeSessions = await db.session.findMany({ where: { status: "ACTIVE" }, include: { user: true, subject: true, _count: { select: { attempts: true } } } });
   for (const s of activeSessions) console.log(`  ACTIVE: ${s.user.nickname} on ${s.subject.title} (${s._count?.attempts ?? "?"} attempts → قابل ازسرگیری)`);
 }
 

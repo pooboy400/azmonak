@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { requireUser } from "@/lib/auth";
 import { getProfileData } from "@/lib/queries/portal";
 import { ProfileForm } from "@/components/portal/profile-form";
+import { DeleteAccountCard } from "@/components/portal/delete-account-card";
 import { UserAvatar } from "@/components/site/user-avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +35,9 @@ export default async function ProfilePage() {
         <div>
           <h1 className="text-xl font-bold">{data.user.nickname}</h1>
           <p className="mt-1 text-xs text-muted-foreground">
+            {data.user.username && (
+              <code dir="ltr" className="me-2 rounded bg-muted px-1.5 py-0.5 text-[11px]">@{data.user.username}</code>
+            )}
             {data.user.grade ? `${gradeLabel(data.user.grade)} · ${majorLabel(data.user.major)}` : "پایه و رشته مشخص نشده"}
             {" · "}
             {data.user.privacy === "PUBLIC" ? "لیدربرد عمومی" : data.user.privacy === "FRIENDS" ? "نمایش فقط برای دوستان" : "کاملاً خصوصی"}
@@ -61,6 +65,7 @@ export default async function ProfilePage() {
       {/* فرم ویرایش */}
       <ProfileForm
         user={{
+          username: data.user.username,
           nickname: data.user.nickname,
           grade: data.user.grade,
           major: data.user.major,
@@ -110,6 +115,9 @@ export default async function ProfilePage() {
           </div>
         </section>
       )}
+
+      {/* حذف حساب — تنها راه پاک شدن حساب و آزاد شدن شماره (از خود پروفایل) */}
+      <DeleteAccountCard username={data.user.username} />
     </div>
   );
 }

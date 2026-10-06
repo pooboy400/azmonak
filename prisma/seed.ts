@@ -367,6 +367,7 @@ async function main() {
         data: {
           id: u.id,
           role: u.role,
+          username: u.username,
           nickname: u.nickname,
           avatarUrl: u.avatarUrl,
           grade: u.grade,

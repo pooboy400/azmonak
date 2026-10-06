@@ -114,7 +114,7 @@ export async function getPortalSubjects(userId: string, grade: string | null, ma
 // ---------- داشبورد ----------
 
 export interface DashboardData {
-  user: { id: string; nickname: string; avatarUrl: string | null; grade: string | null; major: string | null; privacy: string };
+  user: { id: string; username: string | null; nickname: string; avatarUrl: string | null; grade: string | null; major: string | null; privacy: string };
   needsOnboarding: boolean;
   dueReviews: number;
   subjects: PortalSubject[];
@@ -161,13 +161,14 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
   return {
     user: {
       id: user.id,
+      username: user.username,
       nickname: user.nickname,
       avatarUrl: user.avatarUrl,
       grade: user.grade,
       major: user.major,
       privacy: user.privacy,
     },
-    needsOnboarding: !user.grade || !user.major,
+    needsOnboarding: !user.username || !user.grade || !user.major,
     dueReviews,
     subjects,
     recentSessions: recent.map((s) => ({
@@ -254,7 +255,7 @@ export async function getSubjectLeaderboard(viewerId: string, subjectId: string 
 // ---------- کامیونیتی ----------
 
 export interface CommunityData {
-  friends: Array<{ id: string; nickname: string; avatarUrl: string | null; grade: string | null; major: string | null; privacy: string }>;
+  friends: Array<{ id: string; username: string | null; nickname: string; avatarUrl: string | null; grade: string | null; major: string | null; privacy: string }>;
   incoming: Array<{ id: string; nickname: string; avatarUrl: string | null; friendshipId: string }>;
   outgoing: Array<{ id: string; nickname: string; friendshipId: string }>;
   classes: Array<{ id: string; name: string; code: string; teacherName: string; memberCount: number; isMember: boolean }>;
@@ -264,8 +265,8 @@ export async function getCommunityData(userId: string): Promise<CommunityData> {
   const frs = await db.friendship.findMany({
     where: { OR: [{ requesterId: userId }, { addresseeId: userId }] },
     include: {
-      requester: { select: { id: true, nickname: true, avatarUrl: true, grade: true, major: true, privacy: true } },
-      addressee: { select: { id: true, nickname: true, avatarUrl: true, grade: true, major: true, privacy: true } },
+      requester: { select: { id: true, username: true, nickname: true, avatarUrl: true, grade: true, major: true, privacy: true } },
+      addressee: { select: { id: true, username: true, nickname: true, avatarUrl: true, grade: true, major: true, privacy: true } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -291,7 +292,7 @@ export async function getCommunityData(userId: string): Promise<CommunityData> {
   });
 
   return {
-    friends: friends.map((f) => ({ id: f.id, nickname: f.nickname, avatarUrl: f.avatarUrl, grade: f.grade, major: f.major, privacy: f.privacy })),
+    friends: friends.map((f) => ({ id: f.id, username: f.username, nickname: f.nickname, avatarUrl: f.avatarUrl, grade: f.grade, major: f.major, privacy: f.privacy })),
     incoming,
     outgoing,
     classes: allClasses.map((c) => ({
@@ -305,13 +306,18 @@ export async function getCommunityData(userId: string): Promise<CommunityData> {
   };
 }
 
-/** جست‌وجوی کاربر برای افزودن دوست — فقط لقب/آواتار؛ حذف خود و دوستان فعلی */
-export async function searchUsers(viewerId: string, q: string): Promise<Array<{ id: string; nickname: string; avatarUrl: string | null; relation: "none" | "friend" | "pending" }>> {
+/** جست‌وجوی کاربر برای افزودن دوست — با آیدی (تلگرام‌مانند) یا لقب؛ حذف خود و رعایت فعال بودن */
+export async function searchUsers(viewerId: string, q: string): Promise<Array<{ id: string; username: string | null; nickname: string; avatarUrl: string | null; relation: "none" | "friend" | "pending" }>> {
   const query = q.trim();
   if (query.length < 2) return [];
+  const normalized = query.toLowerCase().replace(/^@+/, "");
   const users = await db.user.findMany({
-    where: { nickname: { contains: query }, isActive: true, id: { not: viewerId } },
-    select: { id: true, nickname: true, avatarUrl: true },
+    where: {
+      isActive: true,
+      id: { not: viewerId },
+      OR: [{ username: { contains: normalized } }, { nickname: { contains: query } }],
+    },
+    select: { id: true, username: true, nickname: true, avatarUrl: true },
     take: 6,
   });
   if (users.length === 0) return [];
@@ -483,7 +489,7 @@ export async function getProfileData(userId: string): Promise<{ user: DashboardD
   ]);
   const scores = avgRows.map((r) => r.score!);
   return {
-    user: { id: user.id, nickname: user.nickname, avatarUrl: user.avatarUrl, grade: user.grade, major: user.major, privacy: user.privacy },
+    user: { id: user.id, username: user.username, nickname: user.nickname, avatarUrl: user.avatarUrl, grade: user.grade, major: user.major, privacy: user.privacy },
     stats: {
       attempts: attemptsAgg,
       completedSessions: completed,
@@ -491,5 +497,62 @@ export async function getProfileData(userId: string): Promise<{ user: DashboardD
       abilities: abilities.map((a) => ({ subjectTitle: a.subject.title, rating: a.rating, answeredCount: a.answeredCount })),
       topics: topics.map((t) => ({ level: t.level, topicTitle: t.topic.title, subjectTitle: t.subject.title })),
     },
+  };
+}
+
+// ---------- پروفایل عمومی با آیدی (/portal/u/[username]) ----------
+
+export interface PublicProfileData {
+  status: "not_found" | "private" | "friends_only" | "ok";
+  isSelf: boolean;
+  relation: "self" | "friend" | "pending" | "none";
+  user: DashboardData["user"];
+  stats: ProfileStats | null; // فقط وقتی status=ok
+}
+
+/**
+ * مشاهدهٔ پروفایل یک کاربر با آیدی — با رعایت privacy:
+ * PUBLIC برای همهٔ واردشده‌ها، FRIENDS فقط دوستان و خودش، PRIVATE فقط خودش.
+ */
+export async function getPublicProfile(viewerId: string, rawUsername: string): Promise<PublicProfileData | null> {
+  const username = rawUsername.trim().toLowerCase().replace(/^@+/, "");
+  if (!username) return null;
+  const target = await db.user.findFirst({
+    where: { username, isActive: true },
+    select: { id: true, username: true, nickname: true, avatarUrl: true, grade: true, major: true, privacy: true },
+  });
+  if (!target) return null;
+
+  const isSelf = target.id === viewerId;
+  let relation: PublicProfileData["relation"] = isSelf ? "self" : "none";
+  if (!isSelf) {
+    const fr = await db.friendship.findFirst({
+      where: {
+        OR: [
+          { requesterId: viewerId, addresseeId: target.id },
+          { requesterId: target.id, addresseeId: viewerId },
+        ],
+      },
+      select: { status: true },
+    });
+    relation = !fr ? "none" : fr.status === "ACCEPTED" ? "friend" : "pending";
+  }
+
+  if (!isSelf) {
+    if (target.privacy === "PRIVATE") {
+      return { status: "private", isSelf, relation, user: target, stats: null };
+    }
+    if (target.privacy === "FRIENDS" && relation !== "friend") {
+      return { status: "friends_only", isSelf, relation, user: target, stats: null };
+    }
+  }
+
+  const data = await getProfileData(target.id);
+  return {
+    status: "ok",
+    isSelf,
+    relation,
+    user: target,
+    stats: data?.stats ?? null,
   };
 }

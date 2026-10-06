@@ -7,16 +7,18 @@
 
 import { db } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { normalizeUsername } from "@/lib/username";
 import { revalidatePath } from "next/cache";
 
-export async function sendFriendRequestAction(nickname: string): Promise<{ ok: boolean; message?: string }> {
+/** درخواست دوستی با آیدی یکتا (تلگرام‌مانند) — لقب یکتا نیست پس جست‌وجوی قطعی فقط با آیدی ممکن است */
+export async function sendFriendRequestAction(username: string): Promise<{ ok: boolean; message?: string }> {
   const user = await getSessionUser();
   if (!user) return { ok: false, message: "نشست منقضی شده است." };
-  const q = (nickname ?? "").trim();
-  if (q.length < 3) return { ok: false, message: "لقب را کامل‌تر بنویس." };
+  const q = normalizeUsername(username ?? "");
+  if (q.length < 4) return { ok: false, message: "آیدی را کامل بنویس (حداقل ۴ نویسه)." };
 
-  const target = await db.user.findFirst({ where: { nickname: { equals: q } , isActive: true } });
-  if (!target) return { ok: false, message: "کاربری با این لقب پیدا نشد." };
+  const target = await db.user.findFirst({ where: { username: q, isActive: true } });
+  if (!target) return { ok: false, message: "کاربری با این آیدی پیدا نشد." };
   if (target.id === user.id) return { ok: false, message: "خودت هستی!" };
 
   const existing = await db.friendship.findFirst({

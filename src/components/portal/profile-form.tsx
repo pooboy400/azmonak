@@ -10,9 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { updateProfileAction } from "@/lib/actions/profile";
 import { GRADE_ORDER, MAJOR_ORDER, gradeLabel, majorLabel } from "@/lib/labels";
+import { UsernameField } from "@/components/portal/username-field";
 import { cn } from "@/lib/utils";
 
 interface ProfileUser {
+  username: string | null;
   nickname: string;
   grade: string | null;
   major: string | null;
@@ -28,6 +30,7 @@ const PRIVACY_OPTIONS = [
 
 export function ProfileForm({ user }: { user: ProfileUser }) {
   const router = useRouter();
+  const [username, setUsername] = useState(user.username ?? "");
   const [nickname, setNickname] = useState(user.nickname);
   const [grade, setGrade] = useState<string | null>(user.grade);
   const [major, setMajor] = useState<string | null>(user.major);
@@ -62,13 +65,14 @@ export function ProfileForm({ user }: { user: ProfileUser }) {
   const save = () => {
     setMsg(null);
     startTransition(async () => {
-      const res = await updateProfileAction({ nickname, grade, major, privacy, avatarUrl: avatarUrl ?? "" });
+      const res = await updateProfileAction({ username, nickname, grade, major, privacy, avatarUrl: avatarUrl ?? "" });
       setMsg({ ok: res.ok, text: res.ok ? "پروفایل ذخیره شد." : (res.message ?? "ذخیره ناموفق بود.") });
       if (res.ok) router.refresh();
     });
   };
 
   const dirty =
+    username !== (user.username ?? "") ||
     nickname !== user.nickname || grade !== user.grade || major !== user.major || privacy !== user.privacy;
 
   return (
@@ -112,10 +116,13 @@ export function ProfileForm({ user }: { user: ProfileUser }) {
           />
         </div>
 
-        {/* لقب */}
+        {/* آیدی یکتا + لقب نمایشی */}
+        <UsernameField value={username} onChange={setUsername} current={user.username} />
+
         <div className="space-y-1.5">
-          <Label htmlFor="nickname">لقب</Label>
+          <Label htmlFor="nickname">لقب (نام نمایشی)</Label>
           <Input id="nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} maxLength={24} />
+          <p className="text-[11px] text-muted-foreground">نام نمایشی توست و لازم نیست یکتا باشد؛ هویت یکتا همان آیدی است.</p>
         </div>
 
         {/* پایه و رشته */}

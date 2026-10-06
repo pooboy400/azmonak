@@ -43,9 +43,9 @@ export function SearchForm({ defaultQuery }: { defaultQuery: string }) {
         <Input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="لقب دوستت را بنویس…"
+          placeholder="آیدی یا لقب دوستت را بنویس…"
           className="pr-9"
-          aria-label="جست‌وجوی کاربر با لقب"
+          aria-label="جست‌وجوی کاربر با آیدی یا لقب"
           maxLength={40}
         />
       </div>
@@ -56,7 +56,7 @@ export function SearchForm({ defaultQuery }: { defaultQuery: string }) {
   );
 }
 
-export function AddFriendButton({ nickname }: { nickname: string }) {
+export function AddFriendButton({ username }: { username: string }) {
   const { pending, run } = useAction();
   return (
     <Button
@@ -64,7 +64,7 @@ export function AddFriendButton({ nickname }: { nickname: string }) {
       variant="outline"
       disabled={pending}
       className="cursor-pointer gap-1.5"
-      onClick={() => run(() => sendFriendRequestAction(nickname))}
+      onClick={() => run(() => sendFriendRequestAction(username))}
     >
       {pending ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> : <UserPlus className="h-3.5 w-3.5" aria-hidden />}
       درخواست

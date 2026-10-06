@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { getCommunityData, searchUsers } from "@/lib/queries/portal";
 import { UserAvatar } from "@/components/site/user-avatar";
@@ -46,7 +47,7 @@ export default async function CommunityPage({ searchParams }: { searchParams: Pr
           {q && (
             <div className="space-y-2">
               {results.length === 0 ? (
-                <p className="text-xs text-muted-foreground">کاربری با این لقب پیدا نشد.</p>
+                <p className="text-xs text-muted-foreground">کاربری با این آیدی یا لقب پیدا نشد.</p>
               ) : (
                 results.map((r) => (
                   <div key={r.id} className="flex items-center justify-between gap-3 rounded-xl border border-border bg-muted/30 p-3">
@@ -54,14 +55,18 @@ export default async function CommunityPage({ searchParams }: { searchParams: Pr
                       <UserAvatar src={r.avatarUrl} nickname={r.nickname} size={36} />
                       <div className="min-w-0">
                         <div className="truncate text-sm font-medium">{r.nickname}</div>
-                        {r.relation === "friend" && <Badge variant="secondary" className="mt-0.5 text-[10px]">دوست</Badge>}
-                        {r.relation === "pending" && <Badge variant="outline" className="mt-0.5 text-[10px]">در انتظار</Badge>}
+                        {r.username && (
+                          <code dir="ltr" className="text-[11px] text-muted-foreground">@{r.username}</code>
+                        )}
+                        {r.relation === "friend" && <Badge variant="secondary" className="mt-0.5 mr-2 text-[10px]">دوست</Badge>}
+                        {r.relation === "pending" && <Badge variant="outline" className="mt-0.5 mr-2 text-[10px]">در انتظار</Badge>}
                       </div>
                     </div>
-                    {r.relation === "none" && <AddFriendButton nickname={r.nickname} />}
+                    {r.relation === "none" && r.username && <AddFriendButton username={r.username} />}
                   </div>
                 ))
               )}
+              <p className="text-[11px] text-muted-foreground">برای درخواست دوستی دقیق، آیدی را کامل وارد کن — جست‌وجوی دقیق فقط با آیدی ممکن است.</p>
             </div>
           )}
         </CardContent>
@@ -98,38 +103,41 @@ export default async function CommunityPage({ searchParams }: { searchParams: Pr
         </h2>
         {data.friends.length === 0 ? (
           <p className="rounded-2xl border border-dashed border-border bg-muted/40 p-6 text-center text-sm text-muted-foreground">
-            هنوز دوستی نداری — با جست‌وجوی لقب بالا دوستانت را پیدا کن.
+            هنوز دوستی نداری — با جست‌وجوی آیدی یا لقب بالا دوستانت را پیدا کن.
           </p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {data.friends.map((f) => (
-              <Card key={f.id} className="border-border/70">
-                <CardContent className="flex items-center gap-3 p-4">
-                  <UserAvatar src={f.avatarUrl} nickname={f.nickname} size={42} />
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-bold">{f.nickname}</div>
-                    <div className="mt-0.5 text-[11px] text-muted-foreground">{cohortLabel(f.grade, f.major)}</div>
-                    <div className="mt-1 text-[10px] text-muted-foreground">
-                      {f.privacy === "PUBLIC" ? (
-                        <span className="inline-flex items-center gap-1">
-                          <Check className="h-3 w-3 text-emerald-600" aria-hidden />
-                          لیدربرد عمومی
-                        </span>
-                      ) : f.privacy === "FRIENDS" ? (
-                        <span className="inline-flex items-center gap-1">
-                          <LockKeyhole className="h-3 w-3" aria-hidden />
-                          فقط دوستان
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1">
-                          <Lock className="h-3 w-3" aria-hidden />
-                          خصوصی
-                        </span>
-                      )}
+              <Link key={f.id} href={f.username ? `/portal/u/${f.username}` : "/portal/community"} className="rounded-xl transition-shadow hover:shadow-md">
+                <Card className="border-border/70 h-full">
+                  <CardContent className="flex items-center gap-3 p-4">
+                    <UserAvatar src={f.avatarUrl} nickname={f.nickname} size={42} />
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-bold">{f.nickname}</div>
+                      {f.username && <code dir="ltr" className="text-[10px] text-muted-foreground">@{f.username}</code>}
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">{cohortLabel(f.grade, f.major)}</div>
+                      <div className="mt-1 text-[10px] text-muted-foreground">
+                        {f.privacy === "PUBLIC" ? (
+                          <span className="inline-flex items-center gap-1">
+                            <Check className="h-3 w-3 text-emerald-600" aria-hidden />
+                            لیدربرد عمومی
+                          </span>
+                        ) : f.privacy === "FRIENDS" ? (
+                          <span className="inline-flex items-center gap-1">
+                            <LockKeyhole className="h-3 w-3" aria-hidden />
+                            فقط دوستان
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1">
+                            <Lock className="h-3 w-3" aria-hidden />
+                            خصوصی
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         )}

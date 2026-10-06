@@ -49,7 +49,9 @@ export function LoginForm() {
         setCode("");
         return;
       }
-      router.push("/portal");
+      // کاربر تازه‌ساخت اول باید آیدی یکتا و نام نمایشی‌اش را انتخاب کند (آنبوردینگ اجباری)
+      if (res.isNewUser) router.push("/portal/onboarding");
+      else router.push("/portal");
       router.refresh();
     });
   };

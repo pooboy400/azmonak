@@ -103,21 +103,16 @@ export async function verifyOtpAction(input: { phone: string; code: string }): P
   let isNewUser = false;
 
   if (!user) {
-    // ثبت‌نام خودکار — لقب یکتای موقت؛ کاربر بعداً در پروفایل تغییر می‌دهد
-    for (let i = 0; i < 8 && !user; i++) {
-      const nickname = `دانش‌آموز-${crypto.randomInt(1000, 10000)}`;
-      const dupe = await db.user.findUnique({ where: { nickname } });
-      if (dupe) continue;
-      user = await db.user.create({
-        data: {
-          nickname,
-          identity: { create: { phone, verifiedAt: new Date() } },
-        },
-        include: { identity: true },
-      });
-      isNewUser = true;
-    }
-    if (!user) return { ok: false, message: "خطای غیرمنتظره در ساخت حساب. دوباره تلاش کنید." };
+    // ثبت‌نام خودکار — آیدی یکتا و نام نمایشی در گام آنبوردینگ اجباری انتخاب می‌شوند؛
+    // تا آن لحظه لقب موقت نمایشی است (غیریکتا) و username=null است.
+    user = await db.user.create({
+      data: {
+        nickname: `دانش‌آموز-${crypto.randomInt(1000, 10000)}`,
+        identity: { create: { phone, verifiedAt: new Date() } },
+      },
+      include: { identity: true },
+    });
+    isNewUser = true;
   }
 
   await createSessionCookie(user.id);
