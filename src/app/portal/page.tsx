@@ -63,7 +63,7 @@ export default async function PortalDashboardPage() {
         <div className="flex items-center gap-3">
           <UserAvatar src={data.user.avatarUrl} nickname={data.user.nickname} size={52} />
           <div>
-            <h1 className="text-xl font-bold sm:text-2xl">سلام {data.user.nickname} 👋</h1>
+            <h1 className="text-xl font-bold sm:text-2xl">سلام {data.user.nickname}</h1>
             <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
               {data.user.grade
                 ? `${gradeLabel(data.user.grade)} · ${majorLabel(data.user.major)}`

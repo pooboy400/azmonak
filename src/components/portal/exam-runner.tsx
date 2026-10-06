@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { MathText } from "@/components/site/math-text";
 import { faDuration, faNum, faRating } from "@/lib/fa";
 import { getNextQuestionAction, submitAnswerAction, type NextQuestionResult, type SubmitResult } from "@/lib/actions/exam";
 
@@ -155,7 +156,9 @@ export function ExamRunner({ sessionId, subjectTitle }: { sessionId: string; sub
       {/* صورت سؤال */}
       <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         {question.topicTitle && <div className="mb-2 text-[11px] text-muted-foreground">مبحث: {question.topicTitle}</div>}
-        <p className="mb-5 whitespace-pre-line text-[15px] font-medium leading-8 text-foreground sm:text-base">{question.stem}</p>
+        <p className="mb-5 whitespace-pre-line text-[15px] font-medium leading-8 text-foreground sm:text-base">
+          <MathText text={question.stem} />
+        </p>
 
         <div className="grid gap-2.5" role="radiogroup" aria-label="گزینه‌های سؤال">
           {question.options.map((opt) => {
@@ -195,7 +198,9 @@ export function ExamRunner({ sessionId, subjectTitle }: { sessionId: string; sub
                 >
                   {opt.key}
                 </span>
-                <span className="flex-1">{opt.text}</span>
+                <span className="flex-1">
+                  <MathText text={opt.text} />
+                </span>
                 {feedback && isCorrect && <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />}
                 {feedback && isWrongPick && <XCircle className="h-5 w-5 shrink-0 text-rose-600" aria-hidden />}
               </button>
@@ -261,7 +266,9 @@ export function ExamRunner({ sessionId, subjectTitle }: { sessionId: string; sub
               )}
             </span>
           </div>
-          <p className="text-sm leading-7 text-foreground">{feedback.explanation}</p>
+          <p className="text-sm leading-7 text-foreground">
+            <MathText text={feedback.explanation} />
+          </p>
           <Button className="mt-4 w-full cursor-pointer gap-2 sm:w-auto" onClick={loadNext} disabled={pending}>
             {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <ArrowLeft className="h-4 w-4" aria-hidden />}
             سؤال بعدی

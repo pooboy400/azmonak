@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, TriangleAlert } from "lucide-react";
 
 /**
  * صفحه خطای فارسی برای خطاهای رندر (مثلاً خطای DB) — به‌جای صفحه پیش‌فرض انگلیسی.
@@ -22,9 +22,12 @@ export default function GlobalRouteError({
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4">
       <div className="max-w-md text-center">
-        <p className="mb-3 text-5xl" aria-hidden>
-          ⚠️
-        </p>
+        <div
+          className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-primary"
+          aria-hidden
+        >
+          <TriangleAlert className="h-7 w-7" />
+        </div>
         <h1 className="mb-3 text-2xl font-bold text-foreground">مشکلی پیش آمد</h1>
         <p className="mb-8 text-sm leading-7 text-muted-foreground">
           در بارگذاری این بخش خطایی رخ داد. یک بار دیگر تلاش کن؛ اگر تکرار شد لطفاً بعداً سر بزن یا از صفحه

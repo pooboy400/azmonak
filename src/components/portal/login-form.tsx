@@ -103,7 +103,7 @@ export function LoginForm() {
           <p className="text-xs leading-6 text-muted-foreground" dir="ltr">
             {phone}
           </p>
-          <InputOTP maxLength={5} value={code} onChange={setCode} dir="ltr">
+          <InputOTP maxLength={5} value={code} onChange={setCode} dir="ltr" containerClassName="justify-center">
             <InputOTPGroup className="flex-row-reverse">
               {[0, 1, 2, 3, 4].map((i) => (
                 <InputOTPSlot key={i} index={i} className="h-12 w-11 text-lg" />

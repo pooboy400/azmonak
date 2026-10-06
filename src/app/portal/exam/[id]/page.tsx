@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { MathText } from "@/components/site/math-text";
 import { faNum, faRating, faScore, faDuration } from "@/lib/fa";
 import { faDate } from "@/lib/labels";
 import { CheckCircle2, ClipboardList, Crown, Target, TrendingDown, TrendingUp, XCircle } from "lucide-react";
@@ -87,11 +88,11 @@ function ResultView({ result }: { result: NonNullable<Awaited<ReturnType<typeof 
     {
       label: "تغییر توان",
       value: `${rDelta >= 0 ? "+" : "−"}${faNum(Math.abs(rDelta))}`,
-      sub: `${faRating(session.rStart)} → ${faRating(session.rEnd ?? session.rStart)}`,
+      sub: `${faRating(session.rStart)} به ${faRating(session.rEnd ?? session.rStart)}`,
     },
     {
       label: "نردبان مباحث",
-      value: `${faNum(ladderSummary.up)} ↑ / ${faNum(ladderSummary.down)} ↓`,
+      value: `${faNum(ladderSummary.up)} ارتقا / ${faNum(ladderSummary.down)} افت`,
       sub: "ارتقا و افت سطح در این جلسه",
     },
   ];
@@ -167,7 +168,9 @@ function ResultView({ result }: { result: NonNullable<Awaited<ReturnType<typeof 
                     وزن {faNum(item.weight, 1)}
                   </Badge>
                 </div>
-                <p className="whitespace-pre-line text-sm font-medium leading-7">{item.stem}</p>
+                <p className="whitespace-pre-line text-sm font-medium leading-7">
+                  <MathText text={item.stem} />
+                </p>
                 <div className="grid gap-1.5 sm:grid-cols-2">
                   {item.options.map((opt) => (
                     <div
@@ -179,14 +182,16 @@ function ResultView({ result }: { result: NonNullable<Awaited<ReturnType<typeof 
                         opt.key !== item.correct && opt.key !== item.selected && "opacity-60",
                       )}
                     >
-                      <span className="font-bold">{opt.key}.</span> {opt.text}
+                      <span className="font-bold">{opt.key}.</span> <MathText text={opt.text} />
                       {opt.key === item.selected && (
                         <span className="mr-2 text-[10px] text-muted-foreground">(پاسخ تو)</span>
                       )}
                     </div>
                   ))}
                 </div>
-                <p className="rounded-lg bg-muted/60 p-3 text-xs leading-6 text-foreground">{item.explanation}</p>
+                <p className="rounded-lg bg-muted/60 p-3 text-xs leading-6 text-foreground">
+                  <MathText text={item.explanation} />
+                </p>
               </CardContent>
             </Card>
           ))}
