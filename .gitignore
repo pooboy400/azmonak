@@ -60,3 +60,4 @@ server.log
 # Skills directory
 /skills/
 .zscripts/
+tool-results/
