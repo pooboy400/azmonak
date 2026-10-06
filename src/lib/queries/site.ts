@@ -70,7 +70,7 @@ export interface SubjectRow {
   code: string;
   title: string;
   grade: string;
-  major: string;
+  major: string | null; // null = عمومی
   iconKey: string | null;
   colorKey: string | null;
   topicCount: number;

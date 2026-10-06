@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getActiveSubjects, getPortalUrl } from "@/lib/queries/site";
-import { GRADE_ORDER, gradeLabel, MAJOR_ORDER, majorLabel } from "@/lib/labels";
+import { GRADE_ORDER, gradeLabel, MAJOR_ORDER, majorLabel, sharedMajorLabel } from "@/lib/labels";
 import { SubjectGrid } from "@/components/site/subject-card";
 import { CtaBanner } from "@/components/site/cta-banner";
 
@@ -12,13 +12,17 @@ export const metadata: Metadata = {
 export default async function SubjectsPage() {
   const [subjects, portalUrl] = await Promise.all([getActiveSubjects(), getPortalUrl()]);
 
-  const groups = GRADE_ORDER.map((grade) => ({
-    grade,
-    majors: MAJOR_ORDER.map((major) => ({
+  // گروه‌بندی هر پایه: عمومی (همهٔ رشته‌ها) ← اختصاصی هر رشته ← مشترک چند رشته
+  const groups = GRADE_ORDER.map((grade) => {
+    const inGrade = subjects.filter((s) => s.grade === grade);
+    const majors = MAJOR_ORDER.map((major) => ({
       major,
-      subjects: subjects.filter((s) => s.grade === grade && s.major === major),
-    })).filter((g) => g.subjects.length > 0),
-  })).filter((g) => g.majors.length > 0);
+      subjects: inGrade.filter((s) => s.major === major),
+    })).filter((g) => g.subjects.length > 0);
+    const shared = inGrade.filter((s) => s.major !== null && s.major.includes(","));
+    const common = inGrade.filter((s) => s.major === null);
+    return { grade, majors, shared, common };
+  }).filter((g) => g.majors.length > 0 || g.shared.length > 0 || g.common.length > 0);
 
   return (
     <>
@@ -41,6 +45,15 @@ export default async function SubjectsPage() {
         {groups.map((g) => (
           <div key={g.grade} className="space-y-8">
             <h2 className="text-xl font-bold text-foreground sm:text-2xl">{gradeLabel(g.grade)}</h2>
+            {g.common.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="flex items-center gap-2 text-base font-bold text-secondary-foreground">
+                  <span className="h-5 w-1.5 rounded-full bg-primary" aria-hidden />
+                  عمومی — همهٔ رشته‌ها
+                </h3>
+                <SubjectGrid subjects={g.common} portalUrl={portalUrl} />
+              </div>
+            )}
             {g.majors.map((m) => (
               <div key={m.major} className="space-y-4">
                 <h3 className="flex items-center gap-2 text-base font-bold text-secondary-foreground">
@@ -50,6 +63,15 @@ export default async function SubjectsPage() {
                 <SubjectGrid subjects={m.subjects} portalUrl={portalUrl} />
               </div>
             ))}
+            {g.shared.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="flex items-center gap-2 text-base font-bold text-secondary-foreground">
+                  <span className="h-5 w-1.5 rounded-full bg-primary" aria-hidden />
+                  {sharedMajorLabel(g.shared[0].major ?? "")}
+                </h3>
+                <SubjectGrid subjects={g.shared} portalUrl={portalUrl} />
+              </div>
+            )}
           </div>
         ))}
       </section>

@@ -1,7 +1,7 @@
 // ============================================================
 // آزمونک — Sample data seeder (deterministic, PRNG seed 1405)
 // What it creates (all rows isSample=true, ids prefixed "smp"):
-//   12 subjects (6 with content, 6 catalog-only) + 22 topics + 60 questions
+//   13 subjects (6 with content, 7 catalog-only) + 22 topics + 60 questions
 //   26 users (24 students + 2 teachers) with identity (phones 09990000xxx)
 //   2 classes + 31 friendships + 10 misconception nodes (M01–M10, D16-parked)
 //   ~5.5 weeks of simulated placement/practice sessions with attempts
@@ -54,10 +54,17 @@ const expected = (rs: number, rq: number) => 1 / (1 + Math.pow(10, (rq - rs) / 4
 
 /** subjects each student cohort actually takes (subjects that have questions) */
 function subjectsFor(grade: string | null, major: string | null): string[] {
-  if (grade === "GRADE11" && major === "EXPERIMENTAL") return ["FAR11T", "MAT11T", "PHY11T", "BIO11T"];
-  if (grade === "GRADE10" && major === "EXPERIMENTAL") return ["FAR10T"];
-  if (grade === "GRADE11" && major === "MATH") return ["CAL11M"];
-  return [];
+  if (!grade || !major) return [];
+  const out: string[] = [];
+  // درس‌های عمومی هر پایه (دارای بانک سؤال)
+  if (grade === "GRADE10") out.push("FAR10G"); // فارسی ۱
+  if (grade === "GRADE12") out.push("FAR12G"); // فارسی ۳
+  // درس‌های اختصاصی/مشترک
+  if (grade === "GRADE11" && major === "EXPERIMENTAL") out.push("MAT11T"); // ریاضی ۲
+  if (grade === "GRADE11" && (major === "EXPERIMENTAL" || major === "MATH")) out.push("PHY11C"); // فیزیک ۲ مشترک
+  if (grade === "GRADE12" && major === "EXPERIMENTAL") out.push("BIO12T"); // زیست ۳
+  if (grade === "GRADE12" && major === "MATH") out.push("CAL12M"); // حسابان ۲
+  return out;
 }
 
 // ---------- global sim state ----------
@@ -650,8 +657,8 @@ async function main() {
     // ===== 5. two in-progress sessions (resume + live UI demo) =====
     console.log("⏳ creating in-progress sessions…");
     const inProgress: Array<{ userId: string; code: string; minutesAgo: number; attempts: number }> = [
-      { userId: "smpu01", code: "PHY11T", minutesAgo: 180, attempts: 5 },
-      { userId: "smpu05", code: "BIO11T", minutesAgo: 90, attempts: 4 },
+      { userId: "smpu01", code: "PHY11C", minutesAgo: 180, attempts: 5 }, // یازدهم تجربی — فیزیک ۲ (مشترک)
+      { userId: "smpu18", code: "FAR10G", minutesAgo: 90, attempts: 4 }, // دهم — فارسی ۱ (عمومی)
     ];
     for (const ip of inProgress) {
       const subjectId = subjectIds.get(ip.code)!;

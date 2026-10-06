@@ -41,7 +41,7 @@ export interface PortalSubject {
   code: string;
   title: string;
   grade: string;
-  major: string;
+  major: string | null; // null = عمومی
   iconKey: string | null;
   colorKey: string | null;
   topicCount: number;
@@ -58,7 +58,10 @@ export async function getPortalSubjects(userId: string, grade: string | null, ma
   const subjects = await db.subject.findMany({
     where: {
       isActive: true,
-      ...(grade && major ? { grade, major } : {}),
+      // درسِ هم‌پایه: اختصاصی همان رشته، مشترک چند رشته (شامل رشتهٔ کاربر)، یا عمومی (major خالی)
+      ...(grade && major
+        ? { grade, OR: [{ major: null }, { major: { contains: major } }] }
+        : {}),
       // فقط درس‌هایی که بانک سؤال فعال دارند شروع‌پذیرند
       questions: { some: { status: "APPROVED" } },
     },

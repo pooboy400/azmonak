@@ -101,10 +101,10 @@ model OtpCode {
 
 model Subject {
   id        String   @id @default(cuid())
-  code      String   @unique // مثل FAR11T
-  title     String // مثل «فارسی ۳»
+  code      String   @unique // مثل FAR12G
+  title     String // مثل «فارسی ۳» — پسوند عددی باید با پایه بخواند: ۱=دهم، ۲=یازدهم، ۳=دوازدهم
   grade     String // GRADE10 | GRADE11 | GRADE12
-  major     String // EXPERIMENTAL | MATH | HUMANITIES
+  major     String? // null = درس عمومی (همهٔ رشته‌ها) | "EXPERIMENTAL" | "MATH" | "HUMANITIES" | مشترک با ویرگول مثل "MATH,EXPERIMENTAL"
   iconKey   String? // نام آیکون lucide (سند طراحی — فصل آیکون‌ها)
   colorKey  String? // کلید رنگ توکن (سند طراحی — پالت)
   isActive  Boolean  @default(true)

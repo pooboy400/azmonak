@@ -31,8 +31,17 @@ export function cohortLabel(grade: string | null, major: string | null): string 
   const shortGrade: Record<string, string> = { GRADE10: "دهم", GRADE11: "یازدهم", GRADE12: "دوازدهم" };
   const shortMajor: Record<string, string> = { EXPERIMENTAL: "تجربی", MATH: "ریاضی", HUMANITIES: "انسانی" };
   const g = grade ? (shortGrade[grade] ?? grade) : "";
-  const m = major ? (shortMajor[major] ?? major) : "";
+  // درس عمومی (major خالی) یا مشترک چند رشته (مثل "MATH,EXPERIMENTAL") → فقط پایه
+  const effMajor = major && !major.includes(",") ? major : null;
+  const m = effMajor ? (shortMajor[effMajor] ?? effMajor) : "";
   return [g, m].filter(Boolean).join(" ");
+}
+
+/** برچسب درس مشترک بین چند رشته — «MATH,EXPERIMENTAL» → «مشترک ریاضی و تجربی» */
+export function sharedMajorLabel(major: string): string {
+  const shortMajor: Record<string, string> = { EXPERIMENTAL: "تجربی", MATH: "ریاضی", HUMANITIES: "انسانی" };
+  const parts = major.split(",").map((m) => shortMajor[m.trim()] ?? m.trim()).filter(Boolean);
+  return `مشترک ${parts.join(" و ")}`;
 }
 
 /** تاریخ شمسی — نمایش تاریخ‌های دیتابیس */

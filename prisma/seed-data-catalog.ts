@@ -16,9 +16,10 @@ export interface SeedQuestion {
 
 export interface SeedSubject {
   code: string; // short unique code
-  title: string;
+  title: string; // پسوند عددی با پایه می‌خواند: «…۱»=دهم، «…۲»=یازدهم، «…۳»=دوازدهم
   grade: "GRADE10" | "GRADE11" | "GRADE12";
-  major: "EXPERIMENTAL" | "MATH" | "HUMANITIES";
+  // null = درس عمومی (همهٔ رشته‌ها) | رشتهٔ اختصاصی | مشترک چند رشته با ویرگول مثل "MATH,EXPERIMENTAL"
+  major: "EXPERIMENTAL" | "MATH" | "HUMANITIES" | "MATH,EXPERIMENTAL" | null;
   icon: string; // lucide icon key (frontend design doc v2.1 — chapter 5)
   color: string; // palette token key
   active: boolean; // false = catalog-only (content coming soon)
@@ -28,10 +29,10 @@ export interface SeedSubject {
 
 export const SUBJECTS: SeedSubject[] = [
   {
-    code: "FAR11T",
+    code: "FAR12G",
     title: "فارسی ۳",
-    grade: "GRADE11",
-    major: "EXPERIMENTAL",
+    grade: "GRADE12",
+    major: null, // عمومی — همهٔ رشته‌های دوازدهم
     icon: "book-open",
     color: "violet",
     active: true,
@@ -55,7 +56,7 @@ export const SUBJECTS: SeedSubject[] = [
     code: "MAT11T",
     title: "ریاضی ۲",
     grade: "GRADE11",
-    major: "EXPERIMENTAL",
+    major: "EXPERIMENTAL", // اختصاصی تجربی — یازدهمِ ریاضی‌فیزیک حسابان ۱ می‌خواند
     icon: "calculator",
     color: "cyan",
     active: true,
@@ -76,10 +77,10 @@ export const SUBJECTS: SeedSubject[] = [
     ],
   },
   {
-    code: "PHY11T",
+    code: "PHY11C",
     title: "فیزیک ۲",
     grade: "GRADE11",
-    major: "EXPERIMENTAL",
+    major: "MATH,EXPERIMENTAL", // مشترک ریاضی و تجربی
     icon: "atom",
     color: "sky",
     active: true,
@@ -100,10 +101,10 @@ export const SUBJECTS: SeedSubject[] = [
     ],
   },
   {
-    code: "BIO11T",
+    code: "BIO12T",
     title: "زیست‌شناسی ۳",
-    grade: "GRADE11",
-    major: "EXPERIMENTAL",
+    grade: "GRADE12",
+    major: "EXPERIMENTAL", // اختصاصی تجربی — زیست ۳ کتاب دوازدهم است
     icon: "dna",
     color: "emerald",
     active: true,
@@ -124,10 +125,10 @@ export const SUBJECTS: SeedSubject[] = [
     ],
   },
   {
-    code: "FAR10T",
-    title: "فارسی ۲",
+    code: "FAR10G",
+    title: "فارسی ۱",
     grade: "GRADE10",
-    major: "EXPERIMENTAL",
+    major: null, // عمومی — همهٔ رشته‌های دهم
     icon: "book-open",
     color: "violet",
     active: true,
@@ -146,10 +147,10 @@ export const SUBJECTS: SeedSubject[] = [
     ],
   },
   {
-    code: "CAL11M",
+    code: "CAL12M",
     title: "حسابان ۲",
-    grade: "GRADE11",
-    major: "MATH",
+    grade: "GRADE12",
+    major: "MATH", // اختصاصی ریاضی — حسابان ۲ کتاب دوازدهم است (فصل مشتق)
     icon: "sigma",
     color: "fuchsia",
     active: true,
@@ -169,32 +170,37 @@ export const SUBJECTS: SeedSubject[] = [
   },
   // --- catalog-only subjects (content coming soon — UI shows "به‌زودی") ---
   {
-    code: "CHE11T", title: "شیمی ۲", grade: "GRADE11", major: "EXPERIMENTAL",
+    code: "FAR11G", title: "فارسی ۲", grade: "GRADE11", major: null, // عمومی — همهٔ رشته‌های یازدهم
+    icon: "book-open", color: "violet", active: true,
+    topics: [], questions: [],
+  },
+  {
+    code: "CHE11C", title: "شیمی ۲", grade: "GRADE11", major: "MATH,EXPERIMENTAL", // مشترک ریاضی و تجربی
     icon: "flask-conical", color: "rose", active: true,
     topics: [], questions: [],
   },
   {
-    code: "ARB11T", title: "عربی ۳", grade: "GRADE11", major: "EXPERIMENTAL",
+    code: "ARB12G", title: "عربی ۳", grade: "GRADE12", major: null, // عمومی دوازدهم
     icon: "languages", color: "amber", active: true,
     topics: [], questions: [],
   },
   {
-    code: "ENG11T", title: "انگلیسی ۳", grade: "GRADE11", major: "EXPERIMENTAL",
+    code: "ENG12G", title: "انگلیسی ۳", grade: "GRADE12", major: null, // عمومی دوازدهم
     icon: "globe", color: "teal", active: true,
     topics: [], questions: [],
   },
   {
-    code: "REL11T", title: "دینی ۳", grade: "GRADE11", major: "EXPERIMENTAL",
+    code: "REL12G", title: "دینی ۳", grade: "GRADE12", major: null, // عمومی دوازدهم
     icon: "moon-star", color: "amber", active: true,
     topics: [], questions: [],
   },
   {
-    code: "ZIS10T", title: "زیست‌شناسی ۲", grade: "GRADE10", major: "EXPERIMENTAL",
+    code: "ZIS11T", title: "زیست‌شناسی ۲", grade: "GRADE11", major: "EXPERIMENTAL", // اختصاصی تجربی
     icon: "dna", color: "emerald", active: true,
     topics: [], questions: [],
   },
   {
-    code: "GEO11M", title: "هندسه ۲", grade: "GRADE11", major: "MATH",
+    code: "GEO11M", title: "هندسه ۲", grade: "GRADE11", major: "MATH", // اختصاصی ریاضی
     icon: "shapes", color: "amber", active: true,
     topics: [], questions: [],
   },
