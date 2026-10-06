@@ -15,6 +15,7 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import { existsSync } from "node:fs";
 import { SUBJECTS, type Diff } from "./seed-data-catalog";
 import { USERS, CLASSES, FRIENDSHIPS, MISCONCEPTIONS, samplePhone } from "./seed-data-people";
+import { SITE_SETTINGS, FAQS, BLOG_POSTS } from "./seed-data-site";
 import { cleanSampleData } from "./sample-cleanup";
 
 // ---------- deterministic PRNG ----------
@@ -420,6 +421,35 @@ async function main() {
       await db.misconception.create({ data: { ...m, isSample: true, createdAt: new Date(NOW - 41 * DAY) } });
     }
 
+    // ===== 3.5. site content (public CMS — settings/faq/blog, all sample) =====
+    console.log("📰 inserting site content (settings, faqs, blog)…");
+    for (const s of SITE_SETTINGS) {
+      await db.siteSetting.upsert({
+        where: { key: s.key },
+        update: { value: s.value, isSample: true },
+        create: { key: s.key, value: s.value, isSample: true },
+      });
+    }
+    for (const f of FAQS) {
+      await db.faq.create({ data: { question: f.question, answer: f.answer, order: f.order, isSample: true } });
+    }
+    for (const p of BLOG_POSTS) {
+      await db.blogPost.create({
+        data: {
+          slug: p.slug,
+          title: p.title,
+          excerpt: p.excerpt,
+          content: p.content,
+          coverIcon: p.coverIcon,
+          coverTone: p.coverTone,
+          authorName: p.authorName,
+          publishedAt: new Date(NOW - p.daysAgo * DAY),
+          isPublished: true,
+          isSample: true,
+        },
+      });
+    }
+
     // ===== 4. simulate history =====
     console.log("🧪 simulating ~5.5 weeks of sessions…");
     // catalog per subject code
@@ -697,7 +727,7 @@ async function main() {
     }
 
     // ===== 7. summary =====
-    const [users, identity, subjects, topics, questions, sessions, attempts, sa, ta, reviews, classes, friendships, mis] =
+    const [users, identity, subjects, topics, questions, sessions, attempts, sa, ta, reviews, classes, friendships, mis, settings, faqs, posts] =
       await Promise.all([
         db.user.count(),
         db.identity.count(),
@@ -712,12 +742,16 @@ async function main() {
         db.classRoom.count(),
         db.friendship.count(),
         db.misconception.count(),
+        db.siteSetting.count(),
+        db.faq.count(),
+        db.blogPost.count(),
       ]);
     console.log("\n✅ seed complete — sample data summary:");
     console.table({
       users, identity, subjects, topics, questions, sessions, attempts,
       subjectAbility: sa, topicAbility: ta, reviewSchedule: reviews,
       classes, friendships, misconceptions: mis,
+      siteSettings: settings, faqs, blogPosts: posts,
     });
   } finally {
     await db.$disconnect();

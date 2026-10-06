@@ -32,6 +32,9 @@ export async function cleanSampleData(db: PrismaClient): Promise<Record<string, 
   counts.identity = (await db.identity.deleteMany({ where: { isSample: true } })).count;
   counts.otpCodes = (await db.otpCode.deleteMany({ where: { isSample: true } })).count;
   counts.users = (await db.user.deleteMany({ where: { isSample: true } })).count;
+  counts.blogPosts = (await db.blogPost.deleteMany({ where: { isSample: true } })).count;
+  counts.faqs = (await db.faq.deleteMany({ where: { isSample: true } })).count;
+  counts.siteSettings = (await db.siteSetting.deleteMany({ where: { isSample: true } })).count;
 
   return counts;
 }

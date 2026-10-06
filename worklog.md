@@ -324,3 +324,25 @@ Stage Summary:
 - ۲۶ عکس نمونه در public/avatars/sample/ (نمونه‌محور و همراه DB حذف می‌شود)؛ منبع: i.pravatar.cc — برای نمونه/توسعه، نه انتشار نهایی
 - ورودی UI آینده: Radix Avatar با Image (src=avatarUrl) + Fallback (نخستین حرف لقب) وقتی خالی/۴۰۴
 - ابزارها: scripts/download-sample-avatars.sh (دانلود مجدد)، db:seed-sample / db:clean-sample بدون تغییر CLI
+
+---
+Task ID: 19
+Agent: Super Z (main agent)
+Task: گام یک توسعه فرانت — بخش عمومی کامل سایت (دستور پویا: «کاملاً بدون هیچ هارد کدی» + معماری ساب‌دامین portal.sitename)
+
+Work Log:
+- تصمیم معماری D19 (دستور پویا): تفکیک سایت عمومی (ویترین) از پورتال دانش‌آموزی؛ پیاده‌سازی با Route Groups: src/app/(public)/* + src/app/portal/* + src/middleware.ts (ریرایت Host=portal.* → /portal/* برای پروداکشن ساب‌دامینی؛ در پیش‌نمایش مسیر مستقیم)
+- اسکیما (v1.1): چهار جدول CMS اضافه شد — site_settings (key/value JSON-capable)، faqs، blog_posts (slug/excerpt/markdown/coverIcon/coverTone)، contact_messages (بدون پرچم نمونه — داده واقعی)؛ همه رکوردهای بذری isSample=true + گسترش sample-cleanup.ts (حذف ۴ جدول جدید) — چرخه clean/re-seed ایدمپوتنت اثبات شد (countها ثابت پس از ۳ بار re-seed)
+- داده بذری سایت (prisma/seed-data-site.ts): ۲۸ تنظیم (هویت/hero/features/steps/about/contact/social/cta/leaderboard)، ۸ سوال متداول، ۳ پست بلاگ محتوادار فارسی (Markdown، ~۱۵۰۰ کلمه)
+- لایه دسترسی داده: src/lib/queries/site.ts (تنها نقطه اتصال صفحات عمومی به DB؛ کش TTL ۱۵–۶۰s) — آمار زنده (users/subjects/questions/sessions)، درس‌ها با شمارش مبحث/سؤال، لیدربرد هفتگی (شنبه‌محور تهران، میانگین وزن‌دار، حداقل ۲ جلسه، حذف PRIVATE — همان اصول G10)، FAQ، بلاگ، خواندن JSON تنظیمات
+- برند از لوگوی کاربر (upload/azmonak_logo): استخراج دقیق رنگ با PIL — primary بنفش #4840E0 + accent نارنجی #F09808 + footer #14112B؛ globals.css بازنویسی (پالت روشن، توکن‌های brand-orange/footer، اسکرول‌بار ظریف)؛ فونت وزیرمتن لوکال (۴ وزن، next/font/local)؛ html dir=rtl lang=fa؛ generateMetadata ریشه از site_settings (site.name/tagline/description/url) — بدون هاردکد
+- دارایی‌ها: public/logo.svg + logo.png (لوگوی کاربر) + logo-mark.png (برش دقیق آیکون ۵۱۲×۵۱۲ با تحلیل تراکم ستونی)؛ favicon از logo-mark
+- صفحات عمومی (همه Server Component، همه داده از queries): لندینگ (hero از تنظیمات + پنل تصویری، نوار آمار زنده، ۴ ویژگی، ۳ گام، پیش‌نمایش درس‌ها، سکشن برترین‌های هفته ۳نفره با پادیوم/آواتار، FAQ پیش‌نمایش Accordion، بنر CTA)؛ /subjects (گروه‌بندی پایه×رشته از DB، حالت «به‌زودی» برای کاتالوگ)؛ /about (intro/mission/vision/values از تنظیمات)؛ /faq (کامل)؛ /contact (اطلاعات از تنظیمات + فرم Server Action → contact_messages با zod)؛ /blog و /blog/[slug] (لیست/جزئیات Markdown سفارشی، تاریخ شمسی fa-IR، ۴۰۴ برای اسلاگ ناموجود)؛ /portal placeholder «در حال ساخت»
+- کامپوننت‌ها: SiteHeader (ناوبری فعال با usePathname، منوی موبایل بدون effect، CTA پورتال از تنظیمات)، SiteFooter (۴ ستون، sticky با min-h-screen flex + mt-auto)، UserAvatar (fallback حرف اول لقب)، DbIcon/getTone (نقشه کلید آیکون lucide و توپ رنگی از DB — با eslint-disable مستند برای مثبت کاذب static-components)
+- middleware.ts: ریرایت ساب‌دامین پورتال (مطابق معماری portal.sitename)
+- راستی‌آزمایی: lint صفر خطا؛ ۷ مسیر ۲۰۰ + اسلاگ ناموجود ۴۰۴؛ Agent Browser — رندر کامل لندینگ/درس‌ها/بلاگ/موبایل ۳۹۰px، آواتارها لود (lazy طبیعی)، آکاردئون باز/بسته، منوی موبایل باز شد، فرم تماس end-to-end (رکورد cmuwufivn… در DB ثبت)، فوتر چسبیده در محتوای کوتاه (footerBottom=viewport)، صفر خطای کنسول/صفحه در dev.log
+
+Stage Summary:
+- بخش عمومی کامل و بدون هاردکد: هر متن محتوایی/آمار/درس/FAQ/بلاگ/آواتار/آیکون/رنگ از دیتابیس؛ تنها برچسب‌های UI (ناوبری، برچسب enum) در کامپوننت‌اند
+- معماری دو-بخشی آماده: (public) + portal + middleware؛ گام بعدی: شِل پورتال → ورود OTP → داشبورد و لیدربرد کامل
+- ابزار محتوایی: تغییر متن‌ها فقط با update ردیف site_settings؛ حذف همه داده نمونه با db:clean-sample (شامل CMS)

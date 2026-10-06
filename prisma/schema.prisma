@@ -399,3 +399,58 @@ model ClassMember {
   @@unique([classId, studentId])
   @@map("class_members")
 }
+
+// ---------------- سایت عمومی (CMS سبک — هیچ محتوایی هاردکد نیست) ----------------
+// قاعده نمونه: رکوردهای بذری isSample=true و با db:clean-sample حذف می‌شوند؛
+// پیام‌های تماس داده واقعی کاربران‌اند و پرچم نمونه ندارند.
+
+model SiteSetting {
+  key       String   @id // مثل site.name / hero.title / features (JSON)
+  value     String // متن ساده یا JSON
+  isSample  Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model Faq {
+  id       String  @id @default(cuid())
+  question String
+  answer   String
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+  isSample Boolean @default(false)
+
+  @@index([isActive, order])
+  @@map("faqs")
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String // Markdown
+  coverIcon   String   @default("newspaper") // نام آیکون lucide (icon-map)
+  coverTone   String   @default("violet") // violet | orange | teal | rose | sky
+  authorName  String
+  isPublished Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  isSample    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, publishedAt])
+  @@map("blog_posts")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  contact   String // ایمیل یا شماره تماس فرستنده
+  body      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
