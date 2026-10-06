@@ -27,7 +27,7 @@ export function majorLabel(major: string | null): string {
 
 /** «یازدهم تجربی» — برای نشان‌های کوتاه لیدربرد */
 export function cohortLabel(grade: string | null, major: string | null): string {
-  if (!grade && !major) return "دبیر";
+  if (!grade && !major) return "بدون پایه";
   const shortGrade: Record<string, string> = { GRADE10: "دهم", GRADE11: "یازدهم", GRADE12: "دوازدهم" };
   const shortMajor: Record<string, string> = { EXPERIMENTAL: "تجربی", MATH: "ریاضی", HUMANITIES: "انسانی" };
   const g = grade ? (shortGrade[grade] ?? grade) : "";
