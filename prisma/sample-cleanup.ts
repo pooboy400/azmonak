@@ -1,9 +1,15 @@
 // Deletes ALL sample-flagged rows, in FK-safe order.
 // Real data (isSample=false) is never touched.
+// Also removes the sample avatar folder (public/avatars/sample/) when run
+// standalone — re-seeding afterwards requires re-downloading via
+// scripts/download-sample-avatars.sh (seed warns about it).
 // Run standalone:  bun prisma/sample-cleanup.ts
 // Or via npm:      bun run db:clean-sample
 
+import { rmSync } from "node:fs";
 import { PrismaClient } from "@prisma/client";
+
+export const SAMPLE_AVATARS_DIR = process.cwd() + "/public/avatars/sample";
 
 export async function cleanSampleData(db: PrismaClient): Promise<Record<string, number>> {
   const counts: Record<string, number> = {};
@@ -40,6 +46,9 @@ async function main() {
       if (n > 0) console.log(`   ${table}: ${n} row(s) deleted`);
     }
     if (total === 0) console.log("   (nothing to delete — no sample data present)");
+    // sample-only static assets: whole folder is disposable
+    rmSync(SAMPLE_AVATARS_DIR, { recursive: true, force: true });
+    console.log(`   avatars: folder ${SAMPLE_AVATARS_DIR} removed`);
   } finally {
     await db.$disconnect();
   }

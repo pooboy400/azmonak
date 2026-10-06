@@ -1,0 +1,727 @@
+     1→// ============================================================
+     2→// آزمونک — Sample data seeder (deterministic, PRNG seed 1405)
+     3→// What it creates (all rows isSample=true, ids prefixed "smp"):
+     4→//   12 subjects (6 with content, 6 catalog-only) + 22 topics + 60 questions
+     5→//   26 users (24 students + 2 teachers) with identity (phones 09990000xxx)
+     6→//   2 classes + 31 friendships + 10 misconception nodes (M01–M10, D16-parked)
+     7→//   ~5.5 weeks of simulated placement/practice sessions with attempts
+     8→//   driven by Elo + D13 weighted score + D14 confidence + D16 level ladder
+     9→//   + SM-2 review schedules (some overdue → "مرور امروز" banner has data)
+    10→// Run:      bun prisma/seed.ts   (or: bun run db:seed-sample)
+    11→// Remove:   bun run db:clean-sample   (or re-seed: idempotent, cleans first)
+    12→// ============================================================
+    13→
+    14→import { PrismaClient, Prisma } from "@prisma/client";
+    15→import { SUBJECTS, type Diff } from "./seed-data-catalog";
+    16→import { USERS, CLASSES, FRIENDSHIPS, MISCONCEPTIONS, samplePhone } from "./seed-data-people";
+    17→import { cleanSampleData } from "./sample-cleanup";
+    18→
+    19→// ---------- deterministic PRNG ----------
+    20→function mulberry32(seed: number) {
+    21→  let a = seed >>> 0;
+    22→  return function () {
+    23→    a |= 0;
+    24→    a = (a + 0x6d2b79f5) | 0;
+    25→    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    26→    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    27→    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    28→  };
+    29→}
+    30→const rng = mulberry32(1405);
+    31→const rand = (min: number, max: number) => min + rng() * (max - min);
+    32→const randInt = (min: number, max: number) => Math.floor(rand(min, max + 1));
+    33→const pick = <T,>(arr: T[]): T => arr[Math.floor(rng() * arr.length)];
+    34→const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+    35→const round1 = (v: number) => Math.round(v * 10) / 10;
+    36→
+    37→// ---------- constants from plan v1.3 ----------
+    38→const NOW = Date.now();
+    39→const DAY = 86_400_000;
+    40→const MIN = 60_000;
+    41→
+    42→const TIER_RATING: Record<Diff, number> = { EASY: 1150, MEDIUM: 1250, HARD: 1350 };
+    43→const TIER_SKILL: Record<Diff, number> = { EASY: 0.4, MEDIUM: 0.58, HARD: 0.74 };
+    44→const WEIGHT: Record<Diff, number> = { EASY: 1, MEDIUM: 1.5, HARD: 2 };
+    45→const EST_TIME: Record<Diff, number> = { EASY: 60, MEDIUM: 90, HARD: 120 };
+    46→const DIFF_BY_LEVEL = ["EASY", "MEDIUM", "HARD"] as const;
+    47→const LETTERS = ["A", "B", "C", "D"] as const;
+    48→
+    49→const kStudent = (answered: number) => (answered < 50 ? 32 : answered < 150 ? 24 : 16); // plan K schedule
+    50→const kQuestion = (count: number) => (count < 40 ? 8 : 4);
+    51→const expected = (rs: number, rq: number) => 1 / (1 + Math.pow(10, (rq - rs) / 400));
+    52→
+    53→/** subjects each student cohort actually takes (subjects that have questions) */
+    54→function subjectsFor(grade: string | null, major: string | null): string[] {
+    55→  if (grade === "GRADE11" && major === "EXPERIMENTAL") return ["FAR11T", "MAT11T", "PHY11T", "BIO11T"];
+    56→  if (grade === "GRADE10" && major === "EXPERIMENTAL") return ["FAR10T"];
+    57→  if (grade === "GRADE11" && major === "MATH") return ["CAL11M"];
+    58→  return [];
+    59→}
+    60→
+    61→// ---------- global sim state ----------
+    62→interface QState {
+    63→  id: string; // question.id (DB)
+    64→  rating: number; // Elo rating of the question (drifts during sim)
+    65→  count: number; // ratingCount (drives K_q schedule)
+    66→  correctLetter: "A" | "B" | "C" | "D";
+    67→}
+    68→const qState = new Map<string, QState>();
+    69→let sessionSeq = 0;
+    70→let attemptSeq = 0;
+    71→const nextSessionId = () => `smpsess${String(++sessionSeq).padStart(6, "0")}`;
+    72→const nextAttemptId = () => `smpatt${String(++attemptSeq).padStart(6, "0")}`;
+    73→
+    74→interface TopicState {
+    75→  topicId: string;
+    76→  level: number; // D16 ladder 1–3
+    77→  wrongStreak: number;
+    78→  rightStreak: number;
+    79→  weakness: number;
+    80→  answered: number;
+    81→  review: { ef: number; interval: number; rep: number; last: number | null };
+    82→}
+    83→interface TopicRow {
+    84→  topicId: string;
+    85→  title: string;
+    86→  questions: Map<Diff, string[]>; // diff -> question.id pool
+    87→}
+    88→
+    89→const sessionRows: Prisma.SessionCreateManyInput[] = [];
+    90→const attemptRows: Prisma.AttemptCreateManyInput[] = [];
+    91→
+    92→// ---------- content selection ----------
+    93→function pickTopic(topics: TopicState[]): TopicState {
+    94→  // weaker topics get priority (plan 1.2 — educational value weight)
+    95→  const weights = topics.map((t) => 5 - t.level + rng() * 2);
+    96→  const total = weights.reduce((a, b) => a + b, 0);
+    97→  let r = rng() * total;
+    98→  for (let i = 0; i < topics.length; i++) {
+    99→    r -= weights[i];
+   100→    if (r <= 0) return topics[i];
+   101→  }
+   102→  return topics[topics.length - 1];
+   103→}
+   104→
+   105→function shuffled<T>(arr: T[]): T[] {
+   106→  const a = [...arr];
+   107→  for (let i = a.length - 1; i > 0; i--) {
+   108→    const j = Math.floor(rng() * (i + 1));
+   109→    [a[i], a[j]] = [a[j], a[i]];
+   110→  }
+   111→  return a;
+   112→}
+   113→
+   114→/**
+   115→ * Question selection with preference order: preferred topic → other topics,
+   116→ * each at its own level. 1st pass respects exposure window + in-session
+   117→ * uniqueness; fallback (small sample bank) only respects in-session
+   118→ * uniqueness. Returns the topic actually used so the D16 ladder updates it.
+   119→ */
+   120→function selectQuestion(
+   121→  topicStates: TopicState[],
+   122→  preferred: TopicState | null,
+   123→  catalog: TopicRow[],
+   124→  seen: string[],
+   125→  sessionPicks: Set<string>
+   126→): { qid: string; diff: Diff; topic: TopicState } | null {
+   127→  const rest = preferred ? topicStates.filter((t) => t !== preferred) : topicStates;
+   128→  const ordered = preferred ? [preferred, ...shuffled(rest)] : shuffled(topicStates);
+   129→  for (const ts of ordered) {
+   130→    const row = catalog.find((r) => r.topicId === ts.topicId)!;
+   131→    const want = DIFF_BY_LEVEL[ts.level - 1];
+   132→    for (const diff of [want, ...DIFF_BY_LEVEL.filter((d) => d !== want)]) {
+   133→      const pool = (row.questions.get(diff) ?? []).filter((qid) => !seen.includes(qid) && !sessionPicks.has(qid));
+   134→      if (pool.length > 0) return { qid: pick(pool), diff, topic: ts };
+   135→    }
+   136→  }
+   137→  for (const ts of ordered) {
+   138→    const row = catalog.find((r) => r.topicId === ts.topicId)!;
+   139→    for (const diff of DIFF_BY_LEVEL) {
+   140→      const pool = (row.questions.get(diff) ?? []).filter((qid) => !sessionPicks.has(qid));
+   141→      if (pool.length > 0) return { qid: pick(pool), diff, topic: ts };
+   142→    }
+   143→  }
+   144→  return null;
+   145→}
+   146→
+   147→// ---------- one attempt ----------
+   148→interface WalkCtx {
+   149→  userId: string;
+   150→  subjectRating: number;
+   151→  answered: number; // per student-subject
+   152→  seen: string[]; // exposure window (G8) — capped at windowW below
+   153→  sessionPicks: Set<string>; // in-session uniqueness
+   154→  windowW: number; // effective exposure window (sample banks are smaller than the real 150-question bank)
+   155→  promoted: Set<string>; // max one promotion per session per topic (D16)
+   156→}
+   157→
+   158→function simulateAttempt(
+   159→  ctx: WalkCtx,
+   160→  qid: string,
+   161→  diff: Diff,
+   162→  skill: number,
+   163→  topic: TopicState | null,
+   164→  time: number,
+   165→  sessionId: string,
+   166→  order: number
+   167→): { correct: boolean; weight: number; latency: number; endTime: number } {
+   168→  const q = qState.get(qid)!;
+   169→  const pCorrect = clamp(0.62 + 2.0 * (skill - TIER_SKILL[diff]), 0.1, 0.9);
+   170→  const correct = rng() < pCorrect;
+   171→
+   172→  // D14: confidence self-report
+   173→  const confidence = correct
+   174→    ? rng() < 0.78
+   175→      ? "CONFIDENT"
+   176→      : "GUESSED"
+   177→    : rng() < 0.35
+   178→      ? "CONFIDENT"
+   179→      : "GUESSED";
+   180→
+   181→  // latency shaped by correctness/confidence (t_fast=15s, t_slow=70s — D10)
+   182→  let latency: number;
+   183→  if (correct && confidence === "CONFIDENT") latency = rand(8, 28);
+   184→  else if (correct) latency = rand(18, 50);
+   185→  else if (confidence === "CONFIDENT") latency = rand(25, 60);
+   186→  else latency = rand(30, 85);
+   187→  latency = round1(latency);
+   188→
+   189→  const selected = correct
+   190→    ? q.correctLetter
+   191→    : pick(LETTERS.filter((l) => l !== q.correctLetter));
+   192→  const weight = WEIGHT[diff];
+   193→
+   194→  // Elo (two-sided, plan K schedule)
+   195→  const rBefore = ctx.subjectRating;
+   196→  const E = expected(rBefore, q.rating);
+   197→  const ks = kStudent(ctx.answered);
+   198→  const kq = kQuestion(q.count);
+   199→  const rAfter = correct ? rBefore + ks * (1 - E) : rBefore - ks * E;
+   200→  ctx.subjectRating = rAfter;
+   201→  q.rating = correct ? q.rating + kq * (E - 1) : q.rating + kq * (1 - E);
+   202→  q.count += 1;
+   203→  ctx.answered += 1;
+   204→  ctx.seen.push(qid);
+   205→  ctx.sessionPicks.add(qid);
+   206→  if (ctx.seen.length > ctx.windowW) ctx.seen.shift();
+   207→
+   208→  // D16 level ladder
+   209→  if (topic) {
+   210→    topic.answered += 1;
+   211→    if (correct) {
+   212→      topic.rightStreak += 1;
+   213→      topic.wrongStreak = 0;
+   214→      if (topic.rightStreak >= 2 && !ctx.promoted.has(topic.topicId)) {
+   215→        topic.level = Math.min(3, topic.level + 1);
+   216→        topic.rightStreak = 0;
+   217→        ctx.promoted.add(topic.topicId);
+   218→      }
+   219→    } else {
+   220→      topic.wrongStreak += 1;
+   221→      topic.rightStreak = 0;
+   222→      if (topic.wrongStreak >= 2) {
+   223→        if (topic.level > 1) topic.level -= 1;
+   224→        else topic.weakness += 1; // at floor — weakness counter (study-alert input)
+   225→        topic.wrongStreak = 0;
+   226→      }
+   227→    }
+   228→  }
+   229→
+   230→  attemptRows.push({
+   231→    id: nextAttemptId(),
+   232→    sessionId,
+   233→    userId: ctx.userId,
+   234→    questionId: q.id,
+   235→    orderInSession: order,
+   236→    selected,
+   237→    isCorrect: correct,
+   238→    confidence,
+   239→    latencySec: latency,
+   240→    weight,
+   241→    rBefore: Math.round(rBefore * 10) / 10,
+   242→    rAfter: Math.round(rAfter * 10) / 10,
+   243→    paramsSnapshot: JSON.stringify({ Ks: ks, Kq: kq, zone: "0.65-0.75", exposure: 20, ver: "plan-v1.3" }),
+   244→    isSample: true,
+   245→    createdAt: new Date(time),
+   246→  });
+   247→
+   248→  // SM-2 quality (correct, confidence, latency) + state update
+   249→  if (topic) {
+   250→    const quality = correct
+   251→      ? confidence === "CONFIDENT"
+   252→        ? latency <= 15
+   253→          ? 5
+   254→          : 4
+   255→        : 3
+   256→      : confidence === "CONFIDENT"
+   257→        ? 2
+   258→        : 1;
+   259→    const rv = topic.review;
+   260→    if (quality >= 3) {
+   261→      rv.rep += 1;
+   262→      rv.interval = rv.rep === 1 ? 1 : rv.rep === 2 ? 6 : Math.ceil(rv.interval * rv.ef);
+   263→    } else {
+   264→      rv.rep = 0;
+   265→      rv.interval = 1;
+   266→    }
+   267→    rv.ef = Math.max(1.3, rv.ef + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+   268→    rv.last = time;
+   269→  }
+   270→
+   271→  return { correct, weight, latency, endTime: time + (latency + rand(2, 7)) * 1000 };
+   272→}
+   273→
+   274→// ---------- main ----------
+   275→async function main() {
+   276→  const db = new PrismaClient();
+   277→  try {
+   278→    console.log("🧹 cleaning previous sample data (idempotent re-seed)…");
+   279→    await cleanSampleData(db);
+   280→
+   281→    // ===== 1. subjects + topics + questions =====
+   282→    console.log("📚 inserting subjects, topics, questions…");
+   283→    const subjectIds = new Map<string, string>();
+   284→    const topicIds = new Map<string, string>(); // key: code::title
+   285→    let qCounter = 0;
+   286→    for (const s of SUBJECTS) {
+   287→      const sid = `smpsub-${s.code}`;
+   288→      subjectIds.set(s.code, sid);
+   289→      await db.subject.create({
+   290→        data: {
+   291→          id: sid,
+   292→          code: s.code,
+   293→          title: s.title,
+   294→          grade: s.grade,
+   295→          major: s.major,
+   296→          iconKey: s.icon,
+   297→          colorKey: s.color,
+   298→          isActive: s.active,
+   299→          isSample: true,
+   300→        },
+   301→      });
+   302→      for (let i = 0; i < s.topics.length; i++) {
+   303→        const tid = `smptop-${s.code}-${i + 1}`;
+   304→        topicIds.set(`${s.code}::${s.topics[i]}`, tid);
+   305→        await db.topic.create({
+   306→          data: { id: tid, subjectId: sid, title: s.topics[i], order: i + 1, isSample: true },
+   307→        });
+   308→      }
+   309→      let n = 0;
+   310→      for (const q of s.questions) {
+   311→        n += 1;
+   312→        qCounter += 1;
+   313→        const id = `smpq-${s.code}-${String(n).padStart(2, "0")}`;
+   314→        qState.set(id, {
+   315→          id,
+   316→          rating: TIER_RATING[q.diff],
+   317→          count: 0,
+   318→          correctLetter: q.correct,
+   319→        });
+   320→        await db.question.create({
+   321→          data: {
+   322→            id,
+   323→            qid: `SMP-${s.code}-${String(n).padStart(2, "0")}`,
+   324→            subjectId: sid,
+   325→            topicId: topicIds.get(`${s.code}::${q.topic}`) ?? null,
+   326→            status: "APPROVED",
+   327→            author: "دادهٔ نمونهٔ آزمونک",
+   328→            difficulty: q.diff,
+   329→            stem: q.stem,
+   330→            optionA: q.opts[0],
+   331→            optionB: q.opts[1],
+   332→            optionC: q.opts[2],
+   333→            optionD: q.opts[3],
+   334→            correct: q.correct,
+   335→            distractorMap: "-",
+   336→            explanation: q.expl,
+   337→            estTimeSec: EST_TIME[q.diff],
+   338→            license: "CC BY-NC 4.0",
+   339→            notes: "سؤال نمونهٔ توسعه — با db:clean-sample حذف می‌شود",
+   340→            rating: TIER_RATING[q.diff],
+   341→            ratingCount: 0,
+   342→            isSample: true,
+   343→            createdAt: new Date(NOW - randInt(35, 42) * DAY),
+   344→          },
+   345→        });
+   346→      }
+   347→    }
+   348→
+   349→    // ===== 2. users + identity =====
+   350→    console.log("👥 inserting users…");
+   351→    for (let i = 0; i < USERS.length; i++) {
+   352→      const u = USERS[i];
+   353→      const createdAt = new Date(NOW - randInt(48, 54) * DAY);
+   354→      await db.user.create({
+   355→        data: {
+   356→          id: u.id,
+   357→          role: u.role,
+   358→          nickname: u.nickname,
+   359→          avatarEmoji: u.emoji,
+   360→          grade: u.grade,
+   361→          major: u.major,
+   362→          privacy: u.privacy,
+   363→          isSample: true,
+   364→          createdAt,
+   365→        },
+   366→      });
+   367→      await db.identity.create({
+   368→        data: {
+   369→          userId: u.id,
+   370→          phone: samplePhone(i + 1),
+   371→          isActive: true,
+   372→          verifiedAt: new Date(createdAt.getTime() + 2 * MIN),
+   373→          isSample: true,
+   374→          createdAt,
+   375→        },
+   376→      });
+   377→    }
+   378→
+   379→    // ===== 3. classes + friendships + misconceptions =====
+   380→    console.log("🏫 inserting classes, friendships, misconceptions…");
+   381→    for (const c of CLASSES) {
+   382→      await db.classRoom.create({
+   383→        data: {
+   384→          id: c.id,
+   385→          name: c.name,
+   386→          code: c.code,
+   387→          teacherId: c.teacherId,
+   388→          grade: c.grade,
+   389→          major: c.major,
+   390→          isSample: true,
+   391→          createdAt: new Date(NOW - 40 * DAY),
+   392→        },
+   393→      });
+   394→      await db.classMember.createMany({
+   395→        data: c.memberIds.map((sid) => ({
+   396→          classId: c.id,
+   397→          studentId: sid,
+   398→          isSample: true,
+   399→          joinedAt: new Date(NOW - randInt(37, 39) * DAY),
+   400→        })),
+   401→      });
+   402→    }
+   403→    for (const [req, addr, accepted] of FRIENDSHIPS) {
+   404→      await db.friendship.create({
+   405→        data: {
+   406→          requesterId: req,
+   407→          addresseeId: addr,
+   408→          status: accepted ? "ACCEPTED" : "PENDING",
+   409→          respondedAt: accepted ? new Date(NOW - randInt(5, 20) * DAY) : null,
+   410→          isSample: true,
+   411→          createdAt: new Date(NOW - randInt(10, 30) * DAY),
+   412→        },
+   413→      });
+   414→    }
+   415→    for (const m of MISCONCEPTIONS) {
+   416→      await db.misconception.create({ data: { ...m, isSample: true, createdAt: new Date(NOW - 41 * DAY) } });
+   417→    }
+   418→
+   419→    // ===== 4. simulate history =====
+   420→    console.log("🧪 simulating ~5.5 weeks of sessions…");
+   421→    // catalog per subject code
+   422→    const catalogs = new Map<string, TopicRow[]>();
+   423→    for (const s of SUBJECTS) {
+   424→      const rows: TopicRow[] = s.topics.map((title, i) => ({
+   425→        topicId: topicIds.get(`${s.code}::${title}`)!,
+   426→        title,
+   427→        questions: new Map<Diff, string[]>([
+   428→          ["EASY", []],
+   429→          ["MEDIUM", []],
+   430→          ["HARD", []],
+   431→        ]),
+   432→      }));
+   433→      catalogs.set(s.code, rows);
+   434→    }
+   435→    // fill question pools
+   436→    for (const s of SUBJECTS) {
+   437→      let idx = 0;
+   438→      for (const q of s.questions) {
+   439→        idx += 1;
+   440→        const id = `smpq-${s.code}-${String(idx).padStart(2, "0")}`;
+   441→        const tid = topicIds.get(`${s.code}::${q.topic}`)!;
+   442→        const row = catalogs.get(s.code)!.find((r) => r.topicId === tid)!;
+   443→        row.questions.get(q.diff)!.push(id);
+   444→      }
+   445→      void qCounter;
+   446→    }
+   447→
+   448→    const dayTime = (daysBack: number) => {
+   449→      const dt = new Date(NOW - daysBack * DAY);
+   450→      dt.setHours(randInt(15, 21), randInt(0, 59), 0, 0);
+   451→      if (dt.getTime() > NOW) return NOW - rand(0.2, 2) * 3_600_000;
+   452→      return dt.getTime();
+   453→    };
+   454→
+   455→    const subjectAbilityRows: Prisma.SubjectAbilityCreateManyInput[] = [];
+   456→    const topicAbilityRows: Prisma.TopicAbilityCreateManyInput[] = [];
+   457→    const reviewRows: Prisma.ReviewScheduleCreateManyInput[] = [];
+   458→
+   459→    interface Slot {
+   460→      placement: boolean;
+   461→      time: number;
+   462→      abandoned: boolean;
+   463→    }
+   464→
+   465→    for (const u of USERS) {
+   466→      if (u.role !== "STUDENT") continue;
+   467→      for (const code of subjectsFor(u.grade, u.major)) {
+   468→        const subjectId = subjectIds.get(code)!;
+   469→        const catalog = catalogs.get(code)!;
+   470→        const topicStates: TopicState[] = catalog.map((r) => ({
+   471→          topicId: r.topicId,
+   472→          level: rng() < 0.5 ? 2 : 1,
+   473→          wrongStreak: 0,
+   474→          rightStreak: 0,
+   475→          weakness: 0,
+   476→          answered: 0,
+   477→          review: { ef: 2.5, interval: 0, rep: 0, last: null },
+   478→        }));
+   479→        const ctx: WalkCtx = {
+   480→          userId: u.id,
+   481→          subjectRating: 1100,
+   482→          answered: 0,
+   483→          seen: [],
+   484→          sessionPicks: new Set(),
+   485→          windowW: Math.min(20, Math.max(6, catalog.reduce((n, r) => n + [...r.questions.values()].flat().length, 0) - 4)),
+   486→          promoted: new Set(),
+   487→        };
+   488→
+   489→        // --- schedule: placement first, then weekly practice over 5 weeks + busy current week ---
+   490→        const slots: Slot[] = [{ placement: true, time: dayTime(rand(41, 45)), abandoned: false }];
+   491→        for (let w = 1; w <= 5; w++) {
+   492→          if (rng() < 0.25) continue; // some weeks skipped entirely
+   493→          const count = 1 + (rng() < 0.5 ? 1 : 0) + (rng() < 0.12 ? 1 : 0);
+   494→          for (let c = 0; c < count; c++) {
+   495→            const daysBack = (6 - w) * 7 + rand(0, 6.5);
+   496→            slots.push({ placement: false, time: dayTime(daysBack), abandoned: rng() < 0.05 });
+   497→          }
+   498→        }
+   499→        if (rng() < 0.95) slots.push({ placement: false, time: dayTime(rand(0.2, 4)), abandoned: rng() < 0.08 });
+   500→        if (rng() < 0.55) slots.push({ placement: false, time: dayTime(rand(0.1, 2.5)), abandoned: rng() < 0.1 });
+   501→        if (rng() < 0.25) slots.push({ placement: false, time: dayTime(rand(0.05, 1)), abandoned: false });
+   502→        slots.sort((a, b) => a.time - b.time);
+   503→
+   504→        for (const slot of slots) {
+   505→          const sessionId = nextSessionId();
+   506→          const count = slot.placement ? 4 : 10;
+   507→          // abandoned sessions stop mid-way (student quit)
+   508→          const stopAt = slot.abandoned && !slot.placement ? randInt(3, 7) : count;
+   509→          ctx.promoted = new Set();
+   510→          ctx.sessionPicks = new Set();
+   511→          const rStart = ctx.subjectRating;
+   512→          let scoreW = 0;
+   513→          let scoreSum = 0;
+   514→          let correctCount = 0;
+   515→          let attemptsMade = 0;
+   516→          let t = slot.time;
+   517→
+   518→          for (let k = 1; k <= stopAt; k++) {
+   519→            let qid: string | null = null;
+   520→            let diff: Diff = "MEDIUM";
+   521→            let topic: TopicState | null = null;
+   522→            if (slot.placement) {
+   523→              // spread difficulty across tiers (D1: پراکنده ۱۱۵۰–۱۳۵۰), topics in random order
+   524→              const want = DIFF_BY_LEVEL[(k - 1) % 3];
+   525→              const shuffled = [...topicStates].sort(() => rng() - 0.5);
+   526→              outer: for (const ts of shuffled) {
+   527→                const row = catalog.find((r) => r.topicId === ts.topicId)!;
+   528→                for (const d of [want, ...DIFF_BY_LEVEL]) {
+   529→                  const pool = (row.questions.get(d) ?? []).filter(
+   530→                    (cand) => !ctx.seen.includes(cand) && !ctx.sessionPicks.has(cand)
+   531→                  );
+   532→                  if (pool.length > 0) {
+   533→                    qid = pick(pool);
+   534→                    diff = d;
+   535→                    topic = ts;
+   536→                    break outer;
+   537→                  }
+   538→                }
+   539→              }
+   540→              if (!qid) break;
+   541→            } else {
+   542→              const preferred = pickTopic(topicStates);
+   543→              const chosen = selectQuestion(topicStates, preferred, catalog, ctx.seen, ctx.sessionPicks);
+   544→              if (!chosen) break;
+   545→              qid = chosen.qid;
+   546→              diff = chosen.diff;
+   547→              topic = chosen.topic;
+   548→            }
+   549→            const res = simulateAttempt(ctx, qid, diff, u.skill, topic, t, sessionId, k);
+   550→            attemptsMade += 1;
+   551→            if (res.correct) correctCount += 1;
+   552→            scoreW += res.weight;
+   553→            scoreSum += res.weight * (res.correct ? 1 : 0);
+   554→            t = res.endTime;
+   555→            if (t > NOW) break; // never leak into the future
+   556→          }
+   557→          if (attemptsMade === 0) continue; // no orphan sessions
+   558→          const completed = !slot.abandoned && attemptsMade === count && t <= NOW;
+   559→          sessionRows.push({
+   560→            id: sessionId,
+   561→            userId: u.id,
+   562→            subjectId,
+   563→            type: slot.placement ? "PLACEMENT" : "PRACTICE",
+   564→            status: completed ? "COMPLETED" : "ABANDONED",
+   565→            questionCount: count,
+   566→            correctCount,
+   567→            score: completed && scoreW > 0 ? round1((scoreSum / scoreW) * 100) : null,
+   568→            rStart: Math.round(rStart),
+   569→            rEnd: completed ? Math.round(ctx.subjectRating) : null,
+   570→            startedAt: new Date(slot.time),
+   571→            finishedAt: completed ? new Date(Math.min(t, NOW)) : null,
+   572→            lastActivityAt: new Date(Math.min(t, NOW)),
+   573→            isSample: true,
+   574→            createdAt: new Date(slot.time),
+   575→          });
+   576→        }
+   577→
+   578→        // --- final ability + review rows ---
+   579→        subjectAbilityRows.push({
+   580→          userId: u.id,
+   581→          subjectId,
+   582→          rating: Math.round(ctx.subjectRating),
+   583→          answeredCount: ctx.answered,
+   584→          isSample: true,
+   585→        });
+   586→        for (const ts of topicStates) {
+   587→          if (ts.answered === 0) continue;
+   588→          topicAbilityRows.push({
+   589→            userId: u.id,
+   590→            subjectId,
+   591→            topicId: ts.topicId,
+   592→            level: ts.level,
+   593→            wrongStreak: ts.wrongStreak,
+   594→            rightStreak: ts.rightStreak,
+   595→            weaknessCount: ts.weakness,
+   596→            answeredCount: ts.answered,
+   597→            isSample: true,
+   598→          });
+   599→          const last = ts.review.last;
+   600→          const due = last !== null ? last + Math.max(1, ts.review.interval) * DAY : NOW - randInt(1, 3) * DAY;
+   601→          reviewRows.push({
+   602→            userId: u.id,
+   603→            subjectId,
+   604→            topicId: ts.topicId,
+   605→            ef: round1(ts.review.ef * 100) / 100,
+   606→            intervalDays: Math.max(1, ts.review.interval),
+   607→            repetitions: ts.review.rep,
+   608→            dueAt: new Date(Math.min(due, NOW + randInt(0, 2) * DAY)),
+   609→            lastReviewedAt: last ? new Date(last) : null,
+   610→            isSample: true,
+   611→          });
+   612→        }
+   613→      }
+   614→    }
+   615→
+   616→    // ===== 5. two in-progress sessions (resume + live UI demo) =====
+   617→    console.log("⏳ creating in-progress sessions…");
+   618→    const inProgress: Array<{ userId: string; code: string; minutesAgo: number; attempts: number }> = [
+   619→      { userId: "smpu01", code: "PHY11T", minutesAgo: 180, attempts: 5 },
+   620→      { userId: "smpu05", code: "BIO11T", minutesAgo: 90, attempts: 4 },
+   621→    ];
+   622→    for (const ip of inProgress) {
+   623→      const subjectId = subjectIds.get(ip.code)!;
+   624→      const u = USERS.find((x) => x.id === ip.userId)!;
+   625→      const catalog = catalogs.get(ip.code)!;
+   626→      const sessionId = nextSessionId();
+   627→      const topicStates: TopicState[] = catalog.map((r) => ({
+   628→        topicId: r.topicId,
+   629→        level: 2,
+   630→        wrongStreak: 0,
+   631→        rightStreak: 0,
+   632→        weakness: 0,
+   633→        answered: 0,
+   634→        review: { ef: 2.5, interval: 0, rep: 0, last: null },
+   635→      }));
+   636→      const ctx: WalkCtx = {
+   637→        userId: u.id,
+   638→        subjectRating: 1100,
+   639→        answered: 0,
+   640→        seen: [],
+   641→        sessionPicks: new Set(),
+   642→        windowW: Math.min(20, Math.max(6, catalog.reduce((n, r) => n + [...r.questions.values()].flat().length, 0) - 4)),
+   643→        promoted: new Set(),
+   644→      };
+   645→      const start = NOW - ip.minutesAgo * MIN;
+   646→      let t = start;
+   647→      let correctCount = 0;
+   648→      for (let k = 1; k <= ip.attempts; k++) {
+   649→        const ts = pickTopic(topicStates);
+   650→        const chosen = selectQuestion(topicStates, ts, catalog, ctx.seen, ctx.sessionPicks);
+   651→        if (!chosen) break;
+   652→        const res = simulateAttempt(ctx, chosen.qid, chosen.diff, u.skill, chosen.topic, t, sessionId, k);
+   653→        if (res.correct) correctCount += 1;
+   654→        t = res.endTime;
+   655→      }
+   656→      sessionRows.push({
+   657→        id: sessionId,
+   658→        userId: u.id,
+   659→        subjectId,
+   660→        type: "PRACTICE",
+   661→        status: "ACTIVE",
+   662→        questionCount: 10,
+   663→        correctCount,
+   664→        score: null,
+   665→        rStart: 1100,
+   666→        rEnd: null,
+   667→        startedAt: new Date(start),
+   668→        finishedAt: null,
+   669→        lastActivityAt: new Date(Math.min(t, NOW)),
+   670→        isSample: true,
+   671→        createdAt: new Date(start),
+   672→      });
+   673→    }
+   674→
+   675→    // ===== 6. batch insert + question drift updates =====
+   676→    console.log(`💾 inserting ${sessionRows.length} sessions, ${attemptRows.length} attempts…`);
+   677→    const chunk = <T,>(arr: T[], size: number): T[][] => {
+   678→      const out: T[][] = [];
+   679→      for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+   680→      return out;
+   681→    };
+   682→    for (const part of chunk(sessionRows, 500)) await db.session.createMany({ data: part });
+   683→    for (const part of chunk(attemptRows, 1000)) await db.attempt.createMany({ data: part });
+   684→    for (const part of chunk(subjectAbilityRows, 500)) await db.subjectAbility.createMany({ data: part });
+   685→    for (const part of chunk(topicAbilityRows, 500)) await db.topicAbility.createMany({ data: part });
+   686→    for (const part of chunk(reviewRows, 500)) await db.reviewSchedule.createMany({ data: part });
+   687→
+   688→    for (const st of qState.values()) {
+   689→      await db.question.update({
+   690→        where: { id: st.id },
+   691→        data: { rating: Math.round(st.rating * 10) / 10, ratingCount: st.count },
+   692→      });
+   693→    }
+   694→
+   695→    // ===== 7. summary =====
+   696→    const [users, identity, subjects, topics, questions, sessions, attempts, sa, ta, reviews, classes, friendships, mis] =
+   697→      await Promise.all([
+   698→        db.user.count(),
+   699→        db.identity.count(),
+   700→        db.subject.count(),
+   701→        db.topic.count(),
+   702→        db.question.count(),
+   703→        db.session.count(),
+   704→        db.attempt.count(),
+   705→        db.subjectAbility.count(),
+   706→        db.topicAbility.count(),
+   707→        db.reviewSchedule.count(),
+   708→        db.classRoom.count(),
+   709→        db.friendship.count(),
+   710→        db.misconception.count(),
+   711→      ]);
+   712→    console.log("\n✅ seed complete — sample data summary:");
+   713→    console.table({
+   714→      users, identity, subjects, topics, questions, sessions, attempts,
+   715→      subjectAbility: sa, topicAbility: ta, reviewSchedule: reviews,
+   716→      classes, friendships, misconceptions: mis,
+   717→    });
+   718→  } finally {
+   719→    await db.$disconnect();
+   720→  }
+   721→}
+   722→
+   723→main().catch((e) => {
+   724→  console.error("❌ seed failed:", e);
+   725→  process.exit(1);
+   726→});
+   727→

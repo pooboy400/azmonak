@@ -302,3 +302,25 @@ Stage Summary:
 - حذف کامل و یک‌جا: `bun run db:clean-sample` (فقط رکوردهای isSample=true لمس می‌شوند)؛ بازتولید: `bun run db:seed-sample` (خودش اول پاک می‌کند — قطعی و تکرارپذیر)
 - نقشه اتصال صفحات به داده در گزارش چت ثبت شد؛ گام بعدی طبق دستور پویا: اتصال صفحات فرانت به این داده‌ها (API/Server Components)
 - انحراف محیط مستند: Prisma/SQLite به‌جای Alembic/Postgres (محیط سندباکس) — اسکیما قابل انتقال به Postgres است؛ تغییر نام هیچ قرارداد سند رخ نداده است
+- تحقیق SQL Server: Prisma 6 از sqlserver پشتیبانی می‌کند و اسکیما سازگار است، ولی اجرای موتور در سندباکس ناممکن/پرمخاطره (بدون Docker، دبیان ۱۳ خارج از پشتیبانی مایکروسافت، رم ~۲٫۶GB آزاد) — سه مسیر (A: فعلاً SQLite/سوییچ بعداً، B: SQL Server خارجی با اتصال کاربر، C: Postgres/MySQL سندباکس) گزارش شد؛ تصمیم با پویا
+
+---
+Task ID: 18
+Agent: Super Z (main agent)
+Task: تغییر تصمیم آواتار از دستور پویا «بخش آواتارز رو یوزر باید پروفایل آپلود کنه نه استیکر (به دلیل محدودیت‌ها placeholder بذار یا از عکس‌های آنلاین استفاده کن)»
+
+Work Log:
+- تصمیم پیشین «ایموجی آواتار» (سند حریم خصوصی) با دستور جدید پویا لغو شد: آواتار = عکس پروفایل آپلودی کاربر؛ خالی بودن فیلد = placeholder پیش‌فرض در UI آینده
+- بررسی سرویس‌های عکس: randomuser.me از این محیط ناپایدار بود (همان URL یک‌بار ۲۰۰ یک‌بار ۴۰۴)؛ i.pravatar.cc پایدار بود (۵/۵) → دانلود ۲۶ عکس placeholder (۳۰۰px، ~۹–۲۰KB هرکدام) با تفکیک جنسیت هماهنگ با نام‌های نمونه به public/avatars/sample/ (اسکریپت: scripts/download-sample-avatars.sh)
+- کنترل بصری با شیت (scripts/build_avatar_sheet.py): دو ناهماهنگی جنسیتی کشف و اصلاح شد (smpu01 درسا → img=47 با روسری، smpu02 آرش → img=68)؛ نتیجه نهایی ۲۶/۲۶ هماهنگ
+- اسکیما: users.avatarEmoji → users.avatarUrl (String?، کامنت جدید) + bun run db:push (سینک ۳۶ms + بازتولید Prisma Client v6.19.2)
+- seed-data-people.ts: فیلد emoji حذف → avatarUrl با مسیر عمومی «/avatars/sample/smpuXX.jpg»؛ seed.ts: ارسال avatarUrl + هشدار اگر پوشه عکس‌ها نباشد (راهنمای اجرای اسکریپت دانلود)
+- verify-sample.ts: دو ارجاع avatarEmoji → avatarUrl (در لیدربرد هفتگی، مقدار خالی = «(placeholder)»)
+- sample-cleanup.ts: در اجرای مستقل، پوشه public/avatars/sample/ هم حذف می‌شود (SAMPLE_AVATARS_DIR؛ در فراخوانی داخلیِ re-seed دست نمی‌زند) — پوشه عکس‌ها هم مثل رکوردها یک‌جا قابل‌حذف است
+- re-seed کامل: ۲۶ کاربر / ۶۸ سؤال / ۶۴۴ جلسه / ۵۸۲۶ پاسخ / ۲۷۲ مرور؛ verify: لیدربردها با مسیر عکس، صفر ارجاع باقی‌مانده به avatarEmoji در کل کد، تطابق ۲۶/۲۶ مسیر DB با فایل روی دیسک (public/avatars/sample/)
+
+Stage Summary:
+- مدل آواتار پروژه عوض شد: User.avatarUrl (عکس آپلودی؛ nullable → placeholder در UI) — ایموجی/استیکر دیگر در اسکیما و داده نیست
+- ۲۶ عکس نمونه در public/avatars/sample/ (نمونه‌محور و همراه DB حذف می‌شود)؛ منبع: i.pravatar.cc — برای نمونه/توسعه، نه انتشار نهایی
+- ورودی UI آینده: Radix Avatar با Image (src=avatarUrl) + Fallback (نخستین حرف لقب) وقتی خالی/۴۰۴
+- ابزارها: scripts/download-sample-avatars.sh (دانلود مجدد)، db:seed-sample / db:clean-sample بدون تغییر CLI

@@ -5,7 +5,9 @@
 export interface SeedUser {
   id: string; // smpu01 ...
   nickname: string;
-  emoji: string;
+  // عکس پروفایل واقعی (نه استیکر) — placeholderهای آنلاینِ دانلودشده به public/avatars/sample/
+  // (اسکریپت: scripts/download-sample-avatars.sh) — مسیر عمومی Next.js
+  avatarUrl: string;
   grade: "GRADE10" | "GRADE11" | "GRADE12" | null;
   major: "EXPERIMENTAL" | "MATH" | "HUMANITIES" | null;
   role: "STUDENT" | "TEACHER";
@@ -16,35 +18,35 @@ export interface SeedUser {
 
 export const USERS: SeedUser[] = [
   // ---- یازدهم تجربی (16) — the demo-heavy cohort ----
-  { id: "smpu01", nickname: "درسا.زیستی",      emoji: "🐼",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PUBLIC",  skill: 0.86 },
-  { id: "smpu02", nickname: "آرش_فیزیکدان",    emoji: "🦅",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.78 },
-  { id: "smpu03", nickname: "مینا.ریاضیات",    emoji: "🦊",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.74 },
-  { id: "smpu04", nickname: "کیان_حافظ",       emoji: "🦁",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.70 },
-  { id: "smpu05", nickname: "نگار.آسمان",      emoji: "🦋",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PUBLIC",  skill: 0.66 },
-  { id: "smpu06", nickname: "سامان_ساعی",      emoji: "🐢",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.62 },
-  { id: "smpu07", nickname: "تارا.مطالعه",     emoji: "🐬",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.60 },
-  { id: "smpu08", nickname: "پارسا_پرکار",     emoji: "🐝",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.58 },
-  { id: "smpu09", nickname: "رها.سربالایی",    emoji: "🦌",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.55 },
-  { id: "smpu10", nickname: "شیوا_شب‌خوان",    emoji: "🦉",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PRIVATE", skill: 0.52 },
-  { id: "smpu11", nickname: "امیر.امتحان",     emoji: "🐯",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PRIVATE", skill: 0.50 },
-  { id: "smpu12", nickname: "درنا_سپید",       emoji: "🕊️", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.47 },
-  { id: "smpu13", nickname: "بهنام.بنویس",     emoji: "🐙",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.44 },
-  { id: "smpu14", nickname: "سپیده_ستاره",     emoji: "🌙",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.42 },
-  { id: "smpu15", nickname: "فرزاد.فراتر",     emoji: "🐘",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.40 },
-  { id: "smpu16", nickname: "نگین_نوشتار",     emoji: "🐞",  grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.38 },
+  { id: "smpu01", nickname: "درسا.زیستی",      avatarUrl: "/avatars/sample/smpu01.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PUBLIC",  skill: 0.86 },
+  { id: "smpu02", nickname: "آرش_فیزیکدان",    avatarUrl: "/avatars/sample/smpu02.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.78 },
+  { id: "smpu03", nickname: "مینا.ریاضیات",    avatarUrl: "/avatars/sample/smpu03.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.74 },
+  { id: "smpu04", nickname: "کیان_حافظ",       avatarUrl: "/avatars/sample/smpu04.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.70 },
+  { id: "smpu05", nickname: "نگار.آسمان",      avatarUrl: "/avatars/sample/smpu05.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PUBLIC",  skill: 0.66 },
+  { id: "smpu06", nickname: "سامان_ساعی",      avatarUrl: "/avatars/sample/smpu06.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.62 },
+  { id: "smpu07", nickname: "تارا.مطالعه",     avatarUrl: "/avatars/sample/smpu07.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.60 },
+  { id: "smpu08", nickname: "پارسا_پرکار",     avatarUrl: "/avatars/sample/smpu08.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.58 },
+  { id: "smpu09", nickname: "رها.سربالایی",    avatarUrl: "/avatars/sample/smpu09.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.55 },
+  { id: "smpu10", nickname: "شیوا_شب‌خوان",    avatarUrl: "/avatars/sample/smpu10.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PRIVATE", skill: 0.52 },
+  { id: "smpu11", nickname: "امیر.امتحان",     avatarUrl: "/avatars/sample/smpu11.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PRIVATE", skill: 0.50 },
+  { id: "smpu12", nickname: "درنا_سپید",       avatarUrl: "/avatars/sample/smpu12.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.47 },
+  { id: "smpu13", nickname: "بهنام.بنویس",     avatarUrl: "/avatars/sample/smpu13.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.44 },
+  { id: "smpu14", nickname: "سپیده_ستاره",     avatarUrl: "/avatars/sample/smpu14.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.42 },
+  { id: "smpu15", nickname: "فرزاد.فراتر",     avatarUrl: "/avatars/sample/smpu15.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.40 },
+  { id: "smpu16", nickname: "نگین_نوشتار",     avatarUrl: "/avatars/sample/smpu16.jpg", grade: "GRADE11", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.38 },
   // ---- دهم تجربی (4) ----
-  { id: "smpu17", nickname: "آوا.ارشمیدس",     emoji: "🐰",  grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.70 },
-  { id: "smpu18", nickname: "هیراد_هوشمند",    emoji: "🐴",  grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PUBLIC",  skill: 0.60 },
-  { id: "smpu19", nickname: "مهسا.مشوق",       emoji: "🐱",  grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.55 },
-  { id: "smpu20", nickname: "نوید_نمونه",      emoji: "🐹",  grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.45 },
+  { id: "smpu17", nickname: "آوا.ارشمیدس",     avatarUrl: "/avatars/sample/smpu17.jpg", grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.70 },
+  { id: "smpu18", nickname: "هیراد_هوشمند",    avatarUrl: "/avatars/sample/smpu18.jpg", grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "PUBLIC",  skill: 0.60 },
+  { id: "smpu19", nickname: "مهسا.مشوق",       avatarUrl: "/avatars/sample/smpu19.jpg", grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.55 },
+  { id: "smpu20", nickname: "نوید_نمونه",      avatarUrl: "/avatars/sample/smpu20.jpg", grade: "GRADE10", major: "EXPERIMENTAL", role: "STUDENT", privacy: "FRIENDS", skill: 0.45 },
   // ---- یازدهم ریاضی (4) ----
-  { id: "smpu21", nickname: "آریا.انتگرال",    emoji: "🦖",  grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "FRIENDS", skill: 0.80 },
-  { id: "smpu22", nickname: "النا_لگاریتم",    emoji: "🦜",  grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "PUBLIC",  skill: 0.68 },
-  { id: "smpu23", nickname: "متین.مشتق",       emoji: "🐺",  grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "FRIENDS", skill: 0.58 },
-  { id: "smpu24", nickname: "سارا_سیگما",      emoji: "🐨",  grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "FRIENDS", skill: 0.48 },
+  { id: "smpu21", nickname: "آریا.انتگرال",    avatarUrl: "/avatars/sample/smpu21.jpg", grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "FRIENDS", skill: 0.80 },
+  { id: "smpu22", nickname: "النا_لگاریتم",    avatarUrl: "/avatars/sample/smpu22.jpg", grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "PUBLIC",  skill: 0.68 },
+  { id: "smpu23", nickname: "متین.مشتق",       avatarUrl: "/avatars/sample/smpu23.jpg", grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "FRIENDS", skill: 0.58 },
+  { id: "smpu24", nickname: "سارا_سیگما",      avatarUrl: "/avatars/sample/smpu24.jpg", grade: "GRADE11", major: "MATH", role: "STUDENT", privacy: "FRIENDS", skill: 0.48 },
   // ---- دبیران (2) ----
-  { id: "smpt01", nickname: "فرشاد کاویانی",   emoji: "👨‍🏫", grade: null, major: null, role: "TEACHER", privacy: "PUBLIC",  skill: 0 },
-  { id: "smpt02", nickname: "لیلا موسوی",      emoji: "👩‍🏫", grade: null, major: null, role: "TEACHER", privacy: "PUBLIC",  skill: 0 },
+  { id: "smpt01", nickname: "فرشاد کاویانی",   avatarUrl: "/avatars/sample/smpt01.jpg", grade: null, major: null, role: "TEACHER", privacy: "PUBLIC",  skill: 0 },
+  { id: "smpt02", nickname: "لیلا موسوی",      avatarUrl: "/avatars/sample/smpt02.jpg", grade: null, major: null, role: "TEACHER", privacy: "PUBLIC",  skill: 0 },
 ];
 
 /** phone for a sample user: 09990000001, 09990000002, ... (fake range) */

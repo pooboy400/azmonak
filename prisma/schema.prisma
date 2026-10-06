@@ -42,7 +42,7 @@ model User {
   id          String   @id @default(cuid())
   role        String   @default("STUDENT") // STUDENT | TEACHER | ADMIN
   nickname    String   @unique
-  avatarEmoji String? // ایموجی آواتار به‌جای عکس (سند طراحی — حریم خصوصی)
+  avatarUrl   String? // آواتار آپلودی کاربر (تصمیم جدید — عکس پروفایل، نه استیکر/ایموجی)؛ خالی = placeholder پیش‌فرض در UI
   grade       String? // GRADE10 | GRADE11 | GRADE12 — فقط دانش‌آموز
   major       String? // EXPERIMENTAL | MATH | HUMANITIES — فقط دانش‌آموز
   privacy     String   @default("FRIENDS") // PUBLIC | FRIENDS | PRIVATE

@@ -12,6 +12,7 @@
 // ============================================================
 
 import { PrismaClient, Prisma } from "@prisma/client";
+import { existsSync } from "node:fs";
 import { SUBJECTS, type Diff } from "./seed-data-catalog";
 import { USERS, CLASSES, FRIENDSHIPS, MISCONCEPTIONS, samplePhone } from "./seed-data-people";
 import { cleanSampleData } from "./sample-cleanup";
@@ -348,6 +349,9 @@ async function main() {
 
     // ===== 2. users + identity =====
     console.log("👥 inserting users…");
+    if (!existsSync(process.cwd() + "/public/avatars/sample")) {
+      console.log("⚠️  پوشه public/avatars/sample/ نیست — عکس‌های نمونه را با scripts/download-sample-avatars.sh دانلود کن (وگرنه آواتارها ۴۰۴ می‌شوند و UI باید placeholder نشان دهد).");
+    }
     for (let i = 0; i < USERS.length; i++) {
       const u = USERS[i];
       const createdAt = new Date(NOW - randInt(48, 54) * DAY);
@@ -356,7 +360,7 @@ async function main() {
           id: u.id,
           role: u.role,
           nickname: u.nickname,
-          avatarEmoji: u.emoji,
+          avatarUrl: u.avatarUrl,
           grade: u.grade,
           major: u.major,
           privacy: u.privacy,

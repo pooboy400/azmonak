@@ -54,14 +54,14 @@ async function main() {
     console.log(`  (week since ${weekStart.toISOString()}, eligible: ${rows.length})`);
     rows.slice(0, 8).forEach((r, i) => {
       const u = uMap.get(r.userId)!;
-      console.log(`  ${i + 1}. ${u.avatarEmoji ?? ""} ${u.nickname} — میانگین ${r.avg.toFixed(1)} (${r.n} جلسه)`);
+      console.log(`  ${i + 1}. ${u.avatarUrl ?? "(placeholder)"} ${u.nickname} — میانگین ${r.avg.toFixed(1)} (${r.n} جلسه)`);
     });
   }
 
   console.log("\n=== 3) overall leaderboard — یازدهم تجربی (per major × grade) ===");
   const sessions = await db.session.findMany({
     where: { status: "COMPLETED", type: "PRACTICE", startedAt: { gte: weekStart } },
-    select: { score: true, user: { select: { nickname: true, avatarEmoji: true, grade: true, major: true, privacy: true } } },
+    select: { score: true, user: { select: { nickname: true, avatarUrl: true, grade: true, major: true, privacy: true } } },
   });
   const byCohort = new Map<string, Map<string, { total: number; n: number; u: (typeof sessions)[0]["user"] }>>();
   for (const s of sessions) {
