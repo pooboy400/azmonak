@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getActiveSubjects } from "@/lib/queries/site";
+import { getActiveSubjects, getPortalUrl } from "@/lib/queries/site";
 import { GRADE_ORDER, gradeLabel, MAJOR_ORDER, majorLabel } from "@/lib/labels";
 import { SubjectGrid } from "@/components/site/subject-card";
 import { CtaBanner } from "@/components/site/cta-banner";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SubjectsPage() {
-  const subjects = await getActiveSubjects();
+  const [subjects, portalUrl] = await Promise.all([getActiveSubjects(), getPortalUrl()]);
 
   const groups = GRADE_ORDER.map((grade) => ({
     grade,
@@ -47,7 +47,7 @@ export default async function SubjectsPage() {
                   <span className="h-5 w-1.5 rounded-full bg-primary" aria-hidden />
                   {majorLabel(m.major)}
                 </h3>
-                <SubjectGrid subjects={m.subjects} />
+                <SubjectGrid subjects={m.subjects} portalUrl={portalUrl} />
               </div>
             ))}
           </div>

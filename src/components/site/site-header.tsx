@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SiteLogo } from "@/components/site/site-logo";
 
 const NAV_LINKS = [
   { href: "/", label: "خانه" },
@@ -16,7 +16,15 @@ const NAV_LINKS = [
   { href: "/contact", label: "تماس" },
 ];
 
-export function SiteHeader({ portalUrl, portalCta }: { portalUrl: string; portalCta: string }) {
+export function SiteHeader({
+  portalUrl,
+  portalCta,
+  siteName,
+}: {
+  portalUrl: string;
+  portalCta: string;
+  siteName: string;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -25,9 +33,7 @@ export function SiteHeader({ portalUrl, portalCta }: { portalUrl: string; portal
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-white/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="flex items-center gap-2" aria-label="صفحه اصلی آزمونک">
-          <Image src="/logo.svg" alt="لوگوی آزمونک" width={116} height={51} className="h-10 w-auto" priority />
-        </Link>
+        <SiteLogo name={siteName} href="/" />
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="ناوبری اصلی">
           {NAV_LINKS.map((l) => (

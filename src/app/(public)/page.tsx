@@ -196,7 +196,7 @@ export default async function LandingPage() {
             </Link>
           </Button>
         </div>
-        <SubjectGrid subjects={subjects.slice(0, 6)} />
+        <SubjectGrid subjects={subjects.slice(0, 6)} portalUrl={portalUrl} />
       </section>
 
       {/* ---------- لیدربرد ۳ نفر برتر ---------- */}
