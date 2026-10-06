@@ -497,3 +497,23 @@ Stage Summary:
 - امنیت: کد OTP هش، کوکی امضا زمان‌ثابت، مالکیت جلسه در همه اکشن‌ها، عدم افشای پاسخ در DTO سؤال، حریم خصوصی سه‌سطحی لیدربرد
 - نکته پروداکشن: AUTH_SECRET باید از env تزریق شود؛ درگاه پیامک برای OTP واقعی متصل شود (فعلاً devCode فقط در dev)
 - مانده برای فاز بعد (پیشنهادی): صفحه subjects/[id] تفصیلی، نمودار دولایه D15، انجمن پرسش‌وپاسخ کامل، پنل معلم/کلاس، ادمین سؤال
+
+---
+Task ID: 23
+Agent: Super Z (main agent)
+Task: فیکس خطای Runtime «Invalid Server Actions request.» در صفحه ورود پورتال
+
+Work Log:
+- گزارش پویا: /portal/login هنگام «دریافت کد تأیید» خطای Invalid Server Actions request می‌داد و POST به ۵۰۰ می‌رفت
+- ریشه‌یابی از dev.log: زنجیره گیت‌وی پیش‌نمایش IM هدر Host/X-Forwarded-Host را به دامنه داخلی ws-ad-….cn-hongkong-vpc.fcapp.run بازنویسی می‌کند، در حالی که Origin مروربر preview-chat-92f340ae-….space-z.ai است → گارد CSRF اکشن‌های سرور Next 16 درخواست را رد می‌کند (action-handler.ts → csrf-protection.ts)
+- سورس نصب‌شده Next 16.1.3 از sourcemap استخراج شد: isCsrfOriginAllowed(originDomain, allowedOrigins) با پشتیبانی wildcard ساب‌دامین (*.space-z.ai)
+- فیکس در next.config.ts: experimental.serverActions.allowedOrigins = [دامنه دقیق این سشن، *.space-z.ai]؛ امن است چون کوکی نشست SameSite=Lax (درخواست cross-site کوکی نمی‌برد) و اکشن‌های OTP هم rate-limit دارند؛ dev server خودکار ری‌استارت شد
+- راستی‌آزمایی سخت با curl (دقیقاً همان هدرهای شکست‌خورده کاربر): ۱) requestOtpAction → 200 با devCode؛ ۲) verifyOtpAction → 200 + Set-Cookie azm_session و ثبت‌نام خودکار (isNewUser:true)؛ ۳) کنترل منفی با Origin متخاصم evil.example.com → 500 و رد شدن، یعنی گارد CSRF سالم ماند
+- ID اکشن‌های واقعی از manifest توکار Turbopack (__next_internal_action_entry_do_not_use__) در چانک‌های کلاینت استخراج شد (requestOtp/verifyOtp/logout)
+- تست مرورگری E2E: شماره 09123334455 → مرحله کد با کول‌داون زنده ۴۵ ثانیه → ورود موفق → داشبورد «سلام دانشآموز-8689» با آمار و درس‌ها — صفر خطای کنسول
+- پوش گیت‌هاب شامل کامیت فیکس و اسنپ‌شات‌های tmp پیشین با credential helper یک‌بارمصرف
+
+Stage Summary:
+- علت: بازنویسی هدر Host توسط گیت‌وی + سخت‌گیری CSRF Server Actions؛ فیکس سراسری است و همه اکشن‌ها (auth/contact/profile/community/exam) را پوشش می‌دهد نه فقط لاگین
+- کاربر فقط یک بار صفحه را Refresh کند تا اپلیکیشن با کانفیگ جدید سرو شود
+- نکته پروداکشن: در دیپلوی واقعی فهرست allowedOrigins باید به دامنه نهایی محدود شود (حذف wildcard)
