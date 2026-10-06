@@ -362,3 +362,115 @@ Work Log:
 
 Stage Summary:
 - مخزن https://github.com/pooboy400/azmonak کاملاً همگام با لوکال (۲۹+۱۲+... → HEAD=9af9364)؛ همه‌ی کارهای تسک ۱۸ و ۱۹ اکنون روی گیت‌هاب است
+
+---
+Task ID: 21-b
+Agent: expert-dev-1
+Task: بازبینی کد بخش عمومی (دسته ۱)
+
+Work Log:
+- worklog (انتهای فایل، تسک‌های ۱۵ تا ۲۰) خوانده شد؛ زمینه: قاعده طلایی بدون‌هاردکد + کامیت eac7937 (SiteLogo + لینک کارت درس به portal.url)
+- diff کامیت eac7937 (۶ فایل) بررسی شد؛ ۵ فایل کلیدی خوانده شد: site-logo.tsx، site-header.tsx، subject-card.tsx، lib/queries/site.ts، lib/labels.ts + lib/icon-map.tsx
+- هر ۷ صفحه (public) + layout + root layout + portal + middleware + فوتر/CTA/پادیوم/آواتار/مارک‌داون/فرم تماس/اکشن تماس خوانده و با اسکیما (schema.prisma) و بذر تنظیمات (seed-data-site.ts) تطبیق داده شد
+- ممیزی هاردکد با grep برند («آزمونک/جشنواره») و خواندن خط‌به‌خط: ۷ مورد مهم + ۷ مورد جزئی شناسایی شد (جدول گزارش)؛ NAV_LINKS/QUICK_LINKS، لیبل‌های enum، RANK_STYLE، icon-map و برچسب‌های وضعیت به‌عنوان مجاز صرفه‌نظر شد
+- سلامت تایپ: bunx tsc --noEmit → صفر خطا در src/ (خطاها فقط examples/ و skills/ و prisma/verify-sample.ts — خارج از scope)؛ props سه کامپوننت تغییرکرده با امضای فراخوانی‌ها تطبیق داده شد ✓
+- مرز Server/Client: فقط site-header و contact-form "use client" دارند — حداقلی و درست
+- لایه داده: بدون N+1 (include _count)؛ TTLهای ۱۵/۳۰/۶۰s منطقی؛ empty-state محترمانه در هر ۵ نقطه؛ ریسک کرش در نبود DB/جدول در root layout گزارش شد
+- subject-card و site-logo از نظر semantic/aria/قابلیت استفاده مجدد بررسی شد (یافته‌ها: sr-only زائد، role="img"+aria-hidden متناقض، aria-label ثابت «صفحه اصلی»، فوتر/hero/portal هنوز PNG قدیمی)
+- bun run lint → exit 0، صفر خطا (scripts/extract_lucide.js حالا در ignore list است؛ ۲ خطای قبلی دیگر surface نمی‌شود)
+
+Stage Summary:
+- نتیجه: PASS مشروط — هیچ مورد بحرانی/کرش در مسیر فعلی نیست؛ تایپ و lint پاک؛ الگوی داده-از-DB در ستون فقرات درست است
+- پیش از فاز ۲ (۷ مورد مهم): مهاجرت تیترهای سکشن‌های لندینگ (چرا آزمونک/سه قدم/درس‌ها/پرسش‌ها + زیرتیترها و آرایه چیپ‌های پنل هیرو) و دو خط متن فوتر به site_settings — همگی در src/app/(public)/page.tsx و site-footer.tsx
+- ۷ مورد جزئی (برند در h1 بلاگ/درس‌ها/FAQ، پیام اکشن تماس، متادیتاها، متن‌های پنل ماکاپ) + نکات فنی (fallback در نبود DB، eviction کش، focus-visible کارت، not-found/error فارسی، هم‌ترازی --primary با 4F46E5 لوگو) در گزارش تفصیلی تسک ثبت شد
+- هیچ فایلی ادیت نشد؛ هیچ سرویسی restart نشد؛ dev server دست‌نخورده ماند
+---
+Task ID: 21-a
+Agent: user-tester-1
+Task: تست کاربری بخش عمومی سایت (دسته ۱)
+
+Work Log:
+- session اختصاصی u1 در agent-browser باز شد؛ لندینگ در <5s لود شد (title «آزمونک — آزمون تطبیقی هوشمند برای نوجوانان جشنواره خوارزمی»)
+- لندینگ: اسکرین‌شات (tmp/u1-01-landing-top.png)؛ هدر = SVG مربع بنفش (#4F46E5) با تیک سفید + متن «آزمونک» + نقطه نارنجی — مطابق لوگوی انتظاری؛ hero (کیکر/هدلاین/پاراگراف) در ویوپورت اول visible (eval: top=293px)؛ هشدار جزئی: رنگ SVG لوگو #4F46E5 است در حالی که توکن برند --primary=#4840E0 (نزدیک اما یکی نیست)
+- ناوبری هر ۶ لینک منو تست شد (/ و /subjects و /blog و /about و /faq و /contact)؛ در هر صفحه دقیقاً لینک فعال با کلاس bg-secondary هایلایت می‌شود (خروجی eval برای هر ۶ صفحه)؛ همه صفحات کامل (h1+سکشن‌ها+فوتر) لود شدند؛ hScroll=0
+- درس‌ها: گروه‌بندی پایه دهم/یازدهم از DB؛ hover روی کارت «ریاضی ۲» (ref e79) → حالت hover تأیید شد (matches(':hover')=true + VLM: سایه بزرگ‌تر و translate؛ tmp/u1-05-subject-card-hover.png)؛ کلیک → /portal با placeholder «پورتال دانش‌آموزی به‌زودی باز می‌شود» (انتظار Fase2 — باگ نیست؛ tmp/u1-06)
+- بلاگ: لیست ۳ مقاله با تاریخ شمسی فارسی («۱۱ مهر ۱۴۰۵» و...)؛ مقاله «آزمون تطبیقی چیست و چرا منصفانه‌تر است؟» باز شد: typography سالم (fs=15px، lh=32px، عرض متن 736px، RTL درست، h2های ساختاری)؛ tmp/u1-07 و u1-08
+- FAQ (۸ سؤال): آکاردئون از نوع single-open (Radix) — باز/بسته هر دو جهت راستی‌آزمایی شد (data-state open→closed هنگام باز کردن آیتم دیگر)؛ tmp/u1-09 و u1-10
+- تماس: فرم با «تستگر یک / test1@example.com / پیام تستی از تستر ۱» پر و ارسال شد؛ پیام موفقیت role=status «پیامت رسید! تیم آزمونک در نخستین فرصت پاسخ میدهد.» نمایش داده شد؛ رکورد در DB تأیید شد (contact_messages.id=cmuwy7p8l0001otu6cqfeiqnf)؛ فیلدها پس از ارسال reset شدند؛ tmp/u1-11 و u1-12
+- لیدربرد لندینگ «برترین‌های این هفته»: ۳ کارت هم‌تراز با مدال/تاج، هر ۳ آواتار (smpu01/03/02) پس از scroll لود شدند (naturalWidth=64، بدون broken)؛ tmp/u1-02
+- موبایل 390x844: لندینگ + درس‌ها بدون سرریز افقی (hScroll=0)؛ همبرگری aria-expanded false→true→false، منوی موبایل (nav دوم، h=309px) باز/بسته و بعد از باز کردن unmount می‌شود؛ اسکن برنامه‌ای: تنها متن‌های بریده = spanهای sr-only (accessibility label کارت‌ها — عمدی)؛ صفر عکس شکسته در کل صفحه؛ tmp/u1-14 تا u1-16
+- errors/console: `errors` خالی؛ console صفر [error] در لود تازه هر صفحه و در باز/بسته منو؛ یک‌بار یک hydration attribute-mismatch از Radix Accordion (id/aria-controls با پیشوند radix-_R_*) ثبت شد که در تلاش‌های مکرر بازتولید نشد — نویز dev (Fast Refresh در حین hydrate)، بدون اثر کاربری
+- ۱۷ اسکرین‌شات در tmp/u1-*.png؛ هیچ فایل کد/سروری تغییر نکرد؛ session u1 بسته شد
+
+Stage Summary:
+- بخش عمومی سایت از نگاه کاربر واقعی سالم و کامل است: ناوبری + هایلایت فعال، hover کارت درس، مسیر کارت→portal، مقاله بلاگ با تاریخ شمسی، آکاردئون FAQ، فرم تماس end-to-end (DB تأیید شد)، لیدربرد با آواتارهای لودشده، ریسپانسیو موبایل بدون سرریز، صفر خطای کنسول کاربری
+- دو نکته غیرمسدودکننده: (۱) رنگ SVG لوگوی هدر #4F46E5 با توکن برند #4840E0 یکی نیست (سلیقه‌ای/هم‌راستاسازی برند)؛ (۲) hydration warning یک‌باره Radix Accordion در dev (جزئی، بازتولیدناپذیر)
+- جمع‌بندی: PASS
+---
+Task ID: 21-d
+Agent: expert-dev-2
+Task: بازبینی امنیت/کارایی بخش عمومی (دسته ۲)
+
+Work Log:
+- انتهای worklog.md (تسک‌های ۲۱-a و ۲۱-b) خوانده شد؛ فقط تحلیل — هیچ فایلی ادیت/restart/push نشد
+- فایل‌های کلیدی خط‌به‌خط: lib/queries/site.ts، lib/actions/contact.ts، components/site/markdown.tsx، contact-form.tsx، middleware.ts، next.config.ts، lib/db.ts، public/robots.txt، layout ریشه + هر ۷ صفحه (public) + پادیوم/آواتار/فوتر/subject-card/icon-map/پورتال + schema.prisma
+- XSS بلاگ: react-markdown v10.1.0 نصب است؛ سورس node_modules/react-markdown/lib/index.js خوانده شد — نودهای raw بدون rehype-raw به TEXT فرارِشده تبدیل می‌شوند (خط ۳۶۰-۳۶۵) و defaultUrlTransform اسکیم‌های javascript: را حذف می‌کند (خط ۳۸۲/۴۲۱) → XSS از مسیر مارک‌داون بسته است
+- grep سراسری: dangerouslySetInnerHTML فقط در ui/chart.tsx (shadcn، خارج مسیر عمومی)؛ هیچ $queryRaw / rehype-raw / img خام در src نیست
+- اعتبارسنجی تجربی (فقط GET، بدون تغییر): کش TTL راستی‌آزمایی شد — در یک رندر /subjects پس از انقضای TTL، ۵ کوئری تکراری site_settings (و روی / حدود ۸) ثبت شد → نبود dedupe در Promise.all تأیید شد؛ کش خودش کار می‌کند (هیت درون TTL دیده شد)
+- dev.log (۲۳۵KB) tail/grep شد: ۷۴۵ خط عمدتاً نویز prisma:query؛ بدون خطای کنترل‌نشده؛ ۴۰۴ درست برای /blog/not-a-real-slug؛ پارامترها به‌صورت ? placeholder (بدون نشت مقدار در لاگ)
+- هدرهای پاسخ زنده curl شدند: فقط X-Powered-By؛ بدون CSP/X-Frame-Options/X-Content-Type-Options/Referrer-Policy/HSTS؛ فونت‌های TTF چهار وزن preload شده‌اند
+- منطق weekStartUtc و فیلتر privacy لیدربرد (خط ۱۴۸: فقط PRIVATE حذف می‌شود، FRIENDS عمومی نمایش داده می‌شود) با اسکیما و سند G10 تطبیق داده شد
+- وجود error.tsx / global-error / not-found / loading / sitemap / robots در src/app با glob بررسی شد → هیچ‌کدام وجود ندارد
+
+Stage Summary:
+- XSS بلاگ: PASS — react-markdown بدون rehype-raw، HTML خام به متن فرار تبدیل و javascript: در URLها حذف می‌شود؛ نقطه تزریق عمومی وجود ندارد (محتوای DB فقط ادمین‌ساخت است)
+- امنیت فرم تماس: PASS مشروط — zod سه‌فیلدی با حد طول و پیام فارسی، بدون leak داخلی؛ اما بدون rate-limit/honeypot و بدون لاگ سمت سرور در catch → پیش‌نیاز فاز ۲
+- تزریق Prisma: PASS — همه کوئری‌ها parameterized؛ slug با findFirst امن
+- افشای داده لیدربرد: FAIL (مهم) — getTopWeek فقط PRIVATE را حذف می‌کند و کاربران FRIENDS (پیش‌فرض اسکیما!) را با لقب/آواتار/پایه عمومی نمایش می‌دهد؛ شماره/ایمیل هیچ‌جا انتخاب نمی‌شود ✓؛ توصیه: فیلتر privacy === "PUBLIC" برای سایت عمومی
+- سایر مهم: نبود error.tsx/not-found.tsx فارسی + قطع DB = خطای پیش‌فرض انگلیسی روی همه صفحات (کامنت fallback در layout گمراه‌کننده)؛ نبود هدرهای امنیتی؛ کش بدون dedupe (۵-۸ کوئری تکراری در انقضا)
+- کارایی: PASS در مقیاس فعلی — next/image با ابعاد صریح، رندر سرور مارک‌داون، Promise.all موازی؛ نکات فاز ۲: فونت TTF×۴ سنگین، log:['query'] در پروداکشن، fetch ستون content در لیست بلاگ، کوئری بدون ایندکس (status,type,startedAt)
+- جمع‌بندی: PASS مشروط — هیچ ریسک بحرانی فعلی نیست؛ فهرست پیش‌نیاز فاز ۲ در گزارش تفصیلی تسک ثبت شد (۶ مورد مهم + ~۱۲ نکته)
+
+---
+Task ID: 21-c
+Agent: user-tester-2
+Task: تست کاربری لبه‌محور بخش عمومی (دسته ۲)
+
+Work Log:
+- worklog انتهایی (تسک ۲۱-b و ۲۱-a) خوانده شد؛ session اختصاصی u2 در agent-browser باز شد
+- ۴۰۴ها: /nonexistent → ۴۰۴ پیش‌فرض انگلیسی Next بدون هدر/فوتر (u2-01)؛ /blog/not-a-real-slug → ۴۰۴ انگلیسی داخل لایوت public با هدر/فوتر (u2-02)؛ dir=rtl درست است اما متن «This page could not be found.» انگلیسی است — not-found.tsx فارسی وجود ندارد
+- رفت‌وبرگشت: لندینگ(scroll 400)→درس‌ها→back→forward؛ scroll restoration کار می‌کند (بازگشت به y=400، رفتن به y=0) و هایلایت فعال منو (bg-secondary) در هر دو جهت درست عوض می‌شود
+- تبلت 768x1024: صفر سرریز افقی در لندینگ/درس‌ها/بلاگ (docW=768)؛ گریدها ۱/۲/۳/۴ ستونه منطقی؛ VLM: بدون بریدگی/هم‌پوشانی/نظم به‌هم‌ریخته (u2-03..05)
+- دسکتاپ 1920x1080: سکشن‌های پس‌زمینه‌دار تمام‌عرض (1920) و محتوا در max-w-6xl=1152 مرکزی (left=right=384)؛ کارت‌های بلاگ ~357px در گرید سالم (u2-06..08)
+- لیدربرد: ۳ کارت، امتیازها با ارقام فارسی و ممیز فارسی (۹۵٫۲)، مدال/تاج و ۳ آواتار lazy که پس از scroll لود شدند (naturalWidth=64)؛ طولانی‌ترین لقب واقعی «مینا.ریاضیات» (۱۲ نویسه)؛ با تزریق DOM لقب ۴۷-۶۰ نویسه‌ای: عنصر لقب نه truncate دارد نه break-words نه min-w-0 — ink 432px در باکس 313px و از کارت بیرون می‌زند (inkOverflowsCard=true) (u2-09, u2-09b) — با داده فعلی کشف نمی‌شود اما UGC طولانی چیدمان را می‌شکند
+- موبایل 320x700: docW=320 دقیق در هر ۶ صفحه (landing/subjects/blog/faq/contact/about) — صفر سرریز افقی؛ تنها عناصر بیرون‌صفحه دو blob تزئینی pointer-events-none (عمدی) (u2-10..12)
+- فرم تماس: ایمیل «abc» → خطای فارسی سمت سرور «ایمیل یا شماره تماس را کامل بنویس» بدون کرش (u2-13)؛ submit خالی → required بومی مرورگر مسدود می‌کند؛ ۵۰۰۰ نویسه (bypass maxLength=2000) → سرور رد می‌کند: «پیام حداکثر ۲۰۰۰ نویسه است» — بدون کرش و بدون رکورد DB؛ اما در هر دو رد، همه فیلدها پاک می‌شوند (از دست رفتن متن کاربر روی خطا)
+- هاور/cursor: لینک‌های nav/فوتر pointer با transition 0.15s؛ صفر cursor نابهنجار (not-allowed/wait)؛ اما دکمه‌های واقعی <button> (تریگر آکاردئون FAQ و دکمه «ارسال پیام») cursor:default دارند — ناهماهنگی با <a>های pointer
+- کارایی: DCL بین 124ms (faq) تا 487ms (landing) در dev؛ همه تصاویر loading=lazy و صفر broken؛ آواتارها در scroll واقعاً لود می‌شوند
+- errors و console در کل سناریوها (۸ صفحه + ۴۰۴ + فرم + تغییر viewport): errors خالی، صفر [error]/[warn] — فقط نویز dev (HMR/React DevTools hint)
+- ۱۴ اسکرین‌شات در tmp/u2-*.png؛ هیچ فایلی ادیت نشد؛ سرور restart نشد؛ session u2 بسته شد
+
+Stage Summary:
+- زیرساخت ریسپانسیو و کارایی سالم است: صفر سرریز افقی در 320/768/1920، max-width مرکزی در واید، lazy images، DCL زیر ۰٫۵ ثانیه، صفر خطای JS — و اعتبارسنجی سرورِ فرم تماس در برابر ورودی‌های عجیب (abc/خالی/۵۰۰۰ نویسه) محکم و محترمانه است
+- ۳ یافته: (۱) مهم — صفحه ۴۰۴ پیش‌فرض انگلیسی Next (و در /nonexistent بدون هدر/فوتر)؛ not-found.tsx فارسی لازم است؛ (۲) مهم — پاک‌شدن کامل فیلدهای فرم تماس پس از ردِ سرور (از دست رفتن پیام کاربر)؛ (۳) مهم(بالقوه) — لقب بلند در لیدربرد بدون truncate/break-words از کارت بیرون می‌زند؛ + ۱ جزئی: cursor:default روی دکمه‌های <button> (آکاردئون/ارسال)
+- جمع‌بندی: PASS مشروط — هیچ کرش/سرریز/خطای JS؛ سه مورد مهم قبل از فاز ۲ قابل‌رفع‌اند (not-found فارسی، حفظ مقادیر فرم، truncate لقب)
+
+---
+Task ID: 21
+Agent: Super Z (main agent)
+Task: دستور پویا — فیکس لوگوی هدر، کلیک‌پذیری «تمرین در پورتال»، سپس بازبینی ۴ ساب‌ایجنت (۲ دسته دوتایی)
+
+Work Log:
+- فیکس ۱ (لوگو): ریشه مشکل — فایل /logo.svg در <img> نه فونت دارد نه متغیر CSS؛ fill="var(--text-primary)" نامعتبر → وردمارک تیره/ریز و غالب‌شدن نشان بنفش (شبیه لوگوی Z). راه‌حل: کامپوننت SiteLogo با نشان وکتور عین primitiveهای SVG کاربر (rect#4F46E5 + تیک + نقطه #F59E0B، viewBox نرمال ۱۲۰) + وردمارک HTML از getSetting("site.name") — هدر props siteName گرفت از layout
+- فیکس ۲ (کارت درس): کل کارت فعال → <Link href={portal.url از DB}> با cursor-pointer؛ تکست «تمرین در پورتال» hover-محور ماند + [@media(hover:none)]:opacity-100 برای لمسی؛ درس بدون محتوا div می‌ماند؛ SubjectGrid اکنون portalUrl prop می‌گیرد (landing + subjects)
+- کشف تست: مرورگر headless این محیط در حالت hover:none است — group-hover Tailwind را نمی‌توان آنجا شبیه‌سازی کرد؛ کلیک/ناوبری/cursor با کلیک واقعی موس راستی‌آزمایی شد (→ /portal)
+- ۴ ساب‌ایجنت در ۲ دسته موازی اجرا شد (21-a تستر کاربر، 21-b بازبین کد، 21-c تستر لبه‌محور، 21-d امنیت/کارایی) — گزارش‌های کامل در سکشن‌های جداگانه همین فایل
+- یافته‌ها و فیکس‌های سریع انجام‌شده در کامیت fed01dc: لیدربرد فقط privacy=PUBLIC (قبلاً فقط PRIVATE حذف می‌شد — FRIENDS پیش‌فرض لو می‌رفت!)، not-found.tsx فارسی برندشده با هدر/فوتر، error.tsx فارسی با تلاش دوباره، حفظ مقادیر فرم تماس پس از خطای سرور (values در state) + لاگ سروری + پیام برند از DB + گارد ورودی غیرمتنی، aria لوگو (حذف role متناقض، label مشروط)، focus-ring کارت، حذف sr-only زائد، cursor-pointer آکاردئون/دکمه ارسال، try/catch generateMetadata ریشه، هم‌ترازی توکن‌های برند با رنگ دقیق SVG لوگو (#4840e0→#4f46e5، #f09808→#f59e0b + گرادیان‌ها)
+- باگ حین فیکس فرم: export const از فایل "use server" در مرز SSR undefined می‌شود → state اولیه به کامپوننت کلاینت منتقل شد
+- سرور dev وسط کار افتاده بود؛ مجدداً بالا آمد (nohup bun run dev)
+- tsc صفر خطای src؛ lint exit 0؛ راستی‌آزمایی مرورگری: ۴۰۴ فارسی با هدر/فوتر/۴۰۴ فارسی‌رقم، فرم حفظ مقادیر (nameKept/contactKept/bodyLen=64)، لندینگ سالم با پالت جدید
+
+Stage Summary:
+- هر دو فیکس درخواستی پویا انجام و اثبات شد؛ دور اول بازبینی هم صورت گرفت و موارد سریع فیکس شد
+- مانده به فاز ۲ (فهرست تجمیعی ۴ گزارش): مهاجرت تیترهای سکشن لندینگ/چیپ‌ها/فوتر به site_settings (۷ مورد مهم هاردکد)، rate-limit فرم تماس، هدرهای امنیتی + poweredByHeader:false + بستن ignoreBuildErrors، sitemap/canonical/robots، dedupe کش + ایندکس (status,type,startedAt) + select لیست بلاگ، WOFF2 + گیت لاگ Prisma، aria-current منو، آکاردئون multi-open (سلیقه‌ای)، فوتر/hero/portal هنوز PNG نشان‌اند (استفاده SiteLogo)
+- وضعیت: آماده ورود به فاز ۲ پس از تأیید پویا
