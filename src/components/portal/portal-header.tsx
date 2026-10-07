@@ -42,6 +42,7 @@ export function PortalHeader({
 
   const handleLogout = () => {
     startTransition(async () => {
+      // خروج فقط نشست را می‌بندد — هیچ حساب یا داده‌ای حذف نمی‌شود
       await logoutAction();
       router.push("/portal/login");
       router.refresh();
@@ -86,6 +87,7 @@ export function PortalHeader({
               onClick={handleLogout}
               disabled={pending}
               aria-label="خروج از حساب"
+              title="خروج فقط نشست را می‌بندد؛ حساب و همهٔ داده‌هایت می‌مانند"
               className="hidden cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive md:flex"
             >
               <LogOut className="h-4 w-4" aria-hidden />
@@ -122,6 +124,7 @@ export function PortalHeader({
             <button
               onClick={handleLogout}
               disabled={pending}
+              title="خروج فقط نشست را می‌بندد؛ حساب و همهٔ داده‌هایت می‌مانند"
               className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-destructive"
             >
               <LogOut className="h-4 w-4" aria-hidden />

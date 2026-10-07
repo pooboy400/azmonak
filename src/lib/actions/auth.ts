@@ -3,7 +3,12 @@
 // ============================================================
 // احراز هویت OTP (گام G10 + D3) — درخواست کد و تأیید کد
 // کد ۵ رقمی، انقضای ۲ دقیقه، حداکثر ۵ تلاش، محدودیت ارسال ۴۵ ثانیه
-// در نبود درگاه پیامک (محیط توسعه/پیش‌نمایش) کد در پاسخ برگردانده می‌شود.
+//
+// ⚠️ وضعیت فعلی (تصمیم پویا): درگاه پیامک هنوز متصل نیست؛ کد ورود به‌جای
+// پیامک در «همهٔ محیط‌ها و همهٔ دامنه‌ها» (توسعه/پیش‌نمایش/تولید) روی همان
+// صفحهٔ ورود نمایش داده می‌شود تا ورود همیشه ممکن باشد.
+// بعد از اتصال SMS: کافی است OTP_SHOW_CODE_INSTEAD_OF_SMS=false شود تا
+// نمایش کد فقط در محیط توسعه برگردد.
 // ============================================================
 
 import crypto from "crypto";
@@ -17,6 +22,13 @@ const OTP_MAX_ATTEMPTS = 5;
 const RESEND_COOLDOWN_MS = 45 * 1000;
 const HOURLY_LIMIT = 10;
 
+/**
+ * نمایش کد ورود به‌جای پیامک — فعلاً در همهٔ دامنه‌ها/محیط‌ها فعال است
+ * (پیامک متصل نیست). با اتصال درگاه SMS این فلگ به false تغییر می‌کند
+ * یا فقط برای محیط توسعه برگردانده می‌شود.
+ */
+const OTP_SHOW_CODE_INSTEAD_OF_SMS = (process.env.OTP_SHOW_CODE_INSTEAD_OF_SMS ?? "true") !== "false";
+
 function hashOtp(phone: string, code: string): string {
   return crypto.createHmac("sha256", process.env.AUTH_SECRET ?? "azmoonak-otp-pepper").update(`${phone}:${code}`).digest("hex");
 }
@@ -24,7 +36,7 @@ function hashOtp(phone: string, code: string): string {
 export interface OtpActionResult {
   ok: boolean;
   message?: string;
-  /** فقط در محیط بدون درگاه پیامک — برای امکان تست */
+  /** وقتی پیامک متصل نیست، کد به‌جای پیامک در پاسخ برگردانده می‌شود تا روی صفحه نمایش داده شود */
   devCode?: string;
   resendAfterSec?: number;
 }
@@ -60,13 +72,14 @@ export async function requestOtpAction(input: { phone: string }): Promise<OtpAct
     data: { phone, code: hashOtp(phone, code), expiresAt: new Date(Date.now() + OTP_TTL_MS) },
   });
 
-  // درگاه پیامک در این فاز متصل نیست؛ در توسعه کد بازگردانده/لاگ می‌شود
-  const isDev = process.env.NODE_ENV !== "production";
-  if (isDev) console.log(`[OTP] phone=${phone} code=${code}`);
+  // درگاه پیامک در این فاز متصل نیست — کد در همهٔ دامنه‌ها به‌جای پیامک برگردانده می‌شود
+  if (OTP_SHOW_CODE_INSTEAD_OF_SMS) console.log(`[OTP] phone=${phone} code=${code}`);
   return {
     ok: true,
-    ...(isDev ? { devCode: code } : {}),
-    message: "کد تأیید پیامک شد.",
+    ...(OTP_SHOW_CODE_INSTEAD_OF_SMS ? { devCode: code } : {}),
+    message: OTP_SHOW_CODE_INSTEAD_OF_SMS
+      ? "کد تأیید ساخته شد — فعلاً به‌جای پیامک روی همین صفحه نمایش داده می‌شود."
+      : "کد تأیید پیامک شد.",
     resendAfterSec: Math.ceil(RESEND_COOLDOWN_MS / 1000),
   };
 }
@@ -119,6 +132,12 @@ export async function verifyOtpAction(input: { phone: string; code: string }): P
   return { ok: true, isNewUser };
 }
 
+/**
+ * خروج از حساب — «فقط» نشست جاری را می‌بندد (حذف کوکی امضاشده).
+ * هیچ حساب، جلسه، پاسخ، آمار یا دادهٔ دیگری حذف نمی‌شود؛
+ * با ورود دوباره با همان شماره، همهٔ داده‌ها سر جای خودشان هستند.
+ * تنها راه پاک شدن حساب، «حذف حساب» از خود پروفایل است (deleteAccountAction).
+ */
 export async function logoutAction(): Promise<{ ok: boolean }> {
   await destroySessionCookie();
   return { ok: true };

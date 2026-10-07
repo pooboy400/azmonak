@@ -71,7 +71,8 @@ export function LoginForm() {
             ورود با شماره موبایل
           </div>
           <p className="text-xs leading-6 text-muted-foreground">
-            کد تأیید ۵ رقمی برای این شماره پیامک می‌شود. اگر حساب نداشته باشی، همان لحظه ساخته می‌شود.
+            کد تأیید ۵ رقمی برای ورود استفاده می‌شود. تا وقتی درگاه پیامک وصل نشده، کد به‌جای پیامک روی همین صفحه نشان داده می‌شود.
+            اگر حساب نداشته باشی، همان لحظه ساخته می‌شود.
           </p>
           <Input
             dir="ltr"
@@ -113,9 +114,10 @@ export function LoginForm() {
             </InputOTPGroup>
           </InputOTP>
           {devCode && (
-            <p className="rounded-lg bg-secondary px-3 py-2 text-xs text-secondary-foreground" dir="ltr">
-              dev mode — code: <span className="font-bold">{devCode}</span>
-            </p>
+            <div className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2" dir="ltr">
+              <p className="text-[11px] text-muted-foreground">dev mode — login code (instead of SMS)</p>
+              <p className="text-lg font-bold tracking-[0.3em] text-primary">{devCode}</p>
+            </div>
           )}
           {error && <p className="text-xs text-destructive" role="alert">{error}</p>}
           <Button type="submit" disabled={pending || code.length < 5} className="w-full cursor-pointer gap-2">

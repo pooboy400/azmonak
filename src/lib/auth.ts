@@ -1,11 +1,16 @@
 // ============================================================
 // نشست پورتال — کوکی امضاشده HMAC (بدون وابستگی خارجی)
 // ساختار کوکی: userId.expiry.hmac(userId.expiry)
+//
+// ماندگاری نشست (تصمیم پویا): کوکی «ماندگار» است (maxAge ۳۰ روز) —
+// بستن تب/مرورگر نشست را نمی‌بندد و کاربر لاگین می‌ماند. پرچم secure
+// بر اساس پروتکل واقعی درخواست (x-forwarded-proto) تنظیم می‌شود تا
+// کوکی روی هر دامنه‌ای — HTTPS یا HTTP — توسط مرورگر رد نشود.
 // نکته پروداکشن: AUTH_SECRET باید از environment تزریق شود.
 // ============================================================
 
 import crypto from "crypto";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 
@@ -20,16 +25,23 @@ function sign(payload: string): string {
 export async function createSessionCookie(userId: string): Promise<void> {
   const exp = Date.now() + MAX_AGE_SEC * 1000;
   const payload = `${userId}.${exp}`;
+  // secure فقط وقتی که درخواست واقعاً روی HTTPS آمده — وگرنه مرورگرهای
+  // دامنه‌های HTTP کوکی را بی‌صدا رد می‌کردند و لاگین «می‌پرید».
+  const proto = ((await headers()).get("x-forwarded-proto") ?? "").split(",")[0].trim();
   const store = await cookies();
   store.set(COOKIE_NAME, `${payload}.${sign(payload)}`, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: proto === "https",
     maxAge: MAX_AGE_SEC,
     path: "/",
   });
 }
 
+/**
+ * خروج از حساب — کوکی نشست را پاک می‌کند؛ هیچ داده‌ای (حساب، جلسه، پاسخ، آمار،
+ * فایل و …) حذف نمی‌شود. حذف حساب فقط از پروفایل و با تأیید صریح انجام می‌شود.
+ */
 export async function destroySessionCookie(): Promise<void> {
   const store = await cookies();
   store.delete(COOKIE_NAME);
