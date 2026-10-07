@@ -146,6 +146,9 @@ function ResultView({ result }: { result: NonNullable<Awaited<ReturnType<typeof 
           <StartExamButton subjectId={session.subjectId} label="تمرین جدید همین درس" variant="outline" />
         )}
         <Button asChild variant="ghost" className="cursor-pointer">
+          <Link href={`/portal/subjects/${session.subjectId}`}>روند پیشرفت این درس</Link>
+        </Button>
+        <Button asChild variant="ghost" className="cursor-pointer">
           <Link href="/portal/leaderboard">لیدربرد هفته</Link>
         </Button>
       </div>

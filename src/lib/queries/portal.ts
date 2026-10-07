@@ -111,6 +111,134 @@ export async function getPortalSubjects(userId: string, grade: string | null, ma
   });
 }
 
+// ---------- جزئیات درس (/portal/subjects/[id]) ----------
+
+/** آیا این درس در کوهورت کاربر دیده می‌شود؟ (همان قاعدهٔ فیلتر داشبورد) */
+export function isSubjectVisibleTo(subject: { grade: string; major: string | null }, user: { grade: string | null; major: string | null }): boolean {
+  if (!user.grade || !user.major) return false;
+  if (subject.grade !== user.grade) return false;
+  if (!subject.major) return true; // عمومی — همهٔ رشته‌ها
+  return subject.major.split(",").map((m) => m.trim()).includes(user.major);
+}
+
+/** یک نقطهٔ نمودار روند دولایه (D15) — نمرهٔ جلسه + توان R_s */
+export interface TrendPoint {
+  index: number; // ۱ تا n (ترتیب زمانی)
+  type: string; // PLACEMENT | PRACTICE
+  score: number | null;
+  rStart: number;
+  rEnd: number | null;
+  startedAt: Date;
+}
+
+export interface SubjectTopicRow {
+  id: string;
+  title: string;
+  questionCount: number;
+  level: number | null; // ۱–۳ از نردبان D16؛ null = شروع نشده
+  answeredCount: number;
+  rightStreak: number;
+  wrongStreak: number;
+  weaknessCount: number;
+  reviewDue: boolean;
+  reviewNextAt: Date | null;
+  reviewRepetitions: number;
+}
+
+export interface SubjectDetailData {
+  subject: { id: string; code: string; title: string; grade: string; major: string | null; iconKey: string | null; colorKey: string | null; topicCount: number; questionCount: number };
+  ability: { rating: number; answeredCount: number } | null;
+  completedSessions: number;
+  bestScore: number | null;
+  avgScore: number | null;
+  activeSessionId: string | null;
+  reviewDueCount: number;
+  topics: SubjectTopicRow[];
+  trend: TrendPoint[]; // حداکثر ۱۲ جلسهٔ آخر کامل‌شده — قدیمی‌ترین به جدیدترین
+}
+
+export async function getSubjectDetail(userId: string, subjectId: string): Promise<SubjectDetailData | null> {
+  const subject = await db.subject.findFirst({
+    where: { id: subjectId, isActive: true },
+    include: {
+      _count: { select: { topics: true, questions: { where: { status: "APPROVED" } } } },
+    },
+  });
+  if (!subject) return null;
+
+  const [ability, topics, sessionsAgg, activeSession, reviewDueCount] = await Promise.all([
+    db.subjectAbility.findUnique({ where: { userId_subjectId: { userId, subjectId } } }),
+    db.topic.findMany({
+      where: { subjectId },
+      orderBy: { order: "asc" },
+      include: {
+        _count: { select: { questions: { where: { status: "APPROVED" } } } },
+        topicAbilities: { where: { userId } },
+        reviewSchedules: { where: { userId } },
+      },
+    }),
+    db.session.findMany({
+      where: { userId, subjectId, status: "COMPLETED" },
+      select: { type: true, score: true, rStart: true, rEnd: true, startedAt: true },
+      orderBy: { startedAt: "asc" },
+    }),
+    db.session.findFirst({
+      where: { userId, subjectId, status: "ACTIVE" },
+      select: { id: true },
+      orderBy: { startedAt: "desc" },
+    }),
+    db.reviewSchedule.count({ where: { userId, subjectId, dueAt: { lte: new Date() } } }),
+  ]);
+
+  const scores = sessionsAgg.filter((s) => s.score !== null).map((s) => s.score!);
+  const trend: TrendPoint[] = sessionsAgg.slice(-12).map((s, i) => ({
+    index: i + 1,
+    type: s.type,
+    score: s.score,
+    rStart: s.rStart,
+    rEnd: s.rEnd,
+    startedAt: s.startedAt,
+  }));
+
+  return {
+    subject: {
+      id: subject.id,
+      code: subject.code,
+      title: subject.title,
+      grade: subject.grade,
+      major: subject.major,
+      iconKey: subject.iconKey,
+      colorKey: subject.colorKey,
+      topicCount: subject._count.topics,
+      questionCount: subject._count.questions,
+    },
+    ability: ability ? { rating: ability.rating, answeredCount: ability.answeredCount } : null,
+    completedSessions: sessionsAgg.length,
+    bestScore: scores.length > 0 ? Math.max(...scores) : null,
+    avgScore: scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null,
+    activeSessionId: activeSession?.id ?? null,
+    reviewDueCount,
+    topics: topics.map((t) => {
+      const ta = t.topicAbilities[0];
+      const rs = t.reviewSchedules[0];
+      return {
+        id: t.id,
+        title: t.title,
+        questionCount: t._count.questions,
+        level: ta?.level ?? null,
+        answeredCount: ta?.answeredCount ?? 0,
+        rightStreak: ta?.rightStreak ?? 0,
+        wrongStreak: ta?.wrongStreak ?? 0,
+        weaknessCount: ta?.weaknessCount ?? 0,
+        reviewDue: rs ? rs.dueAt.getTime() <= Date.now() : false,
+        reviewNextAt: rs ? rs.dueAt : null,
+        reviewRepetitions: rs?.repetitions ?? 0,
+      };
+    }),
+    trend,
+  };
+}
+
 // ---------- داشبورد ----------
 
 export interface DashboardData {

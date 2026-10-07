@@ -188,7 +188,11 @@ function SubjectCard({ subject, forecast }: { subject: PortalSubject; forecast?:
               <DbIcon k={subject.iconKey} className="h-5 w-5" />
             </span>
             <div>
-              <CardTitle className="text-base">{subject.title}</CardTitle>
+              <CardTitle className="text-base">
+                <Link href={`/portal/subjects/${subject.id}`} className="hover:text-primary hover:underline">
+                  {subject.title}
+                </Link>
+              </CardTitle>
               <div className="mt-0.5 text-[11px] text-muted-foreground">
                 {cohortLabel(subject.grade, subject.major)} · {faNumLocal(subject.questionCount)} سؤال
               </div>

@@ -1,0 +1,10 @@
+import { PrismaClient } from "@prisma/client";
+const db = new PrismaClient();
+const u = await db.user.findFirst({ where: { username: "mina_math" }, include: { identity: true } });
+const ss = await db.session.findMany({ where: { userId: u.id, status: "COMPLETED" }, orderBy: { startedAt: "asc" }, select: { type: true, score: true, rStart: true, rEnd: true, questionCount: true, startedAt: true }, take: 8 });
+console.log("phone:", u.identity.phone);
+for (const s of ss) console.log(s.type, "score=", s.score, "r=", s.rStart, "→", s.rEnd, "q=", s.questionCount, s.startedAt.toISOString().slice(0,10));
+console.log("total completed:", await db.session.count({ where: { userId: u.id, status: "COMPLETED" } }));
+const ta = await db.topicAbility.findMany({ where: { userId: u.id }, include: { topic: { select: { title: true } } }, take: 6 });
+for (const t of ta) console.log("topic:", t.topic.title, "level=", t.level, "answered=", t.answeredCount);
+await db.$disconnect();
