@@ -44,6 +44,13 @@ export function sharedMajorLabel(major: string): string {
   return `مشترک ${parts.join(" و ")}`;
 }
 
+/** برچسب نوع جلسه — PLACEMENT | PRACTICE | REVIEW */
+export function sessionTypeLabel(type: string): string {
+  if (type === "PLACEMENT") return "جایابی";
+  if (type === "REVIEW") return "مرور";
+  return "تمرین";
+}
+
 /** تاریخ شمسی — نمایش تاریخ‌های دیتابیس */
 export function faDate(date: Date | string): string {
   const d = typeof date === "string" ? new Date(date) : date;

@@ -63,3 +63,10 @@ export async function requireUser() {
   if (!user) redirect("/portal/login");
   return user;
 }
+
+/** کاربر با یکی از نقش‌های مجاز — وگرنه به داشبورد برمی‌گردد. */
+export async function requireRole(roles: string[]) {
+  const user = await requireUser();
+  if (!roles.includes(user.role)) redirect("/portal");
+  return user;
+}

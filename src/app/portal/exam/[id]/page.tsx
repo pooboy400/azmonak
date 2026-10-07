@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { MathText } from "@/components/site/math-text";
 import { faNum, faRating, faScore, faDuration } from "@/lib/fa";
-import { faDate } from "@/lib/labels";
+import { faDate, sessionTypeLabel } from "@/lib/labels";
 import { CheckCircle2, ClipboardList, Crown, Target, TrendingDown, TrendingUp, XCircle } from "lucide-react";
 
 export const metadata: Metadata = { title: "جلسه آزمون" };
@@ -52,7 +52,7 @@ export default async function ExamPage({ params }: { params: Promise<{ id: strin
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="flex items-center gap-2 text-lg font-bold">
           <Target className="h-5 w-5 text-primary" aria-hidden />
-          جلسه {data.session.type === "PLACEMENT" ? "جایابی" : "تمرین"} — {data.session.subjectTitle}
+          جلسه {sessionTypeLabel(data.session.type)} — {data.session.subjectTitle}
         </h1>
         <div className="flex items-center gap-2">
           {rDelta !== null && data.session.rEnd !== null && (
@@ -104,7 +104,7 @@ function ResultView({ result }: { result: NonNullable<Awaited<ReturnType<typeof 
           <Crown className="h-7 w-7" aria-hidden />
         </div>
         <h1 className="text-xl font-bold sm:text-2xl">
-          {isPlacement ? "سطح تو مشخص شد!" : "جلسه تمام شد!"}
+          {isPlacement ? "سطح تو مشخص شد!" : session.type === "REVIEW" ? "مرور امروز تمام شد!" : "جلسه تمام شد!"}
         </h1>
         <p className="mt-1 text-xs text-muted-foreground">
           {session.subjectTitle} · {faDate(session.finishedAt ?? session.startedAt)}

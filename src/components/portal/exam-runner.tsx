@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { MathText } from "@/components/site/math-text";
 import { faDuration, faNum, faRating } from "@/lib/fa";
+import { sessionTypeLabel } from "@/lib/labels";
 import { getNextQuestionAction, submitAnswerAction, type NextQuestionResult, type SubmitResult } from "@/lib/actions/exam";
 
 type Question = NonNullable<NextQuestionResult["question"]>;
@@ -140,7 +141,9 @@ export function ExamRunner({ sessionId, subjectTitle }: { sessionId: string; sub
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3">
         <div className="flex items-center gap-2 text-sm">
           <span className="font-bold">{subjectTitle}</span>
-          <Badge variant={isPlacement ? "outline" : "secondary"}>{isPlacement ? "جایابی" : "تمرین"}</Badge>
+          <Badge variant={isPlacement ? "outline" : "secondary"}>
+            {isPlacement ? "جایابی" : sessionTypeLabel(question.type)}
+          </Badge>
         </div>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <span>

@@ -268,7 +268,7 @@ function simulateAttempt(
     const rv = topic.review;
     if (quality >= 3) {
       rv.rep += 1;
-      rv.interval = rv.rep === 1 ? 1 : rv.rep === 2 ? 6 : Math.ceil(rv.interval * rv.ef);
+      rv.interval = Math.min(365, rv.rep === 1 ? 1 : rv.rep === 2 ? 6 : Math.ceil(rv.interval * rv.ef));
     } else {
       rv.rep = 0;
       rv.interval = 1;
@@ -454,6 +454,201 @@ async function main() {
           publishedAt: new Date(NOW - p.daysAgo * DAY),
           isPublished: true,
           isSample: true,
+        },
+      });
+    }
+
+    // ===== 3.7. انجمن پرسش و پاسخ (نمونه) =====
+    console.log("💬 inserting forum sample questions, answers, votes…");
+    const forumSpecs: Array<{
+      authorId: string;
+      subjectCode: string;
+      topic?: string;
+      title: string;
+      body: string;
+      daysAgo: number;
+      views: number;
+      answers: Array<{ authorId: string; body: string; accepted: boolean; daysAgo: number; votes: string[] }>;
+      votes: string[];
+    }> = [
+      {
+        authorId: "smpu03",
+        subjectCode: "PHY11C",
+        topic: "کار و انرژی",
+        title: "چرا در محاسبهٔ کار، نیروی عمودی را حذف می‌کنیم؟",
+        body: "وقتی جسمی را روی سطح افقی هل می‌دهم، نیروی عمودی وزن هم به آن وارد است.\nچرا در فرمول کار فقط مؤلفهٔ افقی نیرو را می‌گیریم؟ یعنی $W = F\\,x$ چون نیروی ما افقی است یا همیشه؟",
+        daysAgo: 6,
+        views: 41,
+        answers: [
+          {
+            authorId: "smpt01",
+            body: "کار از ضرب داخلی نیرو در جابه‌جایی به دست می‌آید: $W = \\vec{F}\\cdot\\vec{x} = F\\,x\\cos\\theta$.\nنیرویی که بر جابه‌جایی عمود است ($\\theta = 90°$ و $\\cos 90° = 0$) کاری انجام نمی‌دهد — مثل وزن در حرکت افقی. پس حذفش اشتباه نیست، فقط سهم کاری‌اش صفر است.",
+            accepted: true,
+            daysAgo: 5,
+            votes: ["smpu01", "smpu02", "smpu05", "smpu21"],
+          },
+        ],
+        votes: ["smpu01", "smpu07"],
+      },
+      {
+        authorId: "smpu23",
+        subjectCode: "CAL12M",
+        topic: "مشتق",
+        title: "مشتق $f(x)=2x\\sqrt{x}$ را چطور مرحله‌به‌مرحله حساب کنم؟",
+        body: "روی تابع $f(x)=2x\\sqrt{x}$ گیر کرده‌ام. جواب کتاب $3\\sqrt{x}$ است ولی نمی‌فهمم این رادیکال کجا رفت.\nلطفاً قدم‌به‌قدم توضیح دهید.",
+        daysAgo: 3,
+        views: 28,
+        answers: [
+          {
+            authorId: "smpu21",
+            body: "اول بازنویسی کن: $\\sqrt{x} = x^{1/2}$ پس $f(x) = 2x^{3/2}$.\nحالا قاعدهٔ توان: $f'(x) = 2 \\cdot \\tfrac{3}{2}x^{1/2} = 3x^{1/2} = 3\\sqrt{x}$.\nرادیکال نرفته — به توان ۱/۲ تبدیل شده که همان رادیکال است.",
+            accepted: true,
+            daysAgo: 3,
+            votes: ["smpu23", "smpu22", "smpu24"],
+          },
+        ],
+        votes: ["smpu21", "smpu24"],
+      },
+      {
+        authorId: "smpu07",
+        subjectCode: "MAT11T",
+        topic: "تابع",
+        title: "تفاوت دامنه و برد یک تابع دقیقاً چیست؟",
+        body: "در آزمون، دامنه و برد $f(x)=\\dfrac{1}{x-2}$ را پرسیده بود و من جایش را زدم.\nاگر کسی با یک مثال ساده بگوید چه تفاوتی دارند ممنون می‌شوم.",
+        daysAgo: 1,
+        views: 12,
+        answers: [],
+        votes: [],
+      },
+      {
+        authorId: "smpu18",
+        subjectCode: "FAR10G",
+        topic: "آرایه‌های ادبی",
+        title: "تشبیه و استعاره را در متن چطور از هم تشخیص بدهم؟",
+        body: "در قرابت معنایی همیشه بین تشبیه و استعاره گیج می‌شوم. مثلاً «ابر، اشک می‌بارید» کدام است؟",
+        daysAgo: 9,
+        views: 55,
+        answers: [
+          {
+            authorId: "smpu17",
+            body: "تشبیه حداقل دو طرف دارد: مشبه و مشبهٌ‌به (مثل «ابر مثل غمگین بود»). استعاره یکی از طرف‌ها حذف می‌شود.\nدر «ابر، اشک می‌بارید»، مشبهٌ‌به (انسان) حذف شده و ابر جای او نشسته — پس استعارهٔ مرسل است.",
+            accepted: false,
+            daysAgo: 8,
+            votes: ["smpu18", "smpu19"],
+          },
+          {
+            authorId: "smpt02",
+            body: "کمال توجه: یک راه سریع بپرس «چی به چی تشبیه شده؟». اگر دوتا طرف پیدا نکردی ولی صفتی از جایی دیگر منتقل شده، استعاره است.\nمثال شما استعارهٔ مرسل درست است؛ در آزمون هم به تازگی همین شکل پرسیده شده.",
+            accepted: true,
+            daysAgo: 7,
+            votes: ["smpu17", "smpu18", "smpu20"],
+          },
+        ],
+        votes: ["smpu17", "smpu19"],
+      },
+      {
+        authorId: "smpu02",
+        subjectCode: "PHY11C",
+        topic: "اندازه‌حرکت",
+        title: "در برخورد کاملاً نارس، کدام کمیت حفظ می‌شود؟",
+        body: "می‌دانم انرژی جنبشی از دست می‌رود، ولی آیا اندازه‌حرکت همیشه حفظ می‌شود؟ شرطش چیست؟",
+        daysAgo: 2,
+        views: 19,
+        answers: [
+          {
+            authorId: "smpu01",
+            body: "بله — اگر نیروی خارجی خالص صفر باشد، اندازه‌حرکت کل همیشه حفظ می‌شود: $\\sum m\\vec{v}_{قبل} = \\sum m\\vec{v}_{بعد}$.\nدر برخورد نارس فقط انرژی جنبشی نیست که حفظ می‌شود؛ بخشی به گرما و تغییر شکل می‌رود.",
+            accepted: false,
+            daysAgo: 2,
+            votes: ["smpu02", "smpu03"],
+          },
+        ],
+        votes: ["smpu03"],
+      },
+    ];
+
+    let fqSeq = 0;
+    for (const spec of forumSpecs) {
+      fqSeq += 1;
+      const fqId = `smpfq${String(fqSeq).padStart(2, "0")}`;
+      const subjectId = subjectIds.get(spec.subjectCode)!;
+      const topicId = spec.topic ? (topicIds.get(`${spec.subjectCode}::${spec.topic}`) ?? null) : null;
+      const resolved = spec.answers.some((a) => a.accepted);
+      await db.forumQuestion.create({
+        data: {
+          id: fqId,
+          authorId: spec.authorId,
+          subjectId,
+          topicId,
+          title: spec.title,
+          body: spec.body,
+          status: resolved ? "RESOLVED" : "OPEN",
+          viewCount: spec.views,
+          isSample: true,
+          createdAt: new Date(NOW - spec.daysAgo * DAY),
+          updatedAt: new Date(NOW - spec.daysAgo * DAY),
+        },
+      });
+      for (const v of spec.votes) {
+        await db.forumQuestionVote.create({ data: { questionId: fqId, userId: v, isSample: true, createdAt: new Date(NOW - spec.daysAgo * DAY) } });
+      }
+      let faSeq = 0;
+      for (const a of spec.answers) {
+        faSeq += 1;
+        await db.forumAnswer.create({
+          data: {
+            id: `smpfa${String(fqSeq).padStart(2, "0")}${faSeq}`,
+            questionId: fqId,
+            authorId: a.authorId,
+            body: a.body,
+            isAccepted: a.accepted,
+            isSample: true,
+            createdAt: new Date(NOW - a.daysAgo * DAY),
+            updatedAt: new Date(NOW - a.daysAgo * DAY),
+          },
+        });
+        for (const v of a.votes) {
+          await db.forumAnswerVote.create({ data: { answerId: `smpfa${String(fqSeq).padStart(2, "0")}${faSeq}`, userId: v, isSample: true, createdAt: new Date(NOW - a.daysAgo * DAY) } });
+        }
+      }
+    }
+
+    // ===== 3.8. تمرین کلاسی (نمونه) =====
+    console.log("📋 inserting sample class assignments…");
+    const assignmentSpecs: Array<{ id: string; classId: string; subjectCode: string; title: string; questionCount: number; dueInDays: number | null; createdBy: string }> = [
+      { id: "smpas1", classId: "smpcls1", subjectCode: "PHY11C", title: "تمرین هفتهٔ ۶ — کار و انرژی", questionCount: 10, dueInDays: 2, createdBy: "smpt01" },
+      { id: "smpas2", classId: "smpcls1", subjectCode: "MAT11T", title: "مرور تابع قبل از آزمون", questionCount: 8, dueInDays: 5, createdBy: "smpt01" },
+      { id: "smpas3", classId: "smpcls2", subjectCode: "FAR10G", title: "آرایه‌های ادبی — ۱۰ سؤال", questionCount: 10, dueInDays: null, createdBy: "smpt02" },
+    ];
+    for (const a of assignmentSpecs) {
+      await db.assignment.create({
+        data: {
+          id: a.id,
+          classId: a.classId,
+          subjectId: subjectIds.get(a.subjectCode)!,
+          title: a.title,
+          questionCount: a.questionCount,
+          dueAt: a.dueInDays === null ? null : new Date(NOW + a.dueInDays * DAY),
+          isSample: true,
+          createdAt: new Date(NOW - randInt(2, 4) * DAY),
+        },
+      });
+    }
+    // چند تکمیل نمونه برای smpas3 (کلاس دهم) و smpas1
+    const completionSpecs: Array<{ assignmentId: string; studentId: string; score: number; daysAgo: number }> = [
+      { assignmentId: "smpas3", studentId: "smpu17", score: 84.2, daysAgo: 1 },
+      { assignmentId: "smpas3", studentId: "smpu19", score: 66.7, daysAgo: 1 },
+      { assignmentId: "smpas1", studentId: "smpu01", score: 92.0, daysAgo: 1 },
+      { assignmentId: "smpas1", studentId: "smpu05", score: 71.4, daysAgo: 1 },
+    ];
+    for (const c of completionSpecs) {
+      await db.assignmentCompletion.create({
+        data: {
+          assignmentId: c.assignmentId,
+          studentId: c.studentId,
+          score: c.score,
+          isSample: true,
+          completedAt: new Date(NOW - c.daysAgo * DAY),
         },
       });
     }
@@ -735,7 +930,7 @@ async function main() {
     }
 
     // ===== 7. summary =====
-    const [users, identity, subjects, topics, questions, sessions, attempts, sa, ta, reviews, classes, friendships, mis, settings, faqs, posts] =
+    const [users, identity, subjects, topics, questions, sessions, attempts, sa, ta, reviews, classes, friendships, mis, settings, faqs, posts, fq, fa, fqv, fav, asg, ac] =
       await Promise.all([
         db.user.count(),
         db.identity.count(),
@@ -753,12 +948,20 @@ async function main() {
         db.siteSetting.count(),
         db.faq.count(),
         db.blogPost.count(),
+        db.forumQuestion.count(),
+        db.forumAnswer.count(),
+        db.forumQuestionVote.count(),
+        db.forumAnswerVote.count(),
+        db.assignment.count(),
+        db.assignmentCompletion.count(),
       ]);
     console.log("\n✅ seed complete — sample data summary:");
     console.table({
       users, identity, subjects, topics, questions, sessions, attempts,
       subjectAbility: sa, topicAbility: ta, reviewSchedule: reviews,
       classes, friendships, misconceptions: mis,
+      forumQuestions: fq, forumAnswers: fa, forumVotes: fqv + fav,
+      assignments: asg, assignmentCompletions: ac,
       siteSettings: settings, faqs, blogPosts: posts,
     });
   } finally {

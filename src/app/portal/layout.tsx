@@ -16,7 +16,11 @@ export default async function PortalLayout({ children }: { children: React.React
     <div className="flex min-h-screen flex-col">
       <PortalHeader
         siteName={siteName}
-        user={{ nickname: user?.nickname ?? "مهمان", avatarUrl: user?.avatarUrl ?? null }}
+        user={{
+          nickname: user?.nickname ?? "مهمان",
+          avatarUrl: user?.avatarUrl ?? null,
+          role: user?.role ?? null,
+        }}
       />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-6 md:pb-12">{children}</main>
       <footer className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">

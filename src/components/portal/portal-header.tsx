@@ -1,17 +1,18 @@
 "use client";
 
-// هدر پورتال — ناوبری فعال با usePathname + خروج
+// هدر پورتال — ناوبری فعال با usePathname + لینک‌های نقش‌محور (معلم/ادمین) + خروج
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Trophy, Users, User, LogOut, Menu } from "lucide-react";
+import { LayoutDashboard, Trophy, Users, User, LogOut, Menu, MessagesSquare, School, ShieldCheck } from "lucide-react";
 import { useState, useTransition } from "react";
 import { logoutAction } from "@/lib/actions/auth";
 import { SiteLogo } from "@/components/site/site-logo";
 import { UserAvatar } from "@/components/site/user-avatar";
 import { cn } from "@/lib/utils";
 
-const NAV = [
+const BASE_NAV = [
   { href: "/portal", label: "داشبورد", icon: LayoutDashboard },
+  { href: "/portal/forum", label: "انجمن", icon: MessagesSquare },
   { href: "/portal/leaderboard", label: "لیدربرد", icon: Trophy },
   { href: "/portal/community", label: "کامیونیتی", icon: Users },
   { href: "/portal/profile", label: "پروفایل", icon: User },
@@ -22,12 +23,20 @@ export function PortalHeader({
   user,
 }: {
   siteName: string;
-  user: { nickname: string; avatarUrl: string | null };
+  user: { nickname: string; avatarUrl: string | null; role: string | null };
 }) {
   const pathname = usePathname();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const NAV = [...BASE_NAV];
+  if (user.role === "TEACHER" || user.role === "ADMIN") {
+    NAV.splice(4, 0, { href: "/portal/teacher", label: "پنل معلم", icon: School });
+  }
+  if (user.role === "ADMIN") {
+    NAV.splice(5, 0, { href: "/portal/admin", label: "پنل ادمین", icon: ShieldCheck });
+  }
 
   const isActive = (href: string) => (href === "/portal" ? pathname === "/portal" : pathname.startsWith(href));
 
@@ -124,7 +133,8 @@ export function PortalHeader({
 
       {/* ناوبری پایین موبایل */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-border/60 bg-background/95 backdrop-blur-md md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 grid border-t border-border/60 bg-background/95 backdrop-blur-md md:hidden"
+        style={{ gridTemplateColumns: `repeat(${NAV.length}, minmax(0, 1fr))` }}
         aria-label="ناوبری پایین"
       >
         {NAV.map((item) => (

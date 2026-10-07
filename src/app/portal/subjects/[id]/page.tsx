@@ -7,7 +7,7 @@ import { faNum, faRating, faScore } from "@/lib/fa";
 import { faDate, gradeLabel, majorLabel, sharedMajorLabel } from "@/lib/labels";
 import { DbIcon, getTone } from "@/lib/icon-map";
 import { ProgressTrendChart } from "@/components/portal/progress-trend-chart";
-import { StartExamButton } from "@/components/portal/start-exam-button";
+import { StartExamButton, StartReviewButton } from "@/components/portal/start-exam-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -103,6 +103,9 @@ export default async function SubjectDetailPage({ params }: { params: Promise<{ 
               label={data.activeSessionId ? "ادامه جلسه" : hasAbility ? "شروع تمرین" : "شروع جایابی"}
               size="default"
             />
+            {data.reviewDueCount > 0 && !data.activeSessionId && (
+              <StartReviewButton subjectId={data.subject.id} size="default" />
+            )}
           </div>
         </CardContent>
       </Card>

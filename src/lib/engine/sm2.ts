@@ -6,6 +6,7 @@
 
 export const EF_START = 2.5;
 export const EF_FLOOR = 1.3;
+export const INTERVAL_MAX = 365; // سقف فاصلهٔ مرور (روز) — جلوگیری از رشد نمایی بی‌سقف و سرریز تاریخ
 export const T_FAST = 15; // ثانیه؛ زیر آن: حدس رفلکسی (سقف q=۴)
 export const T_SLOW = 70; // ثانیه؛ بالای آن: سخت به جواب رسیده (−۰٫۵)
 export const BASE_CORRECT = 4.0;
@@ -41,10 +42,10 @@ export function updateEf(easeFactor: number, q: number): number {
   return Math.max(EF_FLOOR, easeFactor + 0.1 - d * 0.08 - d * d * 0.02);
 }
 
-/** فاصله مرور بعدی برحسب روز: q<۳ ← ریست ۱ روز؛ سپس ۱، ۶، قبلی×EF. */
+/** فاصله مرور بعدی برحسب روز: q<۳ ← ریست ۱ روز؛ سپس ۱، ۶، قبلی×EF — با سقف ۳۶۵ روز. */
 export function nextInterval(repetition: number, easeFactor: number, q: number, previousInterval = 0): number {
   if (q < 3.0) return 1;
   if (repetition <= 1) return 1;
   if (repetition === 2) return 6;
-  return Math.max(1, Math.round(previousInterval * easeFactor));
+  return Math.min(INTERVAL_MAX, Math.max(1, Math.round(previousInterval * easeFactor)));
 }

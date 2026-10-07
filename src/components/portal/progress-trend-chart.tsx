@@ -4,6 +4,7 @@
 // کامپوننت سرور است؛ بدون state و بدون تعامل — tooltip بومی <title>
 
 import { faNum, faRating, faScore } from "@/lib/fa";
+import { sessionTypeLabel } from "@/lib/labels";
 import type { TrendPoint } from "@/lib/queries/portal";
 
 const W = 660;
@@ -92,7 +93,7 @@ export function ProgressTrendChart({ points }: { points: TrendPoint[] }) {
           return (
             <g key={p.index}>
               <title>
-                {`جلسهٔ ${faNum(p.index)} (${p.type === "PLACEMENT" ? "جایابی" : "تمرین"}) — ${shortJalaliDate(p.startedAt)}${p.score !== null ? ` — نمره ${faScore(p.score)}` : " — بدون نمره"}${p.rEnd !== null ? ` — توان ${faRating(p.rEnd)}` : ""}`}
+                {`جلسهٔ ${faNum(p.index)} (${sessionTypeLabel(p.type)}) — ${shortJalaliDate(p.startedAt)}${p.score !== null ? ` — نمره ${faScore(p.score)}` : " — بدون نمره"}${p.rEnd !== null ? ` — توان ${faRating(p.rEnd)}` : ""}`}
               </title>
               {p.score !== null && <rect x={x} y={y} width={barW} height={Math.max(h, 2)} rx={3} fill="var(--chart-1)" opacity={0.85} />}
             </g>

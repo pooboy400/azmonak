@@ -3,10 +3,11 @@
 // دکمه شروع/ادامه آزمون — اکشن سمت سرور redirect می‌کند؛ خطا با toast نمایش داده می‌شود
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, PlayCircle } from "lucide-react";
+import { Loader2, PlayCircle, CalendarClock, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { startSessionAction, abandonSessionAction } from "@/lib/actions/exam";
+import { startSessionAction, startReviewSessionAction, abandonSessionAction } from "@/lib/actions/exam";
+import { startAssignmentSessionAction } from "@/lib/actions/teacher";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -64,6 +65,64 @@ export function StartExamButton({
     >
       {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <PlayCircle className="h-4 w-4" aria-hidden />}
       {label ?? (isPlacement ? "شروع جایابی" : "شروع تمرین")}
+    </Button>
+  );
+}
+
+export function StartReviewButton({
+  subjectId,
+  label = "شروع مرور امروز",
+  size = "sm",
+}: {
+  subjectId: string;
+  label?: string;
+  size?: "sm" | "default" | "lg";
+}) {
+  const [pending, startTransition] = useTransition();
+  const { toast } = useToast();
+
+  return (
+    <Button
+      size={size}
+      variant="outline"
+      disabled={pending}
+      className="cursor-pointer gap-2 border-amber-300 text-amber-800 hover:bg-amber-50"
+      onClick={() =>
+        startTransition(async () => {
+          const res = await startReviewSessionAction(subjectId);
+          if (res && !res.ok && res.message) {
+            toast({ title: res.message, variant: "destructive" });
+          }
+        })
+      }
+    >
+      {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <CalendarClock className="h-4 w-4" aria-hidden />}
+      {label}
+    </Button>
+  );
+}
+
+/** دکمهٔ شروع تمرین کلاسی از داشبورد دانش‌آموز — اکشن redirect می‌کند */
+export function StartAssignmentButton({ assignmentId }: { assignmentId: string }) {
+  const [pending, startTransition] = useTransition();
+  const { toast } = useToast();
+
+  return (
+    <Button
+      size="sm"
+      disabled={pending}
+      className="cursor-pointer gap-2"
+      onClick={() =>
+        startTransition(async () => {
+          const res = await startAssignmentSessionAction(assignmentId);
+          if (res && !res.ok && res.message) {
+            toast({ title: res.message, variant: "destructive" });
+          }
+        })
+      }
+    >
+      {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <ClipboardList className="h-4 w-4" aria-hidden />}
+      شروع تمرین
     </Button>
   );
 }

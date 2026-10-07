@@ -11,7 +11,7 @@ export interface SeedUser {
   avatarUrl: string;
   grade: "GRADE10" | "GRADE11" | "GRADE12" | null;
   major: "EXPERIMENTAL" | "MATH" | "HUMANITIES" | null;
-  role: "STUDENT" | "TEACHER";
+  role: "STUDENT" | "TEACHER" | "ADMIN";
   privacy: "PUBLIC" | "FRIENDS" | "PRIVATE";
   /** base skill 0..1 — used only by the seeder to drive realistic history */
   skill: number;
@@ -48,6 +48,8 @@ export const USERS: SeedUser[] = [
   // ---- دبیران (2) ----
   { id: "smpt01", username: "farshad_kaviani",  nickname: "فرشاد کاویانی",   avatarUrl: "/avatars/sample/smpt01.jpg", grade: null, major: null, role: "TEACHER", privacy: "PUBLIC",  skill: 0 },
   { id: "smpt02", username: "leila_mousavi",    nickname: "لیلا موسوی",      avatarUrl: "/avatars/sample/smpt02.jpg", grade: null, major: null, role: "TEACHER", privacy: "PUBLIC",  skill: 0 },
+  // ---- ادمین (1) — پنل ادمین را تست/دمو می‌کند ----
+  { id: "smpa01", username: "azmoonak_admin",   nickname: "مدیر آزمونک",     avatarUrl: "/avatars/sample/smpt01.jpg", grade: null, major: null, role: "ADMIN",   privacy: "PUBLIC",  skill: 0 },
 ];
 
 /** phone for a sample user: 09990000001, 09990000002, ... (fake range) */

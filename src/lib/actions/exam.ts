@@ -19,6 +19,7 @@ import { quality, updateEf, nextInterval, EF_START } from "@/lib/engine/sm2";
 import { questionWeight } from "@/lib/engine/predict";
 
 const PRACTICE_QUESTIONS = 10;
+const REVIEW_QUESTIONS = 10; // حداکثر سؤال جلسهٔ مرور (تا سقف سؤال‌های موجود مباحث سرموعد)
 const EXPOSURE_DAYS = 21; // تازگی مبحث: بعد از ۳ هفته «رهاشده» کامل حساب می‌شود
 
 // ---------- شروع جلسه ----------
@@ -55,6 +56,78 @@ export async function startSessionAction(subjectId: string): Promise<{ ok: boole
     },
   });
   redirect(`/portal/exam/${session.id}`);
+}
+
+/**
+ * شروع جلسهٔ «مرور امروز» — صف SM-2 همین درس.
+ * فقط سؤال‌های مباحث سرِموعد (dueAt گذشته) در جلسه می‌آیند و با هر پاسخ،
+ * فاصلهٔ مرور همان مبحث طبق SM-2 به‌روز می‌شود. اگر بانک سؤال مباحث
+ * سرموعد کوچک‌تر از سقف باشد، جلسه با همان تعداد سؤال تعریف می‌شود.
+ */
+export async function startReviewSessionAction(subjectId: string): Promise<{ ok: boolean; message?: string }> {
+  const user = await getSessionUser();
+  if (!user) return { ok: false, message: "برای شروع مرور وارد شوید." };
+
+  const subject = await db.subject.findFirst({ where: { id: subjectId, isActive: true } });
+  if (!subject) return { ok: false, message: "درس یافت نشد." };
+
+  // جلسهٔ مرور نیمه‌کاره همین درس → ازسرگیری
+  const activeReview = await db.session.findFirst({
+    where: { userId: user.id, subjectId, status: "ACTIVE", type: "REVIEW" },
+    orderBy: { startedAt: "desc" },
+  });
+  if (activeReview) redirect(`/portal/exam/${activeReview.id}`);
+
+  const dueTopics = await db.reviewSchedule.findMany({
+    where: { userId: user.id, subjectId, dueAt: { lte: new Date() } },
+    select: { topicId: true },
+  });
+  if (dueTopics.length === 0) return { ok: false, message: "مرور سرِموعدی برای این درس نداری." };
+
+  const poolCount = await db.question.count({
+    where: { subjectId, status: "APPROVED", topicId: { in: dueTopics.map((t) => t.topicId) } },
+  });
+  if (poolCount === 0) return { ok: false, message: "برای مباحث سرِموعد، سؤالی در بانک نیست." };
+
+  const ability = await db.subjectAbility.findUnique({
+    where: { userId_subjectId: { userId: user.id, subjectId } },
+  });
+
+  const session = await db.session.create({
+    data: {
+      userId: user.id,
+      subjectId,
+      type: "REVIEW",
+      questionCount: Math.min(REVIEW_QUESTIONS, poolCount),
+      rStart: ability?.rating ?? START_RATING,
+    },
+  });
+  redirect(`/portal/exam/${session.id}`);
+}
+
+// ---------- پایان‌بندی زودهنگام (بانک سؤال مباحث مرور/تمرین تمام شد) ----------
+
+/**
+ * جلسه را با تعداد پاسخ‌های موجود کامل می‌کند (نمره وزن‌دار D13 از همان‌ها).
+ * اگر هیچ پاسخی نبود، جلسه رهاشده ثبت می‌شود تا زامبی ACTIVE نماند.
+ */
+async function finalizeSessionEarly(sessionId: string, userId: string, subjectId: string): Promise<void> {
+  const allAttempts = await db.attempt.findMany({
+    where: { sessionId },
+    select: { isCorrect: true, weight: true },
+  });
+  if (allAttempts.length === 0) {
+    await db.session.update({ where: { id: sessionId }, data: { status: "ABANDONED", finishedAt: new Date() } });
+    return;
+  }
+  const totalW = allAttempts.reduce((acc, a) => acc + a.weight, 0);
+  const earnedW = allAttempts.reduce((acc, a) => acc + (a.isCorrect ? a.weight : 0), 0);
+  const score = totalW > 0 ? (earnedW / totalW) * 100 : 0;
+  const ability = await db.subjectAbility.findUnique({ where: { userId_subjectId: { userId, subjectId } } });
+  await db.session.update({
+    where: { id: sessionId },
+    data: { status: "COMPLETED", finishedAt: new Date(), score, rEnd: ability?.rating ?? null },
+  });
 }
 
 // ---------- سؤال بعدی ----------
@@ -133,6 +206,31 @@ export async function getNextQuestionAction(sessionId: string): Promise<NextQues
     pool.sort((a, b) => Math.abs(a.rating - target) - Math.abs(b.rating - target));
     const ties = pool.filter((q) => Math.abs(q.rating - target) <= Math.abs(pool[0].rating - target) + 25);
     chosen = ties[Math.floor(Math.random() * ties.length)] ?? pool[0];
+  } else if (session.type === "REVIEW") {
+    // مرور: فقط سؤال‌های مباحث سرِموعد — ضعیف‌ترین مبحث اول (سطح پایین‌تر، ضعف بیشتر)
+    const due = await db.reviewSchedule.findMany({
+      where: { userId: user.id, subjectId: session.subjectId, dueAt: { lte: new Date() } },
+      select: { topicId: true },
+    });
+    const dueIds = new Set(due.map((d) => d.topicId));
+    const pool = questions.filter((q) => !inSession.has(q.id) && q.topicId !== null && dueIds.has(q.topicId));
+    if (pool.length === 0) {
+      // صف مرور زودتر از سقف جلسه تمام شد → پایان‌بندی زودهنگام
+      await finalizeSessionEarly(session.id, user.id, session.subjectId);
+      return { ok: true, finished: true };
+    }
+    const tas = await db.topicAbility.findMany({ where: { userId: user.id, topicId: { in: [...dueIds] } } });
+    const weaknessOf = (topicId: string): number => {
+      const ta = tas.find((t) => t.topicId === topicId);
+      if (!ta) return 0.6;
+      return ta.level === 1 ? 0.9 : ta.level === 2 ? 0.5 : 0.2;
+    };
+    pool.sort((a, b) => {
+      const w = weaknessOf(b.topicId!) - weaknessOf(a.topicId!);
+      if (Math.abs(w) > 0.001) return w;
+      return Math.abs(a.rating - rStudent) - Math.abs(b.rating - rStudent);
+    });
+    chosen = pool[0];
   } else {
     // تمرین: انتخاب سه‌لایه
     const recent = await db.attempt.findMany({
@@ -160,7 +258,11 @@ export async function getNextQuestionAction(sessionId: string): Promise<NextQues
     }
 
     let pool = questions.filter((q) => !inSession.has(q.id));
-    if (pool.length === 0) return { ok: true, finished: true };
+    if (pool.length === 0) {
+      // بانک سؤال این درس برای جلسه تمام شده → پایان‌بندی زودهنگام (به‌جای جلسهٔ زامبی)
+      await finalizeSessionEarly(session.id, user.id, session.subjectId);
+      return { ok: true, finished: true };
+    }
 
     const toCandidate = (q: (typeof questions)[0]): Candidate => {
       const ta = q.topicId ? taByTopic.get(q.topicId) : undefined;
@@ -447,6 +549,18 @@ export async function submitAnswerAction(input: {
       where: { id: session.id },
       data: { status: "COMPLETED", finishedAt: new Date(), score: realScore, rEnd: newStudent },
     });
+    // تکمیل تمرین کلاسی (اگر جلسه برای تمرین معلم شروع شده بود)
+    if (session.assignmentId) {
+      try {
+        await db.assignmentCompletion.upsert({
+          where: { assignmentId_studentId: { assignmentId: session.assignmentId, studentId: user.id } },
+          create: { assignmentId: session.assignmentId, studentId: user.id, sessionId: session.id, score: realScore },
+          update: { sessionId: session.id, score: realScore, completedAt: new Date() },
+        });
+      } catch {
+        // تمرین هم‌زمان حذف شده است — تکمیل ثبت نمی‌شود
+      }
+    }
     result = { score: Math.round(realScore * 10) / 10, correctCount: allAttempts.filter((a) => a.isCorrect).length };
   }
 

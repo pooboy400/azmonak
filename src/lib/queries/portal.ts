@@ -249,6 +249,19 @@ export interface DashboardData {
   recentSessions: Array<{ id: string; type: string; status: string; score: number | null; subjectTitle: string; startedAt: Date; questionCount: number; correctCount: number }>;
   totals: { completedSessions: number; attempts: number; avgScore: number | null };
   forecasts: Record<string, ScoreForecast>;
+  classAssignments: Array<{
+    id: string;
+    title: string;
+    className: string;
+    teacherName: string;
+    subjectId: string;
+    subjectTitle: string;
+    questionCount: number;
+    dueAt: Date | null;
+    completed: boolean;
+    score: number | null;
+    activeSessionId: string | null;
+  }>;
 }
 
 export async function getDashboardData(userId: string): Promise<DashboardData> {
@@ -286,6 +299,44 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
   }
 
   const scoreList = completedSessions.map((s) => s.score!);
+
+  // تمرین‌های کلاسی: از کلاس‌هایی که کاربر عضو آن‌هاست — با وضعیت تکمیل/جلسهٔ در جریان
+  const memberships = await db.classMember.findMany({ where: { studentId: userId }, select: { classId: true } });
+  const classIds = memberships.map((m) => m.classId);
+  const classAssignments: DashboardData["classAssignments"] = [];
+  if (classIds.length > 0) {
+    const [assignments, completions, activeSessions] = await Promise.all([
+      db.assignment.findMany({
+        where: { classId: { in: classIds } },
+        orderBy: { createdAt: "desc" },
+        take: 12,
+        include: {
+          class: { select: { name: true, teacher: { select: { nickname: true } } } },
+          subject: { select: { id: true, title: true } },
+        },
+      }),
+      db.assignmentCompletion.findMany({ where: { studentId: userId } }),
+      db.session.findMany({ where: { userId, assignmentId: { not: null }, status: "ACTIVE" }, select: { id: true, assignmentId: true } }),
+    ]);
+    for (const a of assignments) {
+      const completion = completions.find((c) => c.assignmentId === a.id);
+      const activeSession = activeSessions.find((s) => s.assignmentId === a.id);
+      classAssignments.push({
+        id: a.id,
+        title: a.title,
+        className: a.class.name,
+        teacherName: a.class.teacher.nickname,
+        subjectId: a.subject.id,
+        subjectTitle: a.subject.title,
+        questionCount: a.questionCount,
+        dueAt: a.dueAt,
+        completed: Boolean(completion),
+        score: completion?.score ?? null,
+        activeSessionId: activeSession?.id ?? null,
+      });
+    }
+  }
+
   return {
     user: {
       id: user.id,
@@ -315,6 +366,7 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
       avgScore: scoreList.length > 0 ? scoreList.reduce((a, b) => a + b, 0) / scoreList.length : null,
     },
     forecasts,
+    classAssignments,
   };
 }
 

@@ -4,8 +4,8 @@ import { getSessionUser } from "@/lib/auth";
 import { getDashboardData, type PortalSubject } from "@/lib/queries/portal";
 import { getSetting } from "@/lib/queries/site";
 import { faNum, faScore } from "@/lib/fa";
-import { cohortLabel, gradeLabel, majorLabel } from "@/lib/labels";
-import { StartExamButton } from "@/components/portal/start-exam-button";
+import { cohortLabel, faDate, gradeLabel, majorLabel, sessionTypeLabel } from "@/lib/labels";
+import { StartExamButton, StartAssignmentButton } from "@/components/portal/start-exam-button";
 import { UserAvatar } from "@/components/site/user-avatar";
 import { DbIcon, getTone } from "@/lib/icon-map";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,8 @@ import {
   ArrowDownRight,
   BookOpen,
   CalendarCheck,
+  CheckCircle2,
+  ClipboardList,
   GraduationCap,
   ListChecks,
   Sparkles,
@@ -98,6 +100,50 @@ export default async function PortalDashboardPage() {
         ))}
       </section>
 
+      {/* تمرین‌های کلاسی */}
+      {data.classAssignments.length > 0 && (
+        <section aria-label="تمرین‌های کلاسی">
+          <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
+            <ClipboardList className="h-5 w-5 text-primary" aria-hidden />
+            تمرین‌های کلاسی
+          </h2>
+          <div className="space-y-2">
+            {data.classAssignments.map((a) => (
+              <Card key={a.id} className="border-border/70">
+                <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-lg bg-secondary p-2 text-primary">
+                      <ClipboardList className="h-4 w-4" aria-hidden />
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium">{a.title}</div>
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">
+                        {a.className} · {a.teacherName} · {a.subjectTitle} · {faNumLocal(a.questionCount)} سؤال
+                        {a.dueAt && ` · مهلت ${faDate(a.dueAt)}`}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {a.completed ? (
+                      <Badge className="gap-1 bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
+                        <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
+                        {a.score !== null ? `انجام‌شده — ${faScore(a.score)}` : "انجام‌شده"}
+                      </Badge>
+                    ) : a.activeSessionId ? (
+                      <Button asChild size="sm" variant="outline" className="cursor-pointer">
+                        <Link href={`/portal/exam/${a.activeSessionId}`}>ادامه تمرین</Link>
+                      </Button>
+                    ) : (
+                      <StartAssignmentButton assignmentId={a.id} />
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* درس‌ها */}
       <section aria-label="درس‌های من">
         <div className="mb-4 flex items-center justify-between">
@@ -148,7 +194,7 @@ export default async function PortalDashboardPage() {
                     <div>
                       <div className="text-sm font-medium">{s.subjectTitle}</div>
                       <div className="mt-0.5 text-[11px] text-muted-foreground">
-                        {s.type === "PLACEMENT" ? "جایابی" : "تمرین"} · {faNumLocal(s.correctCount)} از {faNumLocal(s.questionCount)} درست
+                        {sessionTypeLabel(s.type)} · {faNumLocal(s.correctCount)} از {faNumLocal(s.questionCount)} درست
                         {s.status === "ACTIVE" ? " · در جریان" : s.status === "ABANDONED" ? " · رهاشده" : ""}
                       </div>
                     </div>

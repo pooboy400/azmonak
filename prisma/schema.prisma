@@ -22,9 +22,11 @@
 //     q.status    : DRAFT | IN_REVIEW | APPROVED | RETIRED   (G6)
 //     difficulty  : EASY | MEDIUM | HARD  → ۱۱۵۰ / ۱۲۵۰ / ۱۳۵۰
 //     confidence  : CONFIDENT | GUESSED               (D14)
-//     session.type: PLACEMENT | PRACTICE              (D1)
+//     session.type: PLACEMENT | PRACTICE | REVIEW     (D1 + مرور فاصله‌دار SM-2)
 //     session.status: ACTIVE | COMPLETED | ABANDONED
 //     f.status    : PENDING | ACCEPTED
+//     forum.status: OPEN | RESOLVED
+//     vote target: ForumQuestionVote / ForumAnswerVote (مدل جدا برای هر هدف — SQLite پسندیده)
 // ============================================================
 
 generator client {
@@ -63,6 +65,11 @@ model User {
   classMemberships     ClassMember[]
   friendshipsRequested Friendship[]         @relation("FriendshipRequester")
   friendshipsReceived  Friendship[]         @relation("FriendshipAddressee")
+  forumQuestions        ForumQuestion[]        @relation("ForumQuestions")
+  forumAnswers          ForumAnswer[]          @relation("ForumAnswers")
+  forumQuestionVotes    ForumQuestionVote[]    @relation("ForumQuestionVotes")
+  forumAnswerVotes      ForumAnswerVote[]      @relation("ForumAnswerVotes")
+  assignmentCompletions AssignmentCompletion[] @relation("AssignmentCompletions")
 
   @@index([role, grade, major])
   @@index([isSample])
@@ -118,6 +125,8 @@ model Subject {
   subjectAbilities SubjectAbility[]
   topicAbilities   TopicAbility[]
   reviewSchedules  ReviewSchedule[]
+  forumQuestions   ForumQuestion[]
+  assignments      Assignment[]
 
   @@unique([grade, major, title])
   @@index([grade, major, isActive])
@@ -135,6 +144,7 @@ model Topic {
   questions       Question[]
   topicAbilities  TopicAbility[]
   reviewSchedules ReviewSchedule[]
+  forumQuestions  ForumQuestion[]
 
   @@unique([subjectId, title])
   @@map("topics")
@@ -183,7 +193,7 @@ model Session {
   id            String    @id @default(cuid())
   userId        String
   subjectId     String
-  type          String    @default("PRACTICE") // PLACEMENT (۴ سؤالی — D1) | PRACTICE (۱۰ سؤالی — D12)
+  type          String    @default("PRACTICE") // PLACEMENT (۴ سؤالی — D1) | PRACTICE (۱۰ سؤالی — D12) | REVIEW (صف مرور SM-2)
   status        String    @default("ACTIVE") // ACTIVE | COMPLETED | ABANDONED
   questionCount Int       @default(10)
   correctCount  Int       @default(0)
@@ -199,6 +209,8 @@ model Session {
   user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   subject Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   attempts Attempt[]
+  assignmentId String? // اگر جلسه برای یک تمرین کلاسی شروع شده باشد
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
 
   @@index([userId, startedAt])
   @@index([subjectId, status, startedAt])
@@ -382,9 +394,126 @@ model ClassRoom {
 
   teacher User           @relation("ClassTeacher", fields: [teacherId], references: [id], onDelete: Cascade)
   members ClassMember[]
+  assignments Assignment[]
 
   @@index([grade, major])
   @@map("classes")
+}
+
+// ---------------- تمرین کلاسی (پنل معلم) ----------------
+
+// معلم برای کلاسش یک تمرین (درس + تعداد سؤال + مهلت اختیاری) می‌سازد؛
+// دانش‌آموز از داشبورد شروع می‌کند و با اتمام جلسه، تکمیل تمرین ثبت می‌شود.
+model Assignment {
+  id            String    @id @default(cuid())
+  classId       String
+  subjectId     String
+  title         String // «تمرین هفتهٔ ۶ — مشتق»
+  questionCount Int       @default(10) // ۴ تا ۲۰
+  dueAt         DateTime? // مهلت اختیاری
+  isSample      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+
+  class       ClassRoom              @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subject     Subject                @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  completions AssignmentCompletion[]
+  sessions    Session[]
+
+  @@index([classId, createdAt])
+  @@index([subjectId])
+  @@map("assignments")
+}
+
+model AssignmentCompletion {
+  id           String   @id @default(cuid())
+  assignmentId String
+  studentId    String
+  sessionId    String? // جلسه‌ای که تمرین با آن کامل شد
+  score        Float? // نمرهٔ همان جلسه (۰–۱۰۰)
+  completedAt  DateTime @default(now())
+  isSample     Boolean  @default(false)
+
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  student    User       @relation("AssignmentCompletions", fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([assignmentId, studentId])
+  @@index([studentId])
+  @@map("assignment_completions")
+}
+
+// ---------------- انجمن پرسش و پاسخ ----------------
+// بدنهٔ سؤال/پاسخ فرمول LaTeX ($...$ / $$...$$) را پشتیبانی می‌کند و
+// فقط با کامپوننت MathText رندر می‌شود (قاعدهٔ فاز فرمول‌ها).
+
+model ForumQuestion {
+  id        String   @id @default(cuid())
+  authorId  String
+  subjectId String
+  topicId   String?
+  title     String // ۵ تا ۱۲۰ نویسه
+  body      String // تا ۴۰۰۰ نویسه — با $LaTeX$
+  status    String   @default("OPEN") // OPEN | RESOLVED — با پذیرش پاسخ RESOLVED می‌شود
+  viewCount Int      @default(0)
+  isSample  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author  User    @relation("ForumQuestions", fields: [authorId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topic   Topic?  @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  answers ForumAnswer[]
+  votes   ForumQuestionVote[]
+
+  @@index([subjectId, status, createdAt])
+  @@index([authorId, createdAt])
+  @@map("forum_questions")
+}
+
+model ForumAnswer {
+  id         String   @id @default(cuid())
+  questionId String
+  authorId   String
+  body       String // تا ۴۰۰۰ نویسه — با $LaTeX$
+  isAccepted Boolean  @default(false) // پذیرش توسط نویسندهٔ سؤال یا ادمین
+  isSample   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  question ForumQuestion     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  author   User              @relation("ForumAnswers", fields: [authorId], references: [id], onDelete: Cascade)
+  votes    ForumAnswerVote[]
+
+  @@index([questionId, createdAt])
+  @@index([authorId])
+  @@map("forum_answers")
+}
+
+model ForumQuestionVote {
+  id         String   @id @default(cuid())
+  questionId String
+  userId     String
+  createdAt  DateTime @default(now())
+  isSample   Boolean  @default(false)
+
+  question ForumQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user     User          @relation("ForumQuestionVotes", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, userId])
+  @@map("forum_question_votes")
+}
+
+model ForumAnswerVote {
+  id        String   @id @default(cuid())
+  answerId  String
+  userId    String
+  createdAt DateTime @default(now())
+  isSample  Boolean  @default(false)
+
+  answer ForumAnswer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  user   User        @relation("ForumAnswerVotes", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([answerId, userId])
+  @@map("forum_answer_votes")
 }
 
 model ClassMember {

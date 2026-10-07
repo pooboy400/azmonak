@@ -21,6 +21,12 @@ export async function cleanSampleData(db: PrismaClient): Promise<Record<string, 
   counts.abilityTopic = (await db.topicAbility.deleteMany({ where: { isSample: true } })).count;
   counts.reviewSchedule = (await db.reviewSchedule.deleteMany({ where: { isSample: true } })).count;
   counts.misconceptionState = (await db.misconceptionState.deleteMany({ where: { isSample: true } })).count;
+  counts.forumQuestionVotes = (await db.forumQuestionVote.deleteMany({ where: { isSample: true } })).count;
+  counts.forumAnswerVotes = (await db.forumAnswerVote.deleteMany({ where: { isSample: true } })).count;
+  counts.forumAnswers = (await db.forumAnswer.deleteMany({ where: { isSample: true } })).count;
+  counts.forumQuestions = (await db.forumQuestion.deleteMany({ where: { isSample: true } })).count;
+  counts.assignmentCompletions = (await db.assignmentCompletion.deleteMany({ where: { isSample: true } })).count;
+  counts.assignments = (await db.assignment.deleteMany({ where: { isSample: true } })).count;
   counts.questionMisconception = (await db.questionMisconception.deleteMany({ where: { isSample: true } })).count;
   counts.questions = (await db.question.deleteMany({ where: { isSample: true } })).count;
   counts.topics = (await db.topic.deleteMany({ where: { isSample: true } })).count;
